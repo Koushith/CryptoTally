@@ -1,14 +1,20 @@
-import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
+import removeConsole from 'vite-plugin-remove-console';
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    mode === 'production' &&
+      removeConsole({
+        includes: ['log', 'warn', 'info'],
+      }),
+  ].filter(Boolean),
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-});
+}));

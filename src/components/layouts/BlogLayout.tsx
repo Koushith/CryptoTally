@@ -39,7 +39,7 @@ export const BlogLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
       <div className="grid grid-cols-12 gap-8">
         <div className="col-span-3">
-          <div className="sticky top-8 space-y-3">
+          <div className="sticky top-32 space-y-3">
             <p className="font-medium text-sm text-gray-500">ON THIS PAGE</p>
             <nav className="space-y-1">
               {sections.map((section) => (
@@ -57,7 +57,7 @@ export const BlogLayout = ({ children }: { children: React.ReactNode }) => {
             </nav>
           </div>
         </div>
-        <div className="col-span-9">{children}</div>
+        <div className="col-span-9 pt-24">{children}</div>
       </div>
     </div>
   );

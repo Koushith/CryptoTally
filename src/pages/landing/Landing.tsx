@@ -28,6 +28,7 @@ import { WaitlistModal } from '@/components/waitlist-modal';
 import CTAILLUSTRATION from '@/assets/cta-illustration.svg';
 import CFO from '@/assets/cfo.png';
 import { useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 export const Logo = () => {
   return (
@@ -51,109 +52,69 @@ export const Logo = () => {
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
     { label: 'Features', href: '#features' },
     { label: 'How it Works', href: '#how-it-works' },
     { label: 'Who is it For', href: '#who-is-it-for' },
+    {
+      label: 'Blog',
+      href: '/blog',
+      onClick: (e: React.MouseEvent) => {
+        e.preventDefault();
+        navigate('/blog');
+      },
+    },
   ];
-
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      const navHeight = 80; // Increased height for better spacing
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-    }
-  };
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100">
       <nav className="mx-auto max-w-7xl px-6 h-20">
-        {' '}
-        {/* Increased height */}
         <div className="flex items-center justify-between h-full">
-          <Logo />
+          <div className="flex items-center gap-2">
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/');
+              }}
+            >
+              <Logo />
+            </a>
+          </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:items-center lg:gap-x-10">
-            {' '}
-            {/* Increased gap */}
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
+                onClick={item.onClick}
                 className="text-[15px] font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.href);
-                }}
               >
                 {item.label}
               </a>
             ))}
             <Button
-              size="lg"
-              className="bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
               onClick={() => setIsModalOpen(true)}
+              className="bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
             >
               Join Waitlist
             </Button>
           </div>
 
-          {/* Mobile menu button */}
           <div className="lg:hidden">
             <Button
               variant="ghost"
               size="icon"
               className="text-gray-700 hover:text-gray-900"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => setIsMenuOpen(true)}
             >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <Menu className="h-5 w-5" />
             </Button>
           </div>
         </div>
       </nav>
-
-      {/* Mobile menu */}
-      {isMenuOpen && (
-        <div className="fixed inset-x-0 top-20 z-50 h-[calc(100vh-5rem)] bg-white/95 backdrop-blur-lg lg:hidden">
-          <div className="flex h-full flex-col px-6">
-            <div className="space-y-2 py-6">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="block rounded-lg px-4 py-3 text-[15px] font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(item.href);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
-            <div className="mt-auto border-t border-gray-100 py-6">
-              <Button
-                className="w-full bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
-                onClick={() => {
-                  setIsModalOpen(true);
-                  setIsMenuOpen(false);
-                }}
-              >
-                Join Waitlist
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <WaitlistModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </header>
@@ -637,19 +598,24 @@ const ReadyToSimplify = () => {
 };
 
 export const LandingScreen = () => {
+  const location = useLocation();
+  const isBlogRoute = location.pathname.startsWith('/blog');
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
-        <div className="h-full overflow-x-hidden font-sans antialiased">
-          <Hero />
-
-          <WhoIsItFor />
-          <Features />
-          <HowItWorks />
-
-          <ReadyToSimplify />
-        </div>
+        {isBlogRoute ? (
+          <Outlet />
+        ) : (
+          <div className="h-full overflow-x-hidden font-sans antialiased">
+            <Hero />
+            <WhoIsItFor />
+            <Features />
+            <HowItWorks />
+            <ReadyToSimplify />
+          </div>
+        )}
       </main>
       <Footer />
     </div>

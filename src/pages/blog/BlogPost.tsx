@@ -9,6 +9,8 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatDate } from '@/lib/utils';
 import { BlogLayout } from '@/components/layouts/BlogLayout';
+import { MDXProvider } from '@mdx-js/react';
+import { components } from '@/components/mdx-components';
 
 export const BlogPost = () => {
   const { slug } = useParams();

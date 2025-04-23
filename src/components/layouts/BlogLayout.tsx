@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../../lib/utils';
+import { ArrowLeft } from 'lucide-react';
 
 type Section = {
   id: string;
@@ -11,6 +12,20 @@ type Section = {
 export const BlogLayout = ({ children }: { children: React.ReactNode }) => {
   const [sections, setSections] = useState<Section[]>([]);
   const location = useLocation();
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      });
+      // Update URL without jump
+      window.history.pushState({}, '', `#${id}`);
+    }
+  };
 
   useEffect(() => {
     // Wait for content to be rendered
@@ -36,28 +51,55 @@ export const BlogLayout = ({ children }: { children: React.ReactNode }) => {
   }, [location]);
 
   return (
-    <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-      <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-3">
-          <div className="sticky top-32 space-y-3">
-            <p className="font-medium text-sm text-gray-500">ON THIS PAGE</p>
-            <nav className="space-y-1">
-              {sections.map((section) => (
-                <a
-                  key={section.id}
-                  href={`#${section.id}`}
-                  className={cn(
-                    'block text-sm py-1 hover:text-gray-900',
-                    section.level === 1 ? 'text-gray-900' : 'text-gray-600 pl-4'
-                  )}
+    <div className="min-h-screen bg-white pt-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative flex flex-col lg:flex-row lg:gap-x-8">
+          {/* Left sidebar - visible only on desktop */}
+          <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:shrink-0">
+            <div className="sticky top-24">
+              <nav className="flex flex-col space-y-2">
+                <Link
+                  to="/blog"
+                  className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900"
                 >
-                  {section.title}
-                </a>
-              ))}
-            </nav>
+                  <ArrowLeft className="h-4 w-4" />
+                  Back to Blog
+                </Link>
+                {sections.map((section) => (
+                  <a
+                    key={section.id}
+                    href={`#${section.id}`}
+                    onClick={(e) => scrollToSection(e, section.id)}
+                    className={cn(
+                      'text-sm text-gray-600 hover:text-gray-900',
+                      'pl-4 border-l border-gray-200 hover:border-gray-600',
+                      'transition-colors duration-200',
+                      section.level === 1 && 'font-medium',
+                      section.level === 2 && 'pl-6',
+                      section.level === 3 && 'pl-8'
+                    )}
+                  >
+                    {section.title}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </aside>
+
+          {/* Mobile "Back to Blog" link */}
+          <div className="mb-6 block lg:hidden">
+            <Link
+              to="/blog"
+              className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Blog
+            </Link>
           </div>
+
+          {/* Main content */}
+          <main className="flex-1">{children}</main>
         </div>
-        <div className="col-span-9 pt-24">{children}</div>
       </div>
     </div>
   );

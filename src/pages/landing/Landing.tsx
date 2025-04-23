@@ -84,6 +84,7 @@ const Navbar = () => {
             </a>
           </div>
 
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:items-center lg:gap-x-10">
             {navItems.map((item) => (
               <a
@@ -103,17 +104,52 @@ const Navbar = () => {
             </Button>
           </div>
 
+          {/* Mobile Menu Button */}
           <div className="lg:hidden">
             <Button
               variant="ghost"
               size="icon"
               className="text-gray-700 hover:text-gray-900"
-              onClick={() => setIsMenuOpen(true)}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              <Menu className="h-5 w-5" />
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="fixed inset-x-0 top-20 z-50 bg-white border-b border-gray-100 lg:hidden">
+            <div className="p-6 space-y-4">
+              {navItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={(e) => {
+                    if (item.onClick) {
+                      item.onClick(e as React.MouseEvent);
+                    }
+                    setIsMenuOpen(false);
+                  }}
+                  className="block text-[15px] font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  {item.label}
+                </a>
+              ))}
+              <div className="pt-4">
+                <Button
+                  onClick={() => {
+                    setIsModalOpen(true);
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
+                >
+                  Join Waitlist
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
 
       <WaitlistModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

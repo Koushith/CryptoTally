@@ -30,10 +30,10 @@ export const BlogPost = () => {
 
   if (isLoading) {
     return (
-      <div className="mx-auto max-w-4xl px-6 py-10 lg:px-8 lg:py-16">
-        <Skeleton className="h-12 w-3/4" />
-        <Skeleton className="mt-4 h-24" />
-        <Skeleton className="mt-8 h-[600px]" />
+      <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-16">
+        <Skeleton className="h-8 sm:h-12 w-full sm:w-3/4" />
+        <Skeleton className="mt-3 sm:mt-4 h-16 sm:h-24" />
+        <Skeleton className="mt-6 sm:mt-8 h-[400px] sm:h-[600px]" />
       </div>
     );
   }
@@ -43,25 +43,25 @@ export const BlogPost = () => {
   return (
     <BlogLayout>
       <Card className="border-none shadow-none">
-        <CardHeader className="space-y-6 px-0">
+        <CardHeader className="space-y-4 sm:space-y-6 px-4 sm:px-0">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">{post.title}</h1>
-            <p className="text-lg text-gray-600">{post.description}</p>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900">{post.title}</h1>
+            <p className="text-base sm:text-lg text-gray-600">{post.description}</p>
           </div>
-          <div className="flex items-center gap-x-4">
-            <Avatar className="h-12 w-12">
+          <div className="flex items-center gap-x-3 sm:gap-x-4">
+            <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
               <AvatarImage src={post.author.avatar} alt={post.author.name} />
               <AvatarFallback>{post.author.name[0]}</AvatarFallback>
             </Avatar>
             <div>
               <div className="font-medium text-gray-900">{post.author.name}</div>
-              <div className="text-sm text-gray-500">
-                {new Date(post.date).toLocaleDateString()} · {post.readingTime}
+              <div className="text-xs sm:text-sm text-gray-500">
+                {formatDate(post.date)} · {post.readingTime}
               </div>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="prose prose-gray max-w-none pt-8 px-0">
+        <CardContent className="prose prose-sm sm:prose-base prose-gray max-w-none pt-6 sm:pt-8 px-4 sm:px-0">
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
         </CardContent>
       </Card>

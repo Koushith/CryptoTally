@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { WaitlistModal } from '@/components/waitlist-modal';
 import CTAILLUSTRATION from '@/assets/cta-illustration.svg';
+import CFO from '@/assets/cfo.png';
 import { useState } from 'react';
 
 export const Logo = () => {
@@ -162,33 +163,33 @@ const Navbar = () => {
 const Footer = () => {
   return (
     <footer className="border-t border-gray-200 bg-white">
-      <div className="mx-auto max-w-7xl px-6 py-12">
-        <div className="flex flex-col gap-8">
+      <div className="mx-auto max-w-7xl px-6 py-12 md:py-16">
+        <div className="flex flex-col gap-12">
           {/* Logo + Links Section */}
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-x-12">
+          <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-8 md:flex-row md:items-center md:gap-12">
               <Logo />
-              <nav className="flex flex-wrap gap-x-8 gap-y-4 text-sm">
-                <a href="/privacy" className="text-gray-600 hover:text-gray-900">
-                  Privacy
+              <nav className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-8">
+                <a href="/privacy" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                  Privacy Policy
                 </a>
-                <a href="/terms" className="text-gray-600 hover:text-gray-900">
-                  Terms
+                <a href="/terms" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                  Terms of Service
                 </a>
-                <a href="/contact" className="text-gray-600 hover:text-gray-900">
-                  Contact
+                <a href="/contact" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                  Contact Us
                 </a>
               </nav>
             </div>
 
-            {/* Social + Copyright Section */}
-            <div className="flex flex-col gap-6 sm:items-end">
-              <div className="flex gap-x-4">
+            {/* Social Links */}
+            <div className="flex flex-col gap-4 md:items-end">
+              <div className="flex gap-4">
                 <a
                   href="https://twitter.com/koushithamin"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-gray-900"
+                  className="rounded-full bg-gray-100 p-2.5 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors"
                 >
                   <span className="sr-only">Twitter</span>
                   <Twitter className="h-5 w-5" />
@@ -197,7 +198,7 @@ const Footer = () => {
                   href="https://github.com/koushith"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-gray-900"
+                  className="rounded-full bg-gray-100 p-2.5 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors"
                 >
                   <span className="sr-only">GitHub</span>
                   <Github className="h-5 w-5" />
@@ -206,14 +207,14 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Bottom Section with Fun Text */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-gray-200 pt-8">
+          {/* Bottom Section with Copyright */}
+          <div className="flex flex-col gap-4 border-t border-gray-200 pt-8 md:flex-row md:items-center md:justify-between">
             <p className="text-sm text-gray-500">© 2025 CryptoTally. Not vibecoded - built by human haha 😄</p>
             <a
               href="https://twitter.com/koushithamin"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-gray-500 hover:text-gray-900"
+              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
             >
               @koushithamin
             </a>
@@ -408,7 +409,7 @@ const WhoIsItFor = () => {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-gray-300 hover:shadow-md"
+                  className="flex items-start gap-4 rounded-xl border border-gray-100 bg-white p-6 transition-all hover:border-gray-200"
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-900 text-white">
                     {item.icon}
@@ -424,7 +425,8 @@ const WhoIsItFor = () => {
             {/* Right column: Summary */}
             <div className="flex items-center">
               <div className="rounded-2xl bg-gray-900 p-8 text-white">
-                <p className="text-2xl font-medium leading-relaxed tracking-tight">
+                <img src={CFO} alt="Crypto Finance Dashboard" className="mb-6 w-full rounded-lg object-cover" />
+                <p className="text-base leading-relaxed tracking-tight">
                   No CFO? No problem. This tool is your crypto ledger, P&L dashboard, and tax buddy — all in one.
                 </p>
               </div>

@@ -633,27 +633,29 @@ const ReadyToSimplify = () => {
   );
 };
 
-export const LandingScreen = () => {
+// Extract the layout components into a shared layout
+export const MainLayout = () => {
   const location = useLocation();
   const isBlogRoute = location.pathname.startsWith('/blog');
 
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-1">
-        {isBlogRoute ? (
-          <Outlet />
-        ) : (
-          <div className="h-full overflow-x-hidden font-sans antialiased">
-            <Hero />
-            <WhoIsItFor />
-            <Features />
-            <HowItWorks />
-            <ReadyToSimplify />
-          </div>
-        )}
-      </main>
+      <main className="flex-1">{isBlogRoute ? <Outlet /> : <LandingContent />}</main>
       <Footer />
+    </div>
+  );
+};
+
+// Modify LandingContent to contain just the landing page sections
+export const LandingContent = () => {
+  return (
+    <div className="h-full overflow-x-hidden font-sans antialiased">
+      <Hero />
+      <WhoIsItFor />
+      <Features />
+      <HowItWorks />
+      <ReadyToSimplify />
     </div>
   );
 };

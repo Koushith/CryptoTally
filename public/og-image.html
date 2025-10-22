@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 1200px;
+      height: 630px;
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #f9fafb, #ffffff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px;
+    }
+    .container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo {
+      width: 60px;
+      height: 60px;
+      background: #111827;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .brand-name {
+      font-size: 36px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .headline {
+      font-size: 72px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.1;
+      max-width: 900px;
+    }
+    .description {
+      font-size: 28px;
+      color: #6b7280;
+      line-height: 1.5;
+      max-width: 800px;
+    }
+    .badges {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f3f4f6;
+      padding: 12px 20px;
+      border-radius: 999px;
+    }
+    .badge-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-section">
+      <div class="logo">CT</div>
+      <div class="brand-name">CryptoTally</div>
+    </div>
+
+    <div class="headline">
+      Crypto Accounting That Actually Makes Sense
+    </div>
+
+    <div class="description">
+      Connect your wallets. Track every transaction. Generate tax-ready reports.
+    </div>
+
+    <div class="badges">
+      <div class="badge">
+        <div class="badge-text">Multi-chain</div>
+      </div>
+      <div class="badge">
+        <div class="badge-text">Auto-categorize</div>
+      </div>
+      <div class="badge">
+        <div class="badge-text">Tax-ready</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

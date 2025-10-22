@@ -542,7 +542,7 @@ const ReadyToSimplify = () => {
             Say goodbye to spreadsheets and manual tracking!
           </p>
           <p className="mt-4 text-base leading-relaxed text-gray-300">
-            Be the first to manage your crypto finances like a pro — without learning accounting.
+            Be the first to manage your crypto finances like a pro. without learning accounting.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
             <Button
@@ -558,7 +558,7 @@ const ReadyToSimplify = () => {
           <img
             alt=""
             src={CTAILLUSTRATION}
-            className="w-full max-w-7xl translate-x-12 scale-[1.4] lg:translate-x-20 lg:translate-y-28 lg:scale-[1.8]"
+            className="w-full max-w-7xl translate-x-12 scale-[1.4] lg:translate-x-20 lg:translate-y-28 lg:scale-[1.8] blur-[2px] opacity-75"
           />
         </div>
       </div>

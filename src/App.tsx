@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MainLayout, LandingContent } from './pages/landing/Landing';
 import { BlogList } from './pages/blog/Blog';
 import { BlogPost } from './pages/blog/BlogPost';
+import { Analytics } from '@vercel/analytics/react';
 
 export enum Routes {
   Root = '/',
@@ -37,7 +38,12 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Analytics />
+    </>
+  );
 };
 
 export default App;

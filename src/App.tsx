@@ -2,8 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MainLayout, LandingContent } from './pages/landing/Landing';
 import { BlogList } from './pages/blog/Blog';
 import { BlogPost } from './pages/blog/BlogPost';
-import { AuthScreen } from './auth/Auth';
-import { AppLayout } from './layouts/AppLayout';
 
 export enum Routes {
   Root = '/',
@@ -33,35 +31,6 @@ const router = createBrowserRouter([
       {
         path: Routes.BlogPost,
         element: <BlogPost />,
-      },
-    ],
-  },
-  {
-    element: <AppLayout />,
-    children: [
-      {
-        path: Routes.Auth,
-        element: <AuthScreen />,
-      },
-      {
-        path: Routes.Dashboard,
-        element: <div>Dashboard Content</div>,
-      },
-      {
-        path: Routes.Wallets,
-        element: <div>Wallets Content</div>,
-      },
-      {
-        path: Routes.Transactions,
-        element: <div>Transactions Content</div>,
-      },
-      {
-        path: Routes.Team,
-        element: <div>Team Content</div>,
-      },
-      {
-        path: Routes.Settings,
-        element: <div>Settings Content</div>,
       },
     ],
   },

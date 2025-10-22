@@ -32,18 +32,10 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 export const Logo = () => {
   return (
-    <div className="flex items-center gap-2">
-      <svg
-        width="32"
-        height="32"
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="text-gray-900"
-      >
-        <path d="M16 2L2 16L16 30L30 16L16 2Z" stroke="currentColor" strokeWidth="2" />
-        <path d="M16 8L24 16L16 24L8 16L16 8Z" fill="currentColor" />
-      </svg>
+    <div className="flex items-center gap-2.5">
+      <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gray-900">
+        <span className="text-lg font-bold text-white">CT</span>
+      </div>
       <span className="text-xl font-bold text-gray-900">CryptoTally</span>
     </div>
   );
@@ -205,16 +197,23 @@ const Footer = () => {
           </div>
 
           {/* Bottom Section with Copyright */}
-          <div className="flex flex-col gap-4 border-t border-gray-200 pt-8 md:flex-row md:items-center md:justify-between">
-            <p className="text-sm text-gray-500">© 2025 CryptoTally. Not vibecoded - built by human haha 😄</p>
-            <a
-              href="https://twitter.com/koushithamin"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              @koushithamin
-            </a>
+          <div className="border-t border-gray-200 pt-8">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <p className="text-sm text-gray-500">© 2025 CryptoTally. All rights reserved.</p>
+              <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
+                <p className="text-xs text-gray-500">
+                  Illustrations by{' '}
+                  <a
+                    href="https://notioly.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  >
+                    Notioly
+                  </a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -226,125 +225,91 @@ const Hero = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section className="relative overflow-hidden bg-gray-950 pt-40 pb-32 sm:pt-48 sm:pb-40">
-      {/* Decorative elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute h-full w-full bg-[radial-gradient(circle_at_top_right,theme(colors.gray.800/0.15),transparent_50%)]" />
-        <div className="absolute h-full w-full bg-[radial-gradient(circle_at_40%_60%,theme(colors.gray.700/0.1),transparent_30%)]" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent" />
-      </div>
-
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col gap-20 lg:flex-row lg:items-center lg:gap-24">
-          <div className="flex-1 space-y-8">
-            <div className="space-y-6">
-              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                The Easiest Way to Manage Your Company's Crypto Finances
+    <section className="relative min-h-[100vh] overflow-hidden bg-white">
+      <div className="mx-auto max-w-7xl px-6 pt-40 pb-24 lg:px-8 lg:pt-48 lg:pb-32">
+        <div className="grid gap-16 lg:grid-cols-2 lg:gap-20 items-center">
+          {/* Left Column - Text Content */}
+          <div className="space-y-10 max-w-2xl">
+            <div className="space-y-8">
+              <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl lg:text-[4rem] leading-[1.15] lg:leading-[1.1]">
+                Crypto Accounting That Actually Makes Sense
               </h1>
-              <p className="text-lg text-gray-400 leading-relaxed">
-                Track wallet activity, tag transactions, and generate clean reports — built for startups, freelancers,
-                and crypto-native teams.
+              <p className="text-xl text-gray-600 leading-relaxed">
+                Connect your wallets. Track every transaction. Generate tax-ready reports. No spreadsheets required.
               </p>
             </div>
 
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <Button
                 size="lg"
-                className="bg-white text-gray-900 hover:bg-gray-200 font-medium transition-colors group cursor-pointer"
+                className="bg-gray-900 text-white hover:bg-gray-800 font-semibold px-8 py-6 text-base cursor-pointer shadow-lg hover:shadow-xl transition-all"
                 onClick={() => setIsModalOpen(true)}
               >
-                <Rocket className="mr-2 h-4 w-4" />
                 Join the Waitlist
               </Button>
             </div>
 
             <WaitlistModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-            <div className="mt-16 flex flex-wrap items-center gap-4">
+            {/* Feature Pills */}
+            <div className="flex flex-wrap gap-3">
               {[
-                {
-                  text: 'Built for crypto payments',
-                  icon: <DollarSign className="h-4 w-4" />,
-                },
-                {
-                  text: 'SOC 2 Compliant',
-                  icon: <Shield className="h-4 w-4" />,
-                },
-                {
-                  text: 'AI First',
-                  icon: <Brain className="h-4 w-4" />,
-                },
-              ].map((badge, i) => (
-                <div
-                  key={i}
-                  className="group flex items-center gap-3 rounded-full bg-gradient-to-r from-gray-800/80 to-gray-700/50 px-5 py-2 ring-1 ring-gray-700 transition-all hover:ring-gray-500"
-                >
-                  <span className="rounded-full bg-gray-800 p-1.5 text-white ring-1 ring-gray-700 group-hover:text-white">
-                    {badge.icon}
-                  </span>
-                  <span className="text-sm font-medium text-gray-100">{badge.text}</span>
+                { icon: <Wallet className="h-4 w-4" />, text: 'Multi-chain' },
+                { icon: <Tags className="h-4 w-4" />, text: 'Auto-categorize' },
+                { icon: <FileText className="h-4 w-4" />, text: 'Tax-ready' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2.5">
+                  <span className="text-gray-600">{item.icon}</span>
+                  <span className="text-sm font-medium text-gray-700">{item.text}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex-1">
-            <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-10">
-              <div className="grid gap-8">
-                {[
-                  {
-                    icon: <Brain className="h-5 w-5" />,
-                    title: 'Smart Transaction Tagging',
-                    description: 'AI-powered system learns and auto-categorizes your recurring transactions',
-                  },
-                  {
-                    icon: <Wallet className="h-5 w-5" />,
-                    title: 'Multi-wallet Support',
-                    description: 'Connect and track unlimited wallets across chains with automated syncing',
-                  },
-                  {
-                    icon: <FileText className="h-5 w-5" />,
-                    title: 'Intelligent Reporting',
-                    description: 'Smart templates adapt to your business needs for tax and audit reports',
-                  },
-                ].map((feature, i) => (
-                  <div key={i} className="flex items-start gap-5 rounded-xl bg-gray-800/50 p-6 backdrop-blur-sm">
-                    <div className="rounded-lg bg-gray-700 p-3 text-white">{feature.icon}</div>
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-gray-200">{feature.title}</h3>
-                      <p className="text-sm text-gray-400">{feature.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-10 rounded-xl bg-gray-800/50 p-8">
-                <div className="flex items-center justify-between border-b border-gray-700 pb-6">
-                  <div className="space-y-1">
-                    <h4 className="font-medium text-gray-200">Early Access Benefits</h4>
-                    <p className="text-sm text-gray-400">Join the waitlist today</p>
-                  </div>
-                  <span className="rounded-full bg-gray-800 px-3 py-1 text-xs font-medium text-gray-300">
-                    Coming Soon
-                  </span>
-                </div>
-                <ul className="mt-6 space-y-4 text-sm text-gray-400">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                    Priority access to smart features
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                    Extended free trial period
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                    Early adopter pricing benefits
-                  </li>
-                </ul>
-              </div>
+          {/* Right Column - Illustration */}
+          <div className="relative lg:justify-self-end">
+            <div className="relative mx-auto max-w-lg lg:max-w-xl">
+              <img
+                src="https://notioly.com/wp-content/uploads/2024/05/388.Bitcoin-Savings.png"
+                alt="Crypto Accounting Illustration"
+                className="w-full h-auto drop-shadow-sm"
+              />
             </div>
           </div>
+        </div>
+
+        {/* Bottom Feature Cards */}
+        <div className="mt-24 grid gap-8 sm:grid-cols-3">
+          {[
+            {
+              image: 'https://notioly.com/wp-content/uploads/2024/11/469.Money-Transfer.png',
+              title: 'Track All Wallets',
+              description: 'Connect wallets across Ethereum, Polygon, Arbitrum, and more',
+            },
+            {
+              image: 'https://notioly.com/wp-content/uploads/2024/07/416.Data-Analyst.png',
+              title: 'Smart Analytics',
+              description: 'Automatically categorize and analyze all your crypto transactions',
+            },
+            {
+              image: 'https://notioly.com/wp-content/uploads/2025/03/519.Reporting-Stats.png',
+              title: 'Tax Reports',
+              description: 'Generate quarterly and annual reports ready for your accountant',
+            },
+          ].map((feature, i) => (
+            <div
+              key={i}
+              className="relative rounded-2xl border border-gray-200 bg-white p-6 hover:shadow-lg transition-shadow"
+            >
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-32 h-32">
+                  <img src={feature.image} alt={feature.title} className="w-full h-full object-contain" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">{feature.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -353,81 +318,54 @@ const Hero = () => {
 
 const WhoIsItFor = () => {
   return (
-    <section className="relative bg-white py-16 sm:py-20">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-y-0 right-1/2 translate-x-1/2 w-full overflow-hidden">
-          <div className="absolute top-0 left-0 -translate-x-[60%] -translate-y-[40%] w-[120%] h-[180%] -rotate-12">
-            <div className="absolute inset-0 space-y-2 opacity-5">
-              {Array.from({ length: 40 }).map((_, i) => (
-                <div key={i} className="h-2 bg-gray-500" />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <section className="relative bg-gray-50 py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center space-y-4">
+        <div className="mx-auto max-w-3xl text-center space-y-4 mb-16">
           <div className="flex items-center justify-center gap-2 text-gray-900">
             <Lightbulb className="h-5 w-5" />
             <span className="text-sm font-medium uppercase tracking-wider">Who This is For</span>
           </div>
 
-          <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            If you run on crypto, you need more than a spreadsheet.
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+            Built for Teams Running on Crypto
           </h2>
         </div>
 
-        <div className="mx-auto mt-16 max-w-5xl">
-          <div className="grid gap-y-8 gap-x-12 lg:grid-cols-2">
-            {/* Left column: Use cases */}
-            <div className="space-y-6">
-              {[
-                {
-                  title: 'Startups accepting crypto',
-                  description: 'Track USDC, ETH, or token payments seamlessly',
-                  icon: <Building2 className="h-5 w-5" />,
-                },
-                {
-                  title: 'Agencies & freelancers',
-                  description: 'Manage crypto income and expenses effortlessly',
-                  icon: <Users className="h-5 w-5" />,
-                },
-                {
-                  title: 'DAOs & grant recipients',
-                  description: 'Monitor multisig wallet activities in real-time',
-                  icon: <Wallet className="h-5 w-5" />,
-                },
-                {
-                  title: 'NFT creators',
-                  description: 'Track on-chain revenue and royalties automatically',
-                  icon: <Palette className="h-5 w-5" />,
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 rounded-xl border border-gray-100 bg-white p-6 transition-all hover:border-gray-200"
-                >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-900 text-white">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                    <p className="mt-2 text-base text-gray-600">{item.description}</p>
-                  </div>
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                title: 'Startups accepting crypto',
+                description: 'Track USDC, ETH, or token payments seamlessly',
+                image: 'https://notioly.com/wp-content/uploads/2024/05/399.Business-Recipe.png',
+              },
+              {
+                title: 'Agencies & freelancers',
+                description: 'Manage crypto income and expenses effortlessly',
+                image: 'https://notioly.com/wp-content/uploads/2024/07/421.Hiring.png',
+              },
+              {
+                title: 'DAOs & grant recipients',
+                description: 'Monitor multisig wallet activities in real-time',
+                image: 'https://notioly.com/wp-content/uploads/2024/07/419.Money-Care.png',
+              },
+              {
+                title: 'NFT creators',
+                description: 'Track on-chain revenue and royalties automatically',
+                image: 'https://notioly.com/wp-content/uploads/2024/05/398.Make-It-Rain.png',
+              },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center text-center rounded-2xl border border-gray-200 bg-white p-6 hover:shadow-lg transition-shadow"
+              >
+                <div className="w-32 h-32 mb-4">
+                  <img src={item.image} alt={item.title} className="w-full h-full object-contain" />
                 </div>
-              ))}
-            </div>
-
-            {/* Right column: Summary */}
-            <div className="flex items-center">
-              <div className="rounded-2xl bg-gray-900 p-8 text-white">
-                <img src={CFO} alt="Crypto Finance Dashboard" className="mb-6 w-full rounded-lg object-cover" />
-                <p className="text-base leading-relaxed tracking-tight">
-                  No CFO? No problem. This tool is your crypto ledger, P&L dashboard, and tax buddy — all in one.
-                </p>
+                <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -441,68 +379,71 @@ const Features = () => {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.gray.100),white)]" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="flex items-center justify-center gap-2 text-gray-900">
+        <div className="mx-auto max-w-3xl text-center mb-16">
+          <div className="flex items-center justify-center gap-2 text-gray-900 mb-4">
             <Receipt className="h-5 w-5" />
             <span className="text-sm font-medium uppercase tracking-wider">Features Overview</span>
           </div>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+            Everything You Need
+          </h2>
         </div>
 
-        <div className="mx-auto mt-16 max-w-5xl">
+        <div className="mx-auto max-w-5xl">
           <div className="grid gap-x-8 gap-y-12 lg:grid-cols-3">
             {[
               {
-                icon: <Brain className="h-5 w-5" />,
-                title: 'Track Multi-Chain Wallets',
+                icon: <Wallet className="h-5 w-5" />,
+                title: 'Multi-Chain Wallets',
                 features: [
-                  'Connect EVM wallets: MetaMask, Gnosis, Ledger',
-                  'See balances across Ethereum, Polygon, Arbitrum, BNB Chain',
-                  'Real-time fiat value per token and per wallet',
+                  'Connect MetaMask, Gnosis Safe, Ledger',
+                  'Support for Ethereum, Polygon, Arbitrum, BNB Chain',
+                  'Real-time balance tracking in USD',
                 ],
               },
               {
                 icon: <Tags className="h-5 w-5" />,
-                title: 'Smart Transaction Tagging',
+                title: 'Transaction Tagging',
                 features: [
-                  'Inflow/outflow tagging: payments, payroll, expenses, grants',
-                  'Add notes, invoice IDs, and tag rules',
-                  'Auto-tag known wallets and repetitive activity',
+                  'Categorize as payments, expenses, or payroll',
+                  'Add notes and invoice IDs',
+                  'Auto-tag recurring transactions',
                 ],
               },
               {
                 icon: <BarChart3 className="h-5 w-5" />,
-                title: 'Clean Dashboards',
+                title: 'Visual Dashboards',
                 features: [
-                  'Inflows vs. outflows per wallet or business unit',
-                  'Token-specific summaries',
-                  'Filter by tag, wallet, token, date',
+                  'Income vs. expenses per wallet',
+                  'Token balance summaries',
+                  'Filter by category, wallet, or date',
                 ],
               },
               {
                 icon: <LineChart className="h-5 w-5" />,
-                title: 'Real-Time P&L Tracking',
+                title: 'P&L Tracking',
                 features: [
-                  'Track cost basis using FIFO or LIFO',
-                  'See unrealized vs. realized profits',
-                  'Understand the real value of your crypto holdings',
+                  'FIFO/LIFO cost basis tracking',
+                  'Unrealized and realized gains',
+                  'Real-time portfolio valuation',
                 ],
               },
               {
                 icon: <DollarSign className="h-5 w-5" />,
-                title: 'Income + Capital Gains',
+                title: 'Tax Calculations',
                 features: [
-                  'Identify income events (payments, staking rewards)',
-                  'Auto-convert to fiat (USD, INR, EUR)',
-                  'Short-term vs. long-term tax treatment',
+                  'Identify income events automatically',
+                  'Convert to USD, EUR, or INR',
+                  'Short-term and long-term capital gains',
                 ],
               },
               {
                 icon: <FileText className="h-5 w-5" />,
-                title: 'Tax-Ready Reports',
+                title: 'Export Reports',
                 features: [
-                  'Download reports by quarter or year',
-                  'Share with accountant or import into tax tools',
-                  'Complete transaction and cost basis summaries',
+                  'Quarterly and annual reports',
+                  'Accountant-ready format',
+                  'Complete transaction history with cost basis',
                 ],
               },
             ].map((feature, i) => (
@@ -532,62 +473,55 @@ const Features = () => {
 
 const HowItWorks = () => {
   return (
-    <section id="how-it-works" className="bg-gray-50 py-16 sm:py-20">
+    <section id="how-it-works" className="bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-2 text-gray-900">
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center gap-2 text-gray-900 mb-4">
             <Settings className="h-5 w-5" />
             <span className="text-sm font-medium uppercase tracking-wider">How It Works</span>
           </div>
-          <h2 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            No setup. No spreadsheets. Just clean books.
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+            Get Started in 4 Simple Steps
           </h2>
         </div>
 
-        <ul className="mx-auto mt-12 grid max-w-md grid-cols-1 gap-10 [counter-reset:steps] sm:mt-16 lg:mt-20 lg:max-w-5xl lg:grid-cols-4">
+        <div className="mx-auto max-w-5xl grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {[
             {
-              title: 'Connect your wallets',
-              description: 'Easily connect your MetaMask, Gnosis Safe, or hardware wallets with a few clicks',
-              icon: <Wallet className="h-5 w-5" />,
+              title: 'Connect Wallets',
+              description: 'Link your MetaMask, Gnosis Safe, or hardware wallet in seconds',
+              image: 'https://notioly.com/wp-content/uploads/2024/11/469.Money-Transfer.png',
+              step: '01',
             },
             {
-              title: 'Sync your transactions',
-              description: 'We automatically fetch and organize all your on-chain transactions across networks',
-              icon: <RefreshCw className="h-5 w-5" />,
+              title: 'Auto-Sync Transactions',
+              description: 'We fetch and organize all your on-chain transactions automatically',
+              image: 'https://notioly.com/wp-content/uploads/2024/06/407.Analytics.png',
+              step: '02',
             },
             {
-              title: 'Tag & categorize',
-              description: 'Label transactions with custom tags or let our smart rules handle it automatically',
-              icon: <Tags className="h-5 w-5" />,
+              title: 'Tag Transactions',
+              description: 'Categorize as income, expenses, or payroll with custom tags',
+              image: 'https://notioly.com/wp-content/uploads/2024/05/387.Targeting.png',
+              step: '03',
             },
             {
-              title: 'View dashboards and export reports',
-              description: 'Get instant insights from your dashboard or download detailed reports for accounting',
-              icon: <BarChart3 className="h-5 w-5" />,
+              title: 'Export Reports',
+              description: 'Download tax-ready reports for your accountant',
+              image: 'https://notioly.com/wp-content/uploads/2025/03/519.Reporting-Stats.png',
+              step: '04',
             },
           ].map((step, index) => (
-            <li key={index} className="flex-start group relative flex [counter-increment:steps] lg:flex-col">
-              {index < 3 && (
-                <span
-                  className="absolute left-[18px] top-14 h-[calc(100%_-_32px)] w-px bg-gray-200 lg:right-0 lg:left-auto lg:top-[18px] lg:h-px lg:w-[calc(100%_-_72px)]"
-                  aria-hidden="true"
-                />
-              )}
-
-              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white transition-all duration-200 group-hover:border-gray-900 group-hover:bg-gray-900">
-                <div className="text-gray-600 group-hover:text-white">{step.icon}</div>
+            <div key={index} className="relative flex flex-col items-center text-center">
+              <div className="mb-4 text-6xl font-bold text-gray-200">{step.step}</div>
+              <div className="w-32 h-32 mb-4">
+                <img src={step.image} alt={step.title} className="w-full h-full object-contain" />
               </div>
-
-              <div className="ml-6 lg:ml-0 lg:mt-10">
-                <h3 className="text-lg font-semibold text-gray-900 before:mb-2 before:block before:font-mono before:text-sm before:text-gray-500 before:content-[counter(steps,decimal-leading-zero)]">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-base text-gray-600 leading-relaxed">{step.description}</p>
-              </div>
-            </li>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );

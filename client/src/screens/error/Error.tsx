@@ -15,7 +15,7 @@ export const ErrorScreen = ({ error, message = "We couldn't find the page you're
       <div className="flex flex-col items-center text-center max-w-md">
         {/* Notioly Illustration */}
         <img
-          src="https://notioly.com/wp-content/uploads/2024/07/404.Not-Found.png"
+          src="https://notioly.com/wp-content/uploads/2024/06/404.Not-Found.png"
           alt="404 Not Found"
           className="w-64 h-64 mb-8 object-contain"
         />

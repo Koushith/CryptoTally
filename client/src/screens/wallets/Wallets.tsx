@@ -57,9 +57,6 @@ export const WalletsPage = () => {
     navigator.clipboard.writeText(text);
   };
 
-  const totalBalance = mockWallets.reduce((acc, wallet) => acc + wallet.balanceNum, 0);
-  const totalTransactions = mockWallets.reduce((acc, wallet) => acc + wallet.transactions, 0);
-
   const handleAddWallet = () => {
     console.log({ walletAddress, walletLabel, selectedChain });
     setIsAddWalletOpen(false);
@@ -72,34 +69,9 @@ export const WalletsPage = () => {
     <div className="min-h-screen">
       <div className="w-full">
         {/* Header */}
-        <div className="mb-5 md:mb-10">
+        <div className="mb-8 md:mb-16">
           <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Wallets</h1>
           <p className="text-gray-500 text-sm mt-1 md:mt-2">Manage your connected wallets across multiple chains</p>
-        </div>
-
-        {/* Stats Overview */}
-        <div className="mb-8 md:mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-5 shadow-sm md:shadow-none">
-              <div className="text-sm text-gray-500 mb-2">Total Balance</div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                ${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </div>
-              <div className="text-xs text-gray-500">{mockWallets.length} wallets connected</div>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-5 shadow-sm md:shadow-none">
-              <div className="text-sm text-gray-500 mb-2">Total Transactions</div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">{totalTransactions}</div>
-              <div className="text-xs text-green-600">All time</div>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-5 shadow-sm md:shadow-none">
-              <div className="text-sm text-gray-500 mb-2">30-day Change</div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$18.2K</div>
-              <div className="text-xs text-green-600">+7.8% vs last month</div>
-            </div>
-          </div>
         </div>
 
         {/* Wallets Grid */}

@@ -96,11 +96,11 @@ export const WalletsPage = () => {
                 className="group bg-white rounded-2xl md:rounded-xl border border-gray-200 p-4 md:p-6 shadow-sm md:shadow-none md:hover:shadow-md active:scale-[0.98] md:active:scale-100 transition-all cursor-pointer"
               >
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
-                    <Wallet className="h-5 w-5 text-gray-700" />
+                  <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0">
+                    <Wallet className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-semibold text-gray-900 mb-1">{wallet.label}</h3>
+                    <h3 className="text-base font-semibold text-gray-800 mb-1">{wallet.label}</h3>
                     <p className="text-xs text-gray-500">{wallet.chain}</p>
                   </div>
                 </div>
@@ -108,7 +108,7 @@ export const WalletsPage = () => {
                 <div className="space-y-3 mb-4">
                   <div>
                     <div className="text-xs text-gray-500 mb-1">Balance</div>
-                    <div className="text-2xl font-bold text-gray-900">{wallet.balance}</div>
+                    <div className="text-2xl font-bold text-gray-800">{wallet.balance}</div>
                   </div>
 
                   <div className="flex items-center gap-4">

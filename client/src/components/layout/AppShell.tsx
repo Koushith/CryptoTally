@@ -12,6 +12,7 @@ import {
   X,
   Bell,
   User,
+  MessageSquare,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Outlet, NavLink } from 'react-router-dom';
@@ -87,12 +88,15 @@ export function AppShell() {
     <div className="min-h-screen bg-gray-50">
       {/* Mobile Header - Peerlist Style */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white z-50 flex items-center justify-between px-5 shadow-sm">
-        {/* Left side - Logo */}
-        <div className="flex items-center gap-2">
+        {/* Left side - Logo (clickable to open menu) */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="flex items-center gap-2 active:opacity-70 transition-opacity"
+        >
           <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gray-900">
             <span className="text-sm font-bold text-white">CT</span>
           </div>
-        </div>
+        </button>
 
         {/* Right side - Notifications & Profile */}
         <div className="flex items-center gap-2">
@@ -341,6 +345,11 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
           </div>
           <NavItem icon={<User size={18} />} label="Profile" to="/profile" onClick={() => setIsMobileMenuOpen(false)} />
           <NavItem icon={<Settings size={18} />} label="Settings" to="/settings" onClick={() => setIsMobileMenuOpen(false)} />
+
+          <div className="mt-6 mb-2 px-3">
+            <div className="text-xs font-medium text-[#697386] uppercase">Support</div>
+          </div>
+          <NavItem icon={<MessageSquare size={18} />} label="Feedback" to="/feedback" onClick={() => setIsMobileMenuOpen(false)} />
 
           <div className="mt-6 mb-2 px-3">
             <div className="text-xs font-medium text-[#697386] uppercase">Developer</div>

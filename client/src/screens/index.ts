@@ -4,5 +4,6 @@ export * from './transactions';
 export * from './reports';
 export * from './settings';
 export * from './profile';
+export * from './feedback';
 export * from './error/Error';
 export * from './auth/Auth';

@@ -7,6 +7,7 @@ import {
   ReportsPage,
   SettingsPage,
   ProfilePage,
+  FeedbackPage,
   ErrorScreen
 } from './screens';
 import { ComingSoon } from '@/components/ComingSoon';
@@ -45,6 +46,11 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <ProfilePage />,
+        errorElement: <ErrorScreen />,
+      },
+      {
+        path: '/feedback',
+        element: <FeedbackPage />,
         errorElement: <ErrorScreen />,
       },
       // Developer routes

@@ -1,27 +1,9 @@
-import { ArrowUpRight, ArrowDownLeft, Home } from 'lucide-react';
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbPage,
-} from '@/components/ui/breadcrumb';
+import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 
 export const DashboardPage = () => {
   return (
     <div className="min-h-screen">
       <div className="w-full">
-        {/* Breadcrumb */}
-        <Breadcrumb className="mb-4">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbPage className="flex items-center gap-1.5 text-gray-900">
-                <Home className="h-4 w-4" />
-                Dashboard
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
         {/* Header */}
         <div className="mb-6 md:mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Dashboard</h1>

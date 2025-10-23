@@ -89,7 +89,7 @@ const Navbar = () => {
               </a>
             ))}
             <a
-              href="http://localhost:5173"
+              href="https://app.cryptotally.xyz/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[15px] font-medium text-gray-900 hover:text-gray-700 transition-colors"

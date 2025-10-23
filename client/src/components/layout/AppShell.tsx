@@ -6,21 +6,18 @@ import {
   FileText,
   Settings,
   LogOut,
-  Coins,
   Key,
   Webhook,
   FileCode,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Outlet, Link, NavLink } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
@@ -43,7 +40,7 @@ function Logo() {
 }
 
 export function AppShell() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white">

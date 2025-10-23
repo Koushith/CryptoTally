@@ -88,6 +88,14 @@ const Navbar = () => {
                 {item.label}
               </a>
             ))}
+            <a
+              href="http://localhost:5173"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[15px] font-medium text-gray-900 hover:text-gray-700 transition-colors"
+            >
+              Launch App →
+            </a>
             <Button
               onClick={() => setIsModalOpen(true)}
               className="bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
@@ -128,6 +136,15 @@ const Navbar = () => {
                   {item.label}
                 </a>
               ))}
+              <a
+                href="http://localhost:5173"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-[15px] font-medium text-gray-900 hover:text-gray-700 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Launch App →
+              </a>
               <div className="pt-4">
                 <Button
                   onClick={() => {

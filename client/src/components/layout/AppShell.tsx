@@ -158,7 +158,8 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 h-screen w-[280px] bg-white/80 backdrop-blur-sm border-r border-neutral-200 transition-transform duration-200 ease-in-out z-40',
+        'fixed left-0 top-0 h-screen bg-white/80 backdrop-blur-sm border-r border-neutral-200 transition-transform duration-200 ease-in-out z-40',
+        'w-full md:w-[280px]',
         'md:translate-x-0',
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       )}

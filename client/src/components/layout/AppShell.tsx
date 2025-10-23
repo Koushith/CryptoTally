@@ -9,6 +9,8 @@ import {
   Key,
   Webhook,
   FileCode,
+  Menu,
+  X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Outlet, NavLink } from 'react-router-dom';
@@ -40,48 +42,67 @@ function Logo() {
 }
 
 export function AppShell() {
-  const [isMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Mobile Header */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50 flex items-center justify-between px-4">
+        <Logo />
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
+
       <div className="flex">
-        <AppSidebar isMobileMenuOpen={isMobileMenuOpen} />
-        <main className="md:ml-[280px] flex-1 min-h-screen bg-white">
-          <div className="p-8 max-w-[1500px] mx-auto">
+        <AppSidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+        <main className="md:ml-[280px] flex-1 min-h-screen bg-white pt-16 md:pt-0">
+          <div className="p-4 md:p-8 max-w-[1500px] mx-auto">
             <Outlet />
           </div>
         </main>
       </div>
+
+      {/* Mobile overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-30"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
     </div>
   );
 }
 
-function AppSidebar({ isMobileMenuOpen }: { isMobileMenuOpen: boolean }) {
+function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpen: boolean; setIsMobileMenuOpen: (open: boolean) => void }) {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 h-screen w-[280px] bg-white/80 backdrop-blur-sm border-r border-neutral-200 transition-transform duration-200 ease-in-out',
+        'fixed left-0 top-0 h-screen w-[280px] bg-white/80 backdrop-blur-sm border-r border-neutral-200 transition-transform duration-200 ease-in-out z-40',
         'md:translate-x-0',
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       )}
     >
       <div className="h-full flex flex-col">
-        <div className="p-6">
+        <div className="p-6 hidden md:block">
           <Logo />
         </div>
-        <div className="flex flex-col gap-1 p-3 flex-1">
-          <NavItem icon={<LayoutDashboard size={18} />} label="Dashboard" to="/" />
-          <NavItem icon={<Wallet size={18} />} label="Wallets" to="/wallets" />
-          <NavItem icon={<ArrowLeftRight size={18} />} label="Transactions" to="/transactions" />
-          <NavItem icon={<FileText size={18} />} label="Reports" to="/reports" />
-          <NavItem icon={<Settings size={18} />} label="Settings" to="/settings" />
+        <div className="flex flex-col gap-1 p-3 flex-1 pt-6 md:pt-3">
+          <NavItem icon={<LayoutDashboard size={18} />} label="Dashboard" to="/" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem icon={<Wallet size={18} />} label="Wallets" to="/wallets" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem icon={<ArrowLeftRight size={18} />} label="Transactions" to="/transactions" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem icon={<FileText size={18} />} label="Reports" to="/reports" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem icon={<Settings size={18} />} label="Settings" to="/settings" onClick={() => setIsMobileMenuOpen(false)} />
 
           <div className="mt-6 mb-2 px-3">
             <div className="text-xs font-medium text-[#697386] uppercase">Developer</div>
           </div>
-          <NavItem icon={<Key size={18} />} label="API Keys" to="/api-keys" />
-          <NavItem icon={<Webhook size={18} />} label="Webhooks" to="/webhooks" />
-          <NavItem icon={<FileCode size={18} />} label="Documentation" to="/documentation" />
+          <NavItem icon={<Key size={18} />} label="API Keys" to="/api-keys" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem icon={<Webhook size={18} />} label="Webhooks" to="/webhooks" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem icon={<FileCode size={18} />} label="Documentation" to="/documentation" onClick={() => setIsMobileMenuOpen(false)} />
         </div>
 
         {/* Promotional Card */}
@@ -147,10 +168,11 @@ function AppSidebar({ isMobileMenuOpen }: { isMobileMenuOpen: boolean }) {
   );
 }
 
-function NavItem({ icon, label, to }: { icon: React.ReactNode; label: string; to: string }) {
+function NavItem({ icon, label, to, onClick }: { icon: React.ReactNode; label: string; to: string; onClick?: () => void }) {
   return (
     <NavLink
       to={to}
+      onClick={onClick}
       className={({ isActive }) =>
         cn(
           'flex items-center gap-3 w-full px-3 py-2 text-[13px] rounded-md transition-colors',

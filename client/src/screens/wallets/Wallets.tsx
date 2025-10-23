@@ -78,23 +78,23 @@ export const WalletsPage = () => {
     <div className="min-h-screen bg-white">
       <div className="w-full max-w-6xl">
         {/* Header */}
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6 md:mb-10">
           <div>
-            <h1 className="text-[32px] font-bold text-gray-900">Wallets</h1>
+            <h1 className="text-2xl md:text-[32px] font-bold text-gray-900">Wallets</h1>
             <p className="text-gray-500 text-sm mt-2">Manage your connected wallets across multiple chains</p>
           </div>
-          <Button onClick={() => setIsAddWalletOpen(true)}>
+          <Button onClick={() => setIsAddWalletOpen(true)} className="w-full md:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             Add Wallet
           </Button>
         </div>
 
         {/* Stats Overview */}
-        <div className="bg-gray-50 rounded-xl p-6 mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-gray-50 rounded-xl p-4 md:p-6 mb-6 md:mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Balance</div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
                 ${totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
               <div className="text-xs text-gray-500">{mockWallets.length} wallets connected</div>
@@ -102,13 +102,13 @@ export const WalletsPage = () => {
 
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Transactions</div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">{totalTransactions}</div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">{totalTransactions}</div>
               <div className="text-xs text-green-600">All time</div>
             </div>
 
             <div>
               <div className="text-sm text-gray-500 mb-2">30-day Change</div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">$18.2K</div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$18.2K</div>
               <div className="text-xs text-green-600">+7.8% vs last month</div>
             </div>
           </div>
@@ -119,7 +119,7 @@ export const WalletsPage = () => {
           {mockWallets.map((wallet) => (
             <div
               key={wallet.id}
-              className="group bg-white border border-gray-200 rounded-xl p-5 hover:border-gray-300 transition-colors cursor-pointer"
+              className="group bg-white border border-gray-200 rounded-xl p-4 md:p-5 hover:border-gray-300 transition-colors cursor-pointer"
             >
               <div className="flex items-center justify-between gap-4">
                 {/* Left: Wallet Info */}

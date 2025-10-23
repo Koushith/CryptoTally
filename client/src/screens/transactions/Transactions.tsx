@@ -87,14 +87,14 @@ export const TransactionsPage = () => {
     <div className="min-h-screen bg-white">
       <div className="w-full">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-[32px] font-bold text-gray-800">Transactions</h1>
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Transactions</h1>
           <p className="text-gray-500 text-sm mt-2">View and tag all your blockchain transactions</p>
         </div>
 
         {/* Filters */}
-        <div className="bg-gray-50 rounded-2xl p-6 mb-6">
-          <div className="grid grid-cols-4 gap-4">
+        <div className="bg-gray-50 rounded-2xl p-4 md:p-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
@@ -127,11 +127,11 @@ export const TransactionsPage = () => {
           {mockTransactions.map((tx) => (
             <div
               key={tx.id}
-              className="flex items-center justify-between bg-white border border-gray-200 hover:border-gray-300 rounded-xl p-5 transition-all group cursor-pointer"
+              className="flex flex-col md:flex-row md:items-center justify-between bg-white border border-gray-200 hover:border-gray-300 rounded-xl p-4 md:p-5 transition-all group cursor-pointer gap-3"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 md:gap-4">
                 {/* Colored Icon */}
-                <div className={`p-3 rounded-xl ${tx.type === 'in' ? 'bg-emerald-50' : 'bg-rose-50'}`}>
+                <div className={`p-2 md:p-3 rounded-xl flex-shrink-0 ${tx.type === 'in' ? 'bg-emerald-50' : 'bg-rose-50'}`}>
                   {tx.type === 'in' ? (
                     <ArrowDownLeft className="h-5 w-5 text-emerald-600" />
                   ) : (
@@ -150,27 +150,33 @@ export const TransactionsPage = () => {
                   </h3>
 
                   {/* Metadata Line */}
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <Wallet className="h-3 w-3" />
-                    <span>{tx.wallet}</span>
-                    <span>•</span>
+                  <div className="flex items-center flex-wrap gap-2 text-xs text-gray-500">
+                    <div className="flex items-center gap-1">
+                      <Wallet className="h-3 w-3" />
+                      <span>{tx.wallet}</span>
+                    </div>
+                    <span className="hidden md:inline">•</span>
                     <span className={`px-2 py-0.5 rounded ${chainColors[tx.chain].bg} ${chainColors[tx.chain].text}`}>
                       {tx.chain}
                     </span>
-                    <span>•</span>
+                    <span className="hidden md:inline">•</span>
                     <span>{tx.tags.join(', ')}</span>
                     {tx.notes && (
                       <>
-                        <span>•</span>
-                        <FileText className="h-3 w-3" />
-                        <span className="max-w-[150px] truncate">{tx.notes}</span>
+                        <span className="hidden md:inline">•</span>
+                        <div className="flex items-center gap-1">
+                          <FileText className="h-3 w-3" />
+                          <span className="max-w-[150px] truncate">{tx.notes}</span>
+                        </div>
                       </>
                     )}
                     {tx.attachments > 0 && (
                       <>
-                        <span>•</span>
-                        <Paperclip className="h-3 w-3" />
-                        <span>{tx.attachments}</span>
+                        <span className="hidden md:inline">•</span>
+                        <div className="flex items-center gap-1">
+                          <Paperclip className="h-3 w-3" />
+                          <span>{tx.attachments}</span>
+                        </div>
                       </>
                     )}
                   </div>
@@ -186,7 +192,7 @@ export const TransactionsPage = () => {
               </div>
 
               {/* Right Side - Timestamp */}
-              <div className="text-right text-xs text-gray-500">
+              <div className="text-left md:text-right text-xs text-gray-500 md:self-auto self-end">
                 <div>{tx.timestamp}</div>
               </div>
             </div>
@@ -194,16 +200,16 @@ export const TransactionsPage = () => {
         </div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-center gap-2 mt-8">
-          <Button variant="outline" disabled>
+        <div className="flex items-center justify-center gap-2 mt-6 md:mt-8">
+          <Button variant="outline" disabled size="sm" className="md:h-12 md:px-6">
             Previous
           </Button>
           <div className="flex items-center gap-1">
-            <Button variant="default" className="w-12 p-0">1</Button>
-            <Button variant="ghost" className="w-12 p-0">2</Button>
-            <Button variant="ghost" className="w-12 p-0">3</Button>
+            <Button variant="default" className="w-10 md:w-12 p-0 h-10 md:h-12 text-sm">1</Button>
+            <Button variant="ghost" className="w-10 md:w-12 p-0 h-10 md:h-12 text-sm">2</Button>
+            <Button variant="ghost" className="w-10 md:w-12 p-0 h-10 md:h-12 text-sm">3</Button>
           </div>
-          <Button variant="outline">
+          <Button variant="outline" size="sm" className="md:h-12 md:px-6">
             Next
           </Button>
         </div>

@@ -83,18 +83,18 @@ export const SettingsPage = () => {
     <div className="min-h-screen bg-white">
       <div className="w-full max-w-6xl">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-[32px] font-bold text-gray-800">Settings</h1>
+        <div className="mb-6 md:mb-12">
+          <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Settings</h1>
           <p className="text-gray-500 text-sm mt-2">Manage your account and workspace preferences</p>
         </div>
 
         {/* Settings Categories */}
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
           {settingsCategories.map((categoryGroup) => (
             <div key={categoryGroup.category}>
               {/* Category Header */}
-              <div className="mb-4">
-                <h2 className="text-lg font-bold text-gray-900">{categoryGroup.category}</h2>
+              <div className="mb-3 md:mb-4">
+                <h2 className="text-base md:text-lg font-bold text-gray-900">{categoryGroup.category}</h2>
                 <p className="text-sm text-gray-500 mt-1">{categoryGroup.description}</p>
               </div>
 
@@ -106,7 +106,7 @@ export const SettingsPage = () => {
                     <button
                       key={card.id}
                       onClick={() => setOpenModal(card.id)}
-                      className="flex items-center gap-4 p-5 border border-gray-200 rounded-xl hover:shadow-md bg-white transition-all text-left group"
+                      className="flex items-center gap-4 p-4 md:p-5 border border-gray-200 rounded-xl hover:shadow-md bg-white transition-all text-left group"
                     >
                       {/* Icon */}
                       <div className="flex-shrink-0 w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">

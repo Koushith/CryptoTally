@@ -5,39 +5,39 @@ export const DashboardPage = () => {
     <div className="min-h-screen bg-white">
       <div className="w-full max-w-6xl">
         {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-[32px] font-bold text-gray-900">Dashboard</h1>
+        <div className="mb-6 md:mb-10">
+          <h1 className="text-2xl md:text-[32px] font-bold text-gray-900">Dashboard</h1>
           <p className="text-gray-500 text-sm mt-2">Overview of your crypto accounting</p>
         </div>
 
         {/* Summary Cards */}
-        <div className="bg-gray-50 rounded-xl p-6 mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-gray-50 rounded-xl p-4 md:p-6 mb-6 md:mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Balance</div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">$168,350</div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$168,350</div>
               <div className="text-xs text-gray-500">4 wallets connected</div>
             </div>
 
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Inflow</div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">$245,150</div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$245,150</div>
               <div className="text-xs text-green-600">+12.5% vs last month</div>
             </div>
 
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Outflow</div>
-              <div className="text-3xl font-bold text-gray-900 mb-1">$76,800</div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$76,800</div>
               <div className="text-xs text-gray-500">89 transactions</div>
             </div>
           </div>
         </div>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
           {/* Left Column - Category Breakdown */}
-          <div className="border border-gray-200 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-5">By Category</h2>
+          <div className="border border-gray-200 rounded-xl p-4 md:p-6">
+            <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4 md:mb-5">By Category</h2>
             <div className="space-y-2">
               {[
                 { tag: 'Customer Payment', amount: '$158,250', type: 'in' },
@@ -63,10 +63,10 @@ export const DashboardPage = () => {
           </div>
 
           {/* Right Column - Recent Transactions */}
-          <div className="border border-gray-200 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
-              <button className="text-sm text-gray-600 hover:text-gray-900 font-medium">View All →</button>
+          <div className="border border-gray-200 rounded-xl p-4 md:p-6">
+            <div className="flex items-center justify-between mb-4 md:mb-5">
+              <h2 className="text-base md:text-lg font-semibold text-gray-900">Recent Activity</h2>
+              <button className="text-xs md:text-sm text-gray-600 hover:text-gray-900 font-medium">View All →</button>
             </div>
             <div className="space-y-2">
               {[

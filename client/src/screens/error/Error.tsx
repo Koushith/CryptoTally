@@ -11,15 +11,19 @@ export const ErrorScreen = ({ error, message = "We couldn't find the page you're
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
-      <div className="space-y-6 text-center max-w-md">
-        {/* Error Status */}
-        <h1 className="text-6xl font-semibold text-primary">404</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-5">
+      <div className="flex flex-col items-center text-center max-w-md">
+        {/* Notioly Illustration */}
+        <img
+          src="https://notioly.com/wp-content/uploads/2024/07/404.Not-Found.png"
+          alt="404 Not Found"
+          className="w-64 h-64 mb-8 object-contain"
+        />
 
         {/* Main Message */}
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold tracking-tight">Page not found</h2>
-          <p className="text-muted-foreground">
+        <div className="space-y-2 mb-6">
+          <h2 className="text-2xl font-semibold text-gray-900">Page not found</h2>
+          <p className="text-gray-500 text-[15px] leading-relaxed">
             {message}
             {error?.message && <span className="block mt-2 text-sm">{error.message}</span>}
           </p>

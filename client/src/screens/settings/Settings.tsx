@@ -93,7 +93,7 @@ export const SettingsPage = () => {
           {settingsCategories.map((categoryGroup) => (
             <div key={categoryGroup.category}>
               {/* Category Header */}
-              <div className="mb-3 md:mb-4">
+              <div className="mb-4 pb-3 border-b border-gray-200">
                 <h2 className="text-base md:text-lg font-bold text-gray-800">{categoryGroup.category}</h2>
                 <p className="text-sm text-gray-500 mt-1">{categoryGroup.description}</p>
               </div>

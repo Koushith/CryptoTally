@@ -11,6 +11,7 @@ import {
   FileCode,
   Menu,
   X,
+  Bell,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Outlet, NavLink } from 'react-router-dom';
@@ -43,28 +44,131 @@ function Logo() {
 
 export function AppShell() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [hasUnread, setHasUnread] = useState(true);
+
+  const notifications = [
+    {
+      id: 1,
+      title: 'New transaction detected',
+      description: '+5,000 USDC received in Treasury Wallet',
+      time: '2h ago',
+      unread: true,
+      icon: '↓',
+    },
+    {
+      id: 2,
+      title: 'Wallet balance updated',
+      description: 'Operations wallet balance changed by 15%',
+      time: '5h ago',
+      unread: true,
+      icon: '📊',
+    },
+    {
+      id: 3,
+      title: 'Weekly report ready',
+      description: 'Your weekly transaction summary is ready',
+      time: '1d ago',
+      unread: true,
+      icon: '📄',
+    },
+    {
+      id: 4,
+      title: 'New team member',
+      description: 'Sarah Johnson joined your workspace',
+      time: '2d ago',
+      unread: false,
+      icon: '👤',
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50 md:bg-white">
-      {/* Mobile Header - Native App Style */}
+    <div className="min-h-screen bg-gray-50">
+      {/* Mobile Header - Peerlist Style */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white z-50 flex items-center justify-between px-5 shadow-sm">
+        {/* Left side - Logo */}
         <div className="flex items-center gap-2">
           <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gray-900">
             <span className="text-sm font-bold text-white">CT</span>
           </div>
-          <span className="text-lg font-bold text-gray-900">CryptoTally</span>
         </div>
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 active:bg-gray-100 rounded-full transition-colors"
-        >
-          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+
+        {/* Right side - Notifications & Profile */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsNotificationsOpen(true)}
+            className="relative h-8 w-8 flex items-center justify-center border border-gray-200 rounded-xl active:bg-gray-50 transition-colors"
+          >
+            <Bell className="h-4 w-4" />
+            {hasUnread && (
+              <span className="absolute top-0.5 right-0.5 h-2 w-2 bg-red-600 rounded-full" />
+            )}
+          </button>
+
+          <button className="h-8 w-8 rounded-full overflow-hidden border border-gray-200 bg-gray-900 flex items-center justify-center">
+            <span className="text-white text-xs font-semibold">K</span>
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Fullscreen Notifications */}
+      {isNotificationsOpen && (
+        <div className="md:hidden fixed inset-0 bg-white z-[60] flex flex-col">
+          {/* Header */}
+          <div className="h-14 flex items-center justify-between px-5 border-b border-gray-200">
+            <button
+              onClick={() => setIsNotificationsOpen(false)}
+              className="h-8 w-8 flex items-center justify-center active:bg-gray-100 rounded-lg"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <h1 className="text-base font-semibold text-gray-900">Notifications</h1>
+            <button
+              onClick={() => setHasUnread(false)}
+              className="text-xs text-gray-700 active:text-gray-900 font-medium px-2"
+            >
+              Mark all read
+            </button>
+          </div>
+
+          {/* Notifications List */}
+          <div className="flex-1 overflow-y-auto">
+            {notifications.map((notification, idx) => (
+              <div
+                key={notification.id}
+                className={cn(
+                  'px-5 py-4 active:bg-gray-50 transition-colors border-b border-gray-100',
+                  notification.unread && 'bg-gray-50/50'
+                )}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-gray-900 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg">{notification.icon}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <p className="text-sm font-semibold text-gray-900">
+                        {notification.title}
+                      </p>
+                      {notification.unread && (
+                        <div className="w-2 h-2 bg-gray-900 rounded-full flex-shrink-0 mt-1.5" />
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2 leading-relaxed">
+                      {notification.description}
+                    </p>
+                    <p className="text-xs text-gray-500">{notification.time}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="flex">
         <AppSidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
-        <main className="md:ml-[280px] flex-1 min-h-screen bg-gray-50 md:bg-white pt-14 md:pt-0 pb-20 md:pb-0">
+        <main className="md:ml-[280px] flex-1 min-h-screen bg-gray-50 pt-14 md:pt-0 pb-20 md:pb-0">
           <div className="p-5 md:p-8 max-w-[1500px] mx-auto">
             <Outlet />
           </div>
@@ -155,6 +259,8 @@ export function AppShell() {
 }
 
 function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpen: boolean; setIsMobileMenuOpen: (open: boolean) => void }) {
+  const [hasUnread, setHasUnread] = useState(true);
+
   return (
     <aside
       className={cn(
@@ -165,8 +271,96 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
       )}
     >
       <div className="h-full flex flex-col">
-        <div className="p-6 hidden md:block">
+        <div className="p-6 hidden md:flex items-center justify-between">
           <Logo />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0">
+                <Bell className="h-4 w-4" />
+                {hasUnread && (
+                  <span className="absolute top-1 right-1 h-2 w-2 bg-red-600 rounded-full" />
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-80 p-0">
+              <div className="px-4 py-3 border-b border-gray-200 bg-white">
+                <h3 className="font-semibold text-sm text-gray-900">Notifications</h3>
+              </div>
+              <div className="max-h-[420px] overflow-y-auto">
+                {[
+                  {
+                    id: 1,
+                    title: 'New transaction detected',
+                    description: '+5,000 USDC received in Treasury Wallet',
+                    time: '2h ago',
+                    unread: true,
+                    icon: '↓',
+                  },
+                  {
+                    id: 2,
+                    title: 'Wallet balance updated',
+                    description: 'Operations wallet balance changed by 15%',
+                    time: '5h ago',
+                    unread: true,
+                    icon: '📊',
+                  },
+                  {
+                    id: 3,
+                    title: 'Weekly report ready',
+                    description: 'Your weekly transaction summary is ready',
+                    time: '1d ago',
+                    unread: true,
+                    icon: '📄',
+                  },
+                  {
+                    id: 4,
+                    title: 'New team member',
+                    description: 'Sarah Johnson joined your workspace',
+                    time: '2d ago',
+                    unread: false,
+                    icon: '👤',
+                  },
+                ].map((notification, idx, arr) => (
+                  <div
+                    key={notification.id}
+                    className={cn(
+                      'px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors',
+                      notification.unread && 'bg-gray-50/50',
+                      idx !== arr.length - 1 && 'border-b border-gray-100'
+                    )}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0 text-sm">
+                        {notification.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <p className="text-sm font-medium text-gray-900">
+                            {notification.title}
+                          </p>
+                          {notification.unread && (
+                            <div className="w-2 h-2 bg-gray-900 rounded-full flex-shrink-0 mt-1.5" />
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-600 mb-1.5 line-clamp-2">
+                          {notification.description}
+                        </p>
+                        <p className="text-xs text-gray-500">{notification.time}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
+                <button
+                  onClick={() => setHasUnread(false)}
+                  className="text-xs text-gray-700 hover:text-gray-900 font-medium w-full text-center py-1"
+                >
+                  Mark all as read
+                </button>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="flex flex-col gap-1 p-3 flex-1 pt-6 md:pt-3">
           <NavItem icon={<LayoutDashboard size={18} />} label="Dashboard" to="/" onClick={() => setIsMobileMenuOpen(false)} />

@@ -15,7 +15,9 @@ import {
   Plus,
   Upload,
   Tag as TagIcon,
-  Download
+  Download,
+  AlertCircle,
+  Edit3,
 } from 'lucide-react';
 import {
   Sheet,
@@ -42,7 +44,7 @@ const mockTransactions = [
     id: '1',
     hash: '0x1234...5678',
     fullHash: '0x1234567890abcdef1234567890abcdef12345678',
-    type: 'in',
+    type: 'in' as const,
     token: 'USDC',
     amount: '5,000.00',
     fiatValue: '$5,000.00',
@@ -62,14 +64,14 @@ const mockTransactions = [
     id: '2',
     hash: '0xabcd...efgh',
     fullHash: '0xabcdefgh1234567890abcdef1234567890abcdef',
-    type: 'out',
+    type: 'out' as const,
     token: 'ETH',
     amount: '2.5',
     fiatValue: '$4,250.00',
     wallet: 'Operations',
     chain: 'Ethereum',
     timestamp: '2024-01-15 09:15',
-    tags: ['Vendor Expense'],
+    tags: [],
     notes: null,
     attachments: [
       { name: 'receipt.pdf', size: '180 KB' }
@@ -81,7 +83,7 @@ const mockTransactions = [
     id: '3',
     hash: '0x5678...9012',
     fullHash: '0x567890121234567890abcdef1234567890abcdef',
-    type: 'in',
+    type: 'in' as const,
     token: 'USDT',
     amount: '10,000.00',
     fiatValue: '$10,000.00',
@@ -102,15 +104,15 @@ const mockTransactions = [
     id: '4',
     hash: '0x3456...7890',
     fullHash: '0x34567890abcdef1234567890abcdef1234567890',
-    type: 'out',
+    type: 'out' as const,
     token: 'USDC',
     amount: '1,500.00',
     fiatValue: '$1,500.00',
     wallet: 'Payroll Wallet',
     chain: 'Polygon',
     timestamp: '2024-01-14 12:00',
-    tags: ['Salary'],
-    notes: 'Monthly salary - Developer',
+    tags: [],
+    notes: null,
     attachments: [],
     from: '0x5678...efgh',
     to: '0x7890...1234',
@@ -119,18 +121,35 @@ const mockTransactions = [
     id: '5',
     hash: '0x7890...1234',
     fullHash: '0x7890123456789abcdef1234567890abcdef12345',
-    type: 'in',
+    type: 'in' as const,
     token: 'DAI',
     amount: '7,500.00',
     fiatValue: '$7,500.00',
     wallet: 'Treasury Wallet',
     chain: 'Arbitrum',
     timestamp: '2024-01-13 11:20',
-    tags: ['Customer Payment', 'Consulting'],
+    tags: [],
     notes: null,
     attachments: [],
     from: '0x1234...7890',
     to: '0x5678...efgh',
+  },
+  {
+    id: '6',
+    hash: '0x9999...8888',
+    fullHash: '0x9999888877776666555544443333222211110000',
+    type: 'out' as const,
+    token: 'USDC',
+    amount: '850.00',
+    fiatValue: '$850.00',
+    wallet: 'Operations',
+    chain: 'Arbitrum',
+    timestamp: '2024-01-12 15:30',
+    tags: ['Vendor Expense'],
+    notes: 'Software subscription',
+    attachments: [],
+    from: '0x5678...efgh',
+    to: '0x9999...8888',
   },
 ];
 
@@ -141,12 +160,15 @@ const chainColors: Record<string, { bg: string; text: string }> = {
   'BNB Chain': { bg: 'bg-yellow-50', text: 'text-yellow-700' },
 };
 
+type TabType = 'all' | 'untagged' | 'tagged';
+
 export const TransactionsPage = () => {
   const [selectedTx, setSelectedTx] = useState<typeof mockTransactions[0] | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [editedTags, setEditedTags] = useState<string[]>([]);
   const [editedNotes, setEditedNotes] = useState('');
   const [newTag, setNewTag] = useState('');
+  const [activeTab, setActiveTab] = useState<TabType>('all');
 
   const handleTransactionClick = (tx: typeof mockTransactions[0]) => {
     setSelectedTx(tx);
@@ -178,14 +200,24 @@ export const TransactionsPage = () => {
     setIsDetailOpen(false);
   };
 
+  // Filter transactions based on active tab
+  const filteredTransactions = mockTransactions.filter((tx) => {
+    if (activeTab === 'untagged') return tx.tags.length === 0;
+    if (activeTab === 'tagged') return tx.tags.length > 0;
+    return true; // 'all'
+  });
+
+  const untaggedCount = mockTransactions.filter(tx => tx.tags.length === 0).length;
+  const taggedCount = mockTransactions.filter(tx => tx.tags.length > 0).length;
+
   return (
     <div className="min-h-screen">
       <div className="w-full">
         {/* Header */}
-        <div className="mb-5 md:mb-10 flex items-start justify-between gap-4">
+        <div className="mb-5 md:mb-8 flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Transactions</h1>
-            <p className="text-gray-500 text-sm mt-1 md:mt-2">View, tag, and manage all your blockchain transactions</p>
+            <p className="text-gray-500 text-sm mt-1 md:mt-2">Tag and categorize your blockchain transactions</p>
           </div>
           <Button variant="outline" className="flex-shrink-0">
             <Download className="h-4 w-4 mr-2" />
@@ -193,8 +225,72 @@ export const TransactionsPage = () => {
           </Button>
         </div>
 
+        {/* Stats Banner */}
+        {untaggedCount > 0 && (
+          <div className="mb-5 md:mb-6 bg-amber-50 border border-amber-200 rounded-2xl md:rounded-xl p-4 flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <div className="text-sm font-medium text-amber-900">
+                {untaggedCount} transaction{untaggedCount > 1 ? 's' : ''} need{untaggedCount === 1 ? 's' : ''} tagging
+              </div>
+              <div className="text-xs text-amber-700 mt-1">
+                Tag your transactions to organize them for accounting and tax reporting
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setActiveTab('untagged')}
+              className="ml-auto flex-shrink-0 border-amber-300 text-amber-700 hover:bg-amber-100"
+            >
+              View Untagged
+            </Button>
+          </div>
+        )}
+
+        {/* Tabs */}
+        <div className="mb-5 md:mb-6 flex items-center gap-2 border-b border-gray-200">
+          <button
+            onClick={() => setActiveTab('all')}
+            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'all'
+                ? 'border-gray-900 text-gray-900'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            All Transactions
+            <span className="ml-2 text-xs text-gray-400">({mockTransactions.length})</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('untagged')}
+            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'untagged'
+                ? 'border-gray-900 text-gray-900'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Needs Tagging
+            {untaggedCount > 0 && (
+              <span className="ml-2 px-1.5 py-0.5 text-xs font-semibold bg-amber-100 text-amber-700 rounded">
+                {untaggedCount}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('tagged')}
+            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'tagged'
+                ? 'border-gray-900 text-gray-900'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            Tagged
+            <span className="ml-2 text-xs text-gray-400">({taggedCount})</span>
+          </button>
+        </div>
+
         {/* Filters */}
-        <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-4 md:p-5 mb-5 md:mb-8 shadow-sm md:shadow-none">
+        <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-4 md:p-5 mb-5 md:mb-6 shadow-sm md:shadow-none">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -224,79 +320,124 @@ export const TransactionsPage = () => {
         </div>
 
         {/* Transactions List */}
-        <div className="space-y-3">
-          {mockTransactions.map((tx) => (
-            <div
-              key={tx.id}
-              onClick={() => handleTransactionClick(tx)}
-              className="bg-white border border-gray-200 md:hover:border-gray-300 md:hover:shadow-md rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none active:scale-[0.98] md:active:scale-100 transition-all cursor-pointer"
-            >
-              <div className="flex items-start gap-3 md:gap-4">
-                {/* Icon */}
-                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                  tx.type === 'in' ? 'bg-emerald-50' : 'bg-rose-50'
-                }`}>
-                  {tx.type === 'in' ? (
-                    <ArrowDownLeft className="h-5 w-5 md:h-6 md:w-6 text-emerald-600" />
-                  ) : (
-                    <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-rose-600" />
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  {/* Amount */}
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="text-base md:text-lg font-semibold">
-                      <span className={tx.type === 'in' ? 'text-emerald-600' : 'text-rose-600'}>
-                        {tx.type === 'in' ? '+' : '−'} {tx.amount} {tx.token}
-                      </span>
-                      <span className="text-gray-400 font-normal text-sm ml-2">≈ {tx.fiatValue}</span>
-                    </h3>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">{tx.timestamp}</span>
-                  </div>
-
-                  {/* Metadata */}
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                      <Wallet className="h-3.5 w-3.5" />
-                      <span>{tx.wallet}</span>
-                    </div>
-                    <span className={`px-2 py-0.5 rounded-md text-xs ${chainColors[tx.chain].bg} ${chainColors[tx.chain].text}`}>
-                      {tx.chain}
-                    </span>
-                  </div>
-
-                  {/* Tags and Info */}
-                  <div className="flex flex-wrap items-center gap-2">
-                    {tx.tags.map((tag, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                    {tx.notes && (
-                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                        <FileText className="h-3.5 w-3.5" />
-                        <span className="max-w-[200px] truncate">{tx.notes}</span>
-                      </div>
-                    )}
-                    {tx.attachments.length > 0 && (
-                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                        <Paperclip className="h-3.5 w-3.5" />
-                        <span>{tx.attachments.length}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Hash */}
-                  <div className="mt-2">
-                    <code className="text-xs font-mono text-gray-400">{tx.hash}</code>
-                  </div>
-                </div>
-              </div>
+        {filteredTransactions.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FileText className="h-8 w-8 text-gray-400" />
             </div>
-          ))}
-        </div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              {activeTab === 'untagged' ? 'All caught up!' : 'No transactions found'}
+            </h3>
+            <p className="text-sm text-gray-500">
+              {activeTab === 'untagged'
+                ? 'All your transactions are tagged and organized.'
+                : 'Try adjusting your filters or connect more wallets.'}
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {filteredTransactions.map((tx) => {
+              const isUntagged = tx.tags.length === 0;
+
+              return (
+                <div
+                  key={tx.id}
+                  className={`bg-white border rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none transition-all group ${
+                    isUntagged
+                      ? 'border-amber-200 bg-amber-50/30'
+                      : 'border-gray-200 md:hover:border-gray-300 md:hover:shadow-md'
+                  }`}
+                >
+                  <div className="flex items-start gap-3 md:gap-4">
+                    {/* Icon */}
+                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                      tx.type === 'in' ? 'bg-emerald-50' : 'bg-rose-50'
+                    }`}>
+                      {tx.type === 'in' ? (
+                        <ArrowDownLeft className="h-5 w-5 md:h-6 md:w-6 text-emerald-600" />
+                      ) : (
+                        <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-rose-600" />
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      {/* Amount */}
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h3 className="text-base md:text-lg font-semibold">
+                          <span className={tx.type === 'in' ? 'text-emerald-600' : 'text-rose-600'}>
+                            {tx.type === 'in' ? '+' : '−'} {tx.amount} {tx.token}
+                          </span>
+                          <span className="text-gray-400 font-normal text-sm ml-2">≈ {tx.fiatValue}</span>
+                        </h3>
+                        <span className="text-xs text-gray-500 whitespace-nowrap">{tx.timestamp}</span>
+                      </div>
+
+                      {/* Metadata */}
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                          <Wallet className="h-3.5 w-3.5" />
+                          <span>{tx.wallet}</span>
+                        </div>
+                        <span className={`px-2 py-0.5 rounded-md text-xs ${chainColors[tx.chain].bg} ${chainColors[tx.chain].text}`}>
+                          {tx.chain}
+                        </span>
+                      </div>
+
+                      {/* Tags and Info */}
+                      <div className="flex flex-wrap items-center gap-2 mb-3">
+                        {isUntagged ? (
+                          <div className="flex items-center gap-1.5 text-xs text-amber-700 font-medium">
+                            <AlertCircle className="h-3.5 w-3.5" />
+                            <span>Needs tagging</span>
+                          </div>
+                        ) : (
+                          <>
+                            {tx.tags.map((tag, idx) => (
+                              <Badge key={idx} variant="secondary" className="text-xs">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </>
+                        )}
+                        {tx.notes && (
+                          <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <FileText className="h-3.5 w-3.5" />
+                            <span className="max-w-[200px] truncate">{tx.notes}</span>
+                          </div>
+                        )}
+                        {tx.attachments.length > 0 && (
+                          <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <Paperclip className="h-3.5 w-3.5" />
+                            <span>{tx.attachments.length}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Hash and Action Button */}
+                      <div className="flex items-center justify-between gap-2">
+                        <code className="text-xs font-mono text-gray-400">{tx.hash}</code>
+                        <Button
+                          onClick={() => handleTransactionClick(tx)}
+                          size="sm"
+                          variant={isUntagged ? 'default' : 'outline'}
+                          className={`flex-shrink-0 ${
+                            isUntagged
+                              ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                              : ''
+                          }`}
+                        >
+                          <Edit3 className="h-3.5 w-3.5 mr-1.5" />
+                          {isUntagged ? 'Add Tags' : 'Edit'}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Transaction Detail Sheet */}
         <Sheet open={isDetailOpen} onOpenChange={setIsDetailOpen}>
@@ -306,7 +447,7 @@ export const TransactionsPage = () => {
                 <SheetHeader>
                   <SheetTitle>Transaction Details</SheetTitle>
                   <SheetDescription>
-                    View and manage transaction tags, notes, and attachments
+                    Add tags, notes, and attachments to organize this transaction
                   </SheetDescription>
                 </SheetHeader>
 
@@ -364,20 +505,22 @@ export const TransactionsPage = () => {
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                       <TagIcon className="h-4 w-4" />
-                      Tags
+                      Tags {editedTags.length === 0 && <span className="text-amber-600 text-xs">(Required)</span>}
                     </Label>
 
                     {/* Current Tags */}
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {editedTags.map((tag, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-sm gap-1">
-                          {tag}
-                          <button onClick={() => handleRemoveTag(tag)}>
-                            <X className="h-3 w-3" />
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
+                    {editedTags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {editedTags.map((tag, idx) => (
+                          <Badge key={idx} variant="secondary" className="text-sm gap-1">
+                            {tag}
+                            <button onClick={() => handleRemoveTag(tag)}>
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Predefined Tags */}
                     <div className="space-y-2">
@@ -417,7 +560,7 @@ export const TransactionsPage = () => {
                   <div>
                     <Label htmlFor="notes" className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                       <FileText className="h-4 w-4" />
-                      Notes
+                      Notes <span className="text-gray-400 text-xs font-normal">(Optional)</span>
                     </Label>
                     <textarea
                       id="notes"
@@ -432,7 +575,7 @@ export const TransactionsPage = () => {
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                       <Paperclip className="h-4 w-4" />
-                      Attachments ({selectedTx.attachments.length}/10)
+                      Attachments <span className="text-gray-400 text-xs font-normal">({selectedTx.attachments.length}/10 - Optional)</span>
                     </Label>
 
                     {selectedTx.attachments.length > 0 && (
@@ -473,7 +616,11 @@ export const TransactionsPage = () => {
                     <Button variant="outline" onClick={() => setIsDetailOpen(false)} className="flex-1">
                       Cancel
                     </Button>
-                    <Button onClick={handleSave} className="flex-1">
+                    <Button
+                      onClick={handleSave}
+                      className="flex-1"
+                      disabled={editedTags.length === 0}
+                    >
                       Save Changes
                     </Button>
                   </div>

@@ -173,7 +173,7 @@ export function AppShell() {
 
       <div className="flex">
         <AppSidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
-        <main className="md:ml-[280px] flex-1 min-h-screen bg-gray-50 pt-14 md:pt-0 pb-20 md:pb-0">
+        <main className="md:ml-[280px] flex-1 min-h-screen bg-gray-50 pt-14 md:pt-0 pb-24 md:pb-0">
           <div className="p-5 md:p-8 max-w-[1500px] mx-auto">
             <Outlet />
           </div>
@@ -181,9 +181,9 @@ export function AppShell() {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 z-[100] safe-area-inset-bottom">
-        <div className="flex items-center justify-around h-full px-2 pb-safe"
-             style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom))' }}>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[100]"
+           style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <div className="flex items-center justify-around h-16 px-2">
           <NavLink
             to="/"
             className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
@@ -255,7 +255,7 @@ export function AppShell() {
       {/* Mobile overlay */}
       {isMobileMenuOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/50 z-30"
+          className="md:hidden fixed inset-0 bg-black/60 z-[35]"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -269,7 +269,7 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 h-screen bg-white/80 backdrop-blur-sm border-r border-neutral-200 transition-transform duration-200 ease-in-out z-40',
+        'fixed left-0 top-0 h-screen bg-white border-r border-neutral-200 transition-transform duration-200 ease-in-out z-[40]',
         'w-full md:w-[280px]',
         'md:translate-x-0',
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'

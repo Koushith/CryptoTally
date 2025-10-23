@@ -2,17 +2,17 @@ import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 
 export const DashboardPage = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white md:bg-white">
       <div className="w-full max-w-6xl">
         {/* Header */}
-        <div className="mb-6 md:mb-10">
+        <div className="mb-5 md:mb-10">
           <h1 className="text-2xl md:text-[32px] font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500 text-sm mt-2">Overview of your crypto accounting</p>
+          <p className="text-gray-500 text-sm mt-1 md:mt-2">Overview of your crypto accounting</p>
         </div>
 
         {/* Summary Cards */}
-        <div className="bg-gray-50 rounded-xl p-4 md:p-6 mb-6 md:mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="bg-white md:bg-gray-50 rounded-2xl md:rounded-xl p-5 md:p-6 mb-5 md:mb-10 shadow-sm md:shadow-none">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Balance</div>
               <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$168,350</div>
@@ -34,9 +34,9 @@ export const DashboardPage = () => {
         </div>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {/* Left Column - Category Breakdown */}
-          <div className="border border-gray-200 rounded-xl p-4 md:p-6">
+          <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-5 md:p-6 shadow-sm md:shadow-none">
             <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4 md:mb-5">By Category</h2>
             <div className="space-y-2">
               {[
@@ -63,10 +63,10 @@ export const DashboardPage = () => {
           </div>
 
           {/* Right Column - Recent Transactions */}
-          <div className="border border-gray-200 rounded-xl p-4 md:p-6">
+          <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-5 md:p-6 shadow-sm md:shadow-none">
             <div className="flex items-center justify-between mb-4 md:mb-5">
               <h2 className="text-base md:text-lg font-semibold text-gray-900">Recent Activity</h2>
-              <button className="text-xs md:text-sm text-gray-600 hover:text-gray-900 font-medium">View All →</button>
+              <button className="text-xs md:text-sm text-gray-600 active:text-gray-900 md:hover:text-gray-900 font-medium">View All →</button>
             </div>
             <div className="space-y-2">
               {[

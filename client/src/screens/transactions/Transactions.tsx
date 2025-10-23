@@ -84,16 +84,16 @@ const chainColors: Record<string, { bg: string; text: string; border: string }> 
 
 export const TransactionsPage = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="w-full">
         {/* Header */}
-        <div className="mb-6 md:mb-8">
+        <div className="mb-5 md:mb-8">
           <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Transactions</h1>
-          <p className="text-gray-500 text-sm mt-2">View and tag all your blockchain transactions</p>
+          <p className="text-gray-500 text-sm mt-1 md:mt-2">View and tag all your blockchain transactions</p>
         </div>
 
         {/* Filters */}
-        <div className="bg-gray-50 rounded-2xl p-4 md:p-6 mb-6">
+        <div className="bg-white md:bg-gray-50 rounded-2xl p-4 md:p-6 mb-4 md:mb-6 shadow-sm md:shadow-none">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -127,7 +127,7 @@ export const TransactionsPage = () => {
           {mockTransactions.map((tx) => (
             <div
               key={tx.id}
-              className="flex flex-col md:flex-row md:items-center justify-between bg-white border border-gray-200 hover:border-gray-300 rounded-xl p-4 md:p-5 transition-all group cursor-pointer gap-3"
+              className="flex flex-col md:flex-row md:items-center justify-between bg-white border border-gray-200 md:hover:border-gray-300 rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none active:scale-[0.98] md:active:scale-100 transition-all group cursor-pointer gap-3"
             >
               <div className="flex items-center gap-3 md:gap-4">
                 {/* Colored Icon */}

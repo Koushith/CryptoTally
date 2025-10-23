@@ -45,26 +45,102 @@ export function AppShell() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50 flex items-center justify-between px-4">
-        <Logo />
+    <div className="min-h-screen bg-gray-50 md:bg-white">
+      {/* Mobile Header - Native App Style */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white z-50 flex items-center justify-between px-5 shadow-sm">
+        <div className="flex items-center gap-2">
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gray-900">
+            <span className="text-sm font-bold text-white">CT</span>
+          </div>
+          <span className="text-lg font-bold text-gray-900">CryptoTally</span>
+        </div>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 active:bg-gray-100 rounded-full transition-colors"
         >
-          {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       <div className="flex">
         <AppSidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
-        <main className="md:ml-[280px] flex-1 min-h-screen bg-white pt-16 md:pt-0">
-          <div className="p-4 md:p-8 max-w-[1500px] mx-auto">
+        <main className="md:ml-[280px] flex-1 min-h-screen bg-gray-50 md:bg-white pt-14 md:pt-0 pb-20 md:pb-0">
+          <div className="p-5 md:p-8 max-w-[1500px] mx-auto">
             <Outlet />
           </div>
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 z-40 safe-area-inset-bottom">
+        <div className="flex items-center justify-around h-full px-2">
+          <NavLink
+            to="/"
+            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-3 rounded-lg transition-colors ${
+              isActive ? 'text-gray-900' : 'text-gray-500'
+            }`}
+          >
+            {({ isActive }) => (
+              <>
+                <LayoutDashboard size={22} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <span className="text-[10px] font-medium mt-1">Dashboard</span>
+              </>
+            )}
+          </NavLink>
+          <NavLink
+            to="/wallets"
+            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-3 rounded-lg transition-colors ${
+              isActive ? 'text-gray-900' : 'text-gray-500'
+            }`}
+          >
+            {({ isActive }) => (
+              <>
+                <Wallet size={22} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <span className="text-[10px] font-medium mt-1">Wallets</span>
+              </>
+            )}
+          </NavLink>
+          <NavLink
+            to="/transactions"
+            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-3 rounded-lg transition-colors ${
+              isActive ? 'text-gray-900' : 'text-gray-500'
+            }`}
+          >
+            {({ isActive }) => (
+              <>
+                <ArrowLeftRight size={22} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <span className="text-[10px] font-medium mt-1">Transactions</span>
+              </>
+            )}
+          </NavLink>
+          <NavLink
+            to="/reports"
+            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-3 rounded-lg transition-colors ${
+              isActive ? 'text-gray-900' : 'text-gray-500'
+            }`}
+          >
+            {({ isActive }) => (
+              <>
+                <FileText size={22} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <span className="text-[10px] font-medium mt-1">Reports</span>
+              </>
+            )}
+          </NavLink>
+          <NavLink
+            to="/settings"
+            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-3 rounded-lg transition-colors ${
+              isActive ? 'text-gray-900' : 'text-gray-500'
+            }`}
+          >
+            {({ isActive }) => (
+              <>
+                <Settings size={22} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <span className="text-[10px] font-medium mt-1">Settings</span>
+              </>
+            )}
+          </NavLink>
+        </div>
+      </nav>
 
       {/* Mobile overlay */}
       {isMobileMenuOpen && (

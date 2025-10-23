@@ -75,13 +75,13 @@ export const WalletsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="w-full max-w-6xl">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6 md:mb-10">
+        <div className="flex flex-col md:flex-row justify-between md:items-center gap-3 md:gap-4 mb-5 md:mb-10">
           <div>
             <h1 className="text-2xl md:text-[32px] font-bold text-gray-900">Wallets</h1>
-            <p className="text-gray-500 text-sm mt-2">Manage your connected wallets across multiple chains</p>
+            <p className="text-gray-500 text-sm mt-1 md:mt-2">Manage your connected wallets across multiple chains</p>
           </div>
           <Button onClick={() => setIsAddWalletOpen(true)} className="w-full md:w-auto">
             <Plus className="h-4 w-4 mr-2" />
@@ -90,8 +90,8 @@ export const WalletsPage = () => {
         </div>
 
         {/* Stats Overview */}
-        <div className="bg-gray-50 rounded-xl p-4 md:p-6 mb-6 md:mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="bg-white md:bg-gray-50 rounded-2xl md:rounded-xl p-5 md:p-6 mb-5 md:mb-10 shadow-sm md:shadow-none">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Balance</div>
               <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
@@ -115,11 +115,11 @@ export const WalletsPage = () => {
         </div>
 
         {/* Wallets List */}
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
           {mockWallets.map((wallet) => (
             <div
               key={wallet.id}
-              className="group bg-white border border-gray-200 rounded-xl p-4 md:p-5 hover:border-gray-300 transition-colors cursor-pointer"
+              className="group bg-white border border-gray-200 rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none active:scale-[0.98] md:hover:border-gray-300 transition-all cursor-pointer"
             >
               <div className="flex items-center justify-between gap-4">
                 {/* Left: Wallet Info */}

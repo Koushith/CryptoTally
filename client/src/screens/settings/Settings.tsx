@@ -80,16 +80,16 @@ export const SettingsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="w-full max-w-6xl">
         {/* Header */}
-        <div className="mb-6 md:mb-12">
+        <div className="mb-5 md:mb-12">
           <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Settings</h1>
-          <p className="text-gray-500 text-sm mt-2">Manage your account and workspace preferences</p>
+          <p className="text-gray-500 text-sm mt-1 md:mt-2">Manage your account and workspace preferences</p>
         </div>
 
         {/* Settings Categories */}
-        <div className="space-y-6 md:space-y-8">
+        <div className="space-y-5 md:space-y-8">
           {settingsCategories.map((categoryGroup) => (
             <div key={categoryGroup.category}>
               {/* Category Header */}
@@ -99,14 +99,14 @@ export const SettingsPage = () => {
               </div>
 
               {/* Settings Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {categoryGroup.items.map((card) => {
                   const Icon = card.icon;
                   return (
                     <button
                       key={card.id}
                       onClick={() => setOpenModal(card.id)}
-                      className="flex items-center gap-4 p-4 md:p-5 border border-gray-200 rounded-xl hover:shadow-md bg-white transition-all text-left group"
+                      className="flex items-center gap-4 p-4 md:p-5 border border-gray-200 rounded-2xl md:rounded-xl md:hover:shadow-md bg-white shadow-sm md:shadow-none active:scale-[0.98] md:active:scale-100 transition-all text-left group"
                     >
                       {/* Icon */}
                       <div className="flex-shrink-0 w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">

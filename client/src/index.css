@@ -136,6 +136,38 @@
   }
 }
 
+/* Native Mobile App Feel */
+@media (max-width: 768px) {
+  /* Remove tap highlight on mobile */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  /* Smooth scrolling for mobile */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent text selection on interactive elements */
+  button, a {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Safe area for notch devices */
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Native-like button press effect */
+  button:active, a:active {
+    opacity: 0.7;
+    transition: opacity 0.1s ease;
+  }
+}
+
 @media print {
   @page {
     size: A4;

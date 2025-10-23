@@ -6,21 +6,21 @@ export const ReportsPage = () => {
   const [isCustomReportOpen, setIsCustomReportOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="w-full">
         {/* Header */}
-        <div className="mb-6 md:mb-10">
+        <div className="mb-5 md:mb-10">
           <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Reports & Export</h1>
-          <p className="text-gray-500 text-sm mt-2">Generate reports for tax filing, accounting, and audits</p>
+          <p className="text-gray-500 text-sm mt-1 md:mt-2">Generate reports for tax filing, accounting, and audits</p>
         </div>
 
         {/* Quick Export Cards */}
-        <div className="mb-10 md:mb-16">
-          <div className="mb-6 md:mb-8">
+        <div className="mb-8 md:mb-16">
+          <div className="mb-4 md:mb-8">
             <h2 className="text-base md:text-lg font-semibold text-gray-900">Quick Reports</h2>
             <p className="text-sm text-gray-500 mt-1">Pre-configured reports ready to download</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5">
             {[
               {
                 title: 'Tax Report',
@@ -43,7 +43,7 @@ export const ReportsPage = () => {
             ].map((report) => (
               <div
                 key={report.title}
-                className="group bg-white rounded-xl border border-gray-200 p-4 md:p-6 hover:shadow-md transition-all cursor-pointer"
+                className="group bg-white rounded-2xl md:rounded-xl border border-gray-200 p-4 md:p-6 shadow-sm md:shadow-none md:hover:shadow-md active:scale-[0.98] md:active:scale-100 transition-all cursor-pointer"
               >
                 <div className="flex items-start gap-4 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
@@ -71,10 +71,10 @@ export const ReportsPage = () => {
         </div>
 
         {/* Custom Report Builder */}
-        <div className="mb-10 md:mb-16">
+        <div className="mb-8 md:mb-16">
           <button
             onClick={() => setIsCustomReportOpen(!isCustomReportOpen)}
-            className="w-full flex items-center justify-between bg-white border border-gray-200 hover:border-gray-300 rounded-xl p-4 md:p-5 transition-all mb-4"
+            className="w-full flex items-center justify-between bg-white border border-gray-200 md:hover:border-gray-300 rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none active:scale-[0.99] transition-all mb-4"
           >
             <div className="text-left">
               <h2 className="text-base md:text-lg font-semibold text-gray-900">Custom Report Builder</h2>
@@ -88,7 +88,7 @@ export const ReportsPage = () => {
           </button>
 
           {isCustomReportOpen && (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-6">
+            <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-4 md:p-6 shadow-sm md:shadow-none">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-6">
               {/* Left Column */}
               <div className="space-y-6">
@@ -222,7 +222,7 @@ export const ReportsPage = () => {
 
         {/* Recent Exports */}
         <div>
-          <div className="mb-6 md:mb-8">
+          <div className="mb-4 md:mb-8">
             <h2 className="text-base md:text-lg font-semibold text-gray-900">Recent Exports</h2>
             <p className="text-sm text-gray-500 mt-1">Download previously generated reports</p>
           </div>
@@ -252,7 +252,7 @@ export const ReportsPage = () => {
             ].map((export_item, idx) => (
               <div
                 key={idx}
-                className="flex items-center justify-between bg-white border border-gray-200 hover:shadow-md rounded-xl p-4 transition-all group cursor-pointer"
+                className="flex items-center justify-between bg-white border border-gray-200 md:hover:shadow-md rounded-2xl md:rounded-xl p-4 shadow-sm md:shadow-none active:scale-[0.98] md:active:scale-100 transition-all group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">

@@ -166,6 +166,22 @@
     opacity: 0.7;
     transition: opacity 0.1s ease;
   }
+
+  /* Push Chatwoot widget above bottom navigation */
+  #chatwoot-widget-holder {
+    bottom: 80px !important;
+  }
+
+  /* Alternative selector for Chatwoot bubble */
+  .woot-widget-bubble {
+    bottom: 80px !important;
+  }
+
+  /* Chatwoot iframe container */
+  iframe[title*="chatwoot"],
+  iframe[src*="chatwoot"] {
+    margin-bottom: 80px !important;
+  }
 }
 
 @media print {

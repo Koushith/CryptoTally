@@ -2,8 +2,14 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Plus, Copy, ExternalLink, Wallet } from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription
+} from '@/components/ui/sheet';
+import { Plus, Copy, ExternalLink, Wallet, TrendingUp, Activity } from 'lucide-react';
 
 const mockWallets = [
   {
@@ -16,6 +22,7 @@ const mockWallets = [
     balanceNum: 125430.5,
     transactions: 342,
     change: '+12.5%',
+    changePositive: true,
   },
   {
     id: '2',
@@ -27,6 +34,7 @@ const mockWallets = [
     balanceNum: 45230.0,
     transactions: 128,
     change: '+8.2%',
+    changePositive: true,
   },
   {
     id: '3',
@@ -38,6 +46,7 @@ const mockWallets = [
     balanceNum: 28150.75,
     transactions: 89,
     change: '+5.1%',
+    changePositive: true,
   },
   {
     id: '4',
@@ -49,11 +58,13 @@ const mockWallets = [
     balanceNum: 15890.2,
     transactions: 56,
     change: '+3.7%',
+    changePositive: true,
   },
 ];
 
 export const WalletsPage = () => {
   const [isAddWalletOpen, setIsAddWalletOpen] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
   const [walletAddress, setWalletAddress] = useState('');
   const [walletLabel, setWalletLabel] = useState('');
   const [selectedChain, setSelectedChain] = useState('ethereum');
@@ -66,7 +77,6 @@ export const WalletsPage = () => {
   const totalTransactions = mockWallets.reduce((acc, wallet) => acc + wallet.transactions, 0);
 
   const handleAddWallet = () => {
-    // Handle adding wallet logic here
     console.log({ walletAddress, walletLabel, selectedChain });
     setIsAddWalletOpen(false);
     setWalletAddress('');
@@ -74,23 +84,23 @@ export const WalletsPage = () => {
     setSelectedChain('ethereum');
   };
 
+  const handleWalletClick = (walletId: string) => {
+    setSelectedWallet(walletId);
+  };
+
+  const selectedWalletData = mockWallets.find(w => w.id === selectedWallet);
+
   return (
     <div className="min-h-screen">
       <div className="w-full max-w-6xl">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between md:items-center gap-3 md:gap-4 mb-5 md:mb-10">
-          <div>
-            <h1 className="text-2xl md:text-[32px] font-bold text-gray-900">Wallets</h1>
-            <p className="text-gray-500 text-sm mt-1 md:mt-2">Manage your connected wallets across multiple chains</p>
-          </div>
-          <Button onClick={() => setIsAddWalletOpen(true)} className="w-full md:w-auto">
-            <Plus className="h-4 w-4 mr-2" />
-            Add Wallet
-          </Button>
+        <div className="mb-5 md:mb-10">
+          <h1 className="text-2xl md:text-[32px] font-bold text-gray-900">Wallets</h1>
+          <p className="text-gray-500 text-sm mt-1 md:mt-2">Manage your connected wallets across multiple chains</p>
         </div>
 
         {/* Stats Overview */}
-        <div className="bg-white md:bg-gray-50 rounded-2xl md:rounded-xl p-5 md:p-6 mb-5 md:mb-10 shadow-sm md:shadow-none">
+        <div className="bg-white md:bg-gray-50 rounded-2xl md:rounded-xl p-5 md:p-6 mb-5 md:mb-8 shadow-sm md:shadow-none">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Balance</div>
@@ -114,129 +124,112 @@ export const WalletsPage = () => {
           </div>
         </div>
 
-        {/* Wallets List */}
-        <div className="space-y-3 md:space-y-4">
-          {mockWallets.map((wallet) => (
-            <div
-              key={wallet.id}
-              className="group bg-white border border-gray-200 rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none active:scale-[0.98] md:hover:border-gray-300 transition-all cursor-pointer"
-            >
-              <div className="flex items-center justify-between gap-4">
-                {/* Left: Wallet Info */}
-                <div className="flex items-center gap-4 flex-1 min-w-0">
-                  <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0">
-                    <Wallet className="h-5 w-5 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-semibold text-gray-900">{wallet.label}</h3>
+        {/* Wallets Grid */}
+        <div className="mb-6 md:mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-base md:text-lg font-semibold text-gray-900">Your Wallets</h2>
+            <Button onClick={() => setIsAddWalletOpen(true)} size="sm">
+              <Plus className="h-4 w-4 mr-1.5" />
+              Add Wallet
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+            {mockWallets.map((wallet) => (
+              <button
+                key={wallet.id}
+                onClick={() => handleWalletClick(wallet.id)}
+                className="group bg-white border border-gray-200 rounded-2xl md:rounded-xl p-5 md:p-6 shadow-sm md:shadow-none active:scale-[0.98] md:hover:shadow-md md:hover:border-gray-300 transition-all text-left"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0">
+                      <Wallet className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-gray-900 mb-1">{wallet.label}</h3>
                       <div className="flex items-center gap-1.5">
                         <div className={`w-1.5 h-1.5 rounded-full ${wallet.chainColor}`}></div>
                         <span className="text-xs text-gray-500">{wallet.chain}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <code className="text-xs text-gray-500 font-mono">
-                        {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
-                      </code>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          copyToClipboard(wallet.address);
-                        }}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
-                        title="Copy address"
-                      >
-                        <Copy className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600" />
-                      </button>
-                      <button
-                        onClick={(e) => e.stopPropagation()}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity"
-                        title="View on explorer"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5 text-gray-400 hover:text-gray-600" />
-                      </button>
+                  </div>
+                  <span className="text-xs text-gray-400 group-hover:text-gray-600 transition-colors">→</span>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Balance</div>
+                    <div className="text-2xl font-bold text-gray-900">{wallet.balance}</div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1.5">
+                      <Activity className="h-3.5 w-3.5 text-gray-400" />
+                      <span className="text-xs text-gray-600">{wallet.transactions} txs</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <TrendingUp className="h-3.5 w-3.5 text-green-600" />
+                      <span className="text-xs text-green-600 font-medium">{wallet.change}</span>
                     </div>
                   </div>
-                </div>
 
-                {/* Center: Stats */}
-                <div className="hidden md:flex items-center gap-8">
-                  <div className="text-right">
-                    <div className="text-xs text-gray-500 mb-1">Balance</div>
-                    <div className="text-lg font-bold text-gray-900">{wallet.balance}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-gray-500 mb-1">Transactions</div>
-                    <div className="text-lg font-semibold text-gray-900">{wallet.transactions}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-gray-500 mb-1">Change</div>
-                    <div className="text-lg font-semibold text-green-600">{wallet.change}</div>
+                  <div className="pt-3 border-t border-gray-100">
+                    <code className="text-xs text-gray-400 font-mono">
+                      {wallet.address.slice(0, 10)}...{wallet.address.slice(-8)}
+                    </code>
                   </div>
                 </div>
-
-                {/* Right: Action */}
-                <button className="opacity-0 group-hover:opacity-100 text-sm text-gray-600 hover:text-gray-900 font-medium transition-opacity">
-                  View →
-                </button>
-              </div>
-
-              {/* Mobile Stats */}
-              <div className="md:hidden mt-4 pt-4 border-t border-gray-100 grid grid-cols-3 gap-4">
-                <div>
-                  <div className="text-xs text-gray-500 mb-1">Balance</div>
-                  <div className="text-sm font-bold text-gray-900">{wallet.balance}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500 mb-1">Transactions</div>
-                  <div className="text-sm font-semibold text-gray-900">{wallet.transactions}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500 mb-1">Change</div>
-                  <div className="text-sm font-semibold text-green-600">{wallet.change}</div>
-                </div>
-              </div>
-            </div>
-          ))}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Add Wallet Modal */}
-        <Dialog open={isAddWalletOpen} onOpenChange={setIsAddWalletOpen}>
-          <DialogContent className="sm:max-w-[500px]">
-            <DialogHeader>
-              <DialogTitle>Add New Wallet</DialogTitle>
-              <DialogDescription>Connect a wallet to track transactions across multiple chains</DialogDescription>
-            </DialogHeader>
-            <div className="space-y-6 py-4">
+        {/* Add Wallet Sheet */}
+        <Sheet open={isAddWalletOpen} onOpenChange={setIsAddWalletOpen}>
+          <SheetContent className="overflow-y-auto">
+            <SheetHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
+                  <Plus className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <SheetTitle>Add New Wallet</SheetTitle>
+                </div>
+              </div>
+              <SheetDescription>Connect a wallet to track transactions across multiple chains</SheetDescription>
+            </SheetHeader>
+
+            <div className="space-y-5 mt-6">
               <div className="space-y-2">
-                <Label htmlFor="wallet-label">Wallet Label</Label>
+                <Label htmlFor="wallet-label" className="text-sm text-gray-700">Wallet Label</Label>
                 <Input
                   id="wallet-label"
                   placeholder="e.g., Treasury Wallet"
                   value={walletLabel}
                   onChange={(e) => setWalletLabel(e.target.value)}
+                  className="border-gray-200 focus:border-gray-900 focus:ring-0"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="wallet-address">Wallet Address</Label>
+                <Label htmlFor="wallet-address" className="text-sm text-gray-700">Wallet Address</Label>
                 <Input
                   id="wallet-address"
                   placeholder="0x..."
                   value={walletAddress}
                   onChange={(e) => setWalletAddress(e.target.value)}
-                  className="font-mono text-sm"
+                  className="font-mono text-sm border-gray-200 focus:border-gray-900 focus:ring-0"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="chain">Blockchain Network</Label>
+                <Label htmlFor="chain" className="text-sm text-gray-700">Blockchain Network</Label>
                 <select
                   id="chain"
                   value={selectedChain}
                   onChange={(e) => setSelectedChain(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                  className="w-full text-sm border border-gray-200 rounded-md px-3 py-2 bg-white focus:border-gray-900 focus:ring-0 focus:outline-none"
                 >
                   <option value="ethereum">Ethereum</option>
                   <option value="polygon">Polygon</option>
@@ -249,20 +242,104 @@ export const WalletsPage = () => {
 
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600">
-                  <strong>Note:</strong> This is a read-only connection. We'll never ask for your private keys or seed
-                  phrase.
+                  <strong>Note:</strong> This is a read-only connection. We'll never ask for your private keys or seed phrase.
                 </p>
               </div>
-            </div>
 
-            <div className="flex justify-end gap-3">
-              <Button variant="outline" onClick={() => setIsAddWalletOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleAddWallet}>Add Wallet</Button>
+              <div className="flex justify-end gap-3 pt-4 border-t">
+                <Button variant="outline" onClick={() => setIsAddWalletOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleAddWallet}>Add Wallet</Button>
+              </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
+
+        {/* Wallet Details Sheet */}
+        <Sheet open={!!selectedWallet} onOpenChange={() => setSelectedWallet(null)}>
+          <SheetContent className="overflow-y-auto">
+            {selectedWalletData && (
+              <>
+                <SheetHeader>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
+                      <Wallet className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <SheetTitle>{selectedWalletData.label}</SheetTitle>
+                    </div>
+                  </div>
+                  <SheetDescription>
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className={`w-2 h-2 rounded-full ${selectedWalletData.chainColor}`}></div>
+                      <span>{selectedWalletData.chain}</span>
+                    </div>
+                  </SheetDescription>
+                </SheetHeader>
+
+                <div className="mt-6 space-y-6">
+                  {/* Balance */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="text-sm text-gray-500 mb-2">Total Balance</div>
+                    <div className="text-3xl font-bold text-gray-900 mb-2">{selectedWalletData.balance}</div>
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4 text-green-600" />
+                      <span className="text-sm text-green-600 font-medium">{selectedWalletData.change}</span>
+                      <span className="text-xs text-gray-500">last 30 days</span>
+                    </div>
+                  </div>
+
+                  {/* Address */}
+                  <div className="space-y-2">
+                    <Label className="text-sm text-gray-700">Wallet Address</Label>
+                    <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-3">
+                      <code className="text-xs text-gray-900 font-mono flex-1 break-all">
+                        {selectedWalletData.address}
+                      </code>
+                      <button
+                        onClick={() => copyToClipboard(selectedWalletData.address)}
+                        className="flex-shrink-0"
+                        title="Copy address"
+                      >
+                        <Copy className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                      </button>
+                      <button
+                        className="flex-shrink-0"
+                        title="View on explorer"
+                      >
+                        <ExternalLink className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-xs text-gray-500 mb-1">Transactions</div>
+                      <div className="text-2xl font-bold text-gray-900">{selectedWalletData.transactions}</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-xs text-gray-500 mb-1">Network</div>
+                      <div className="text-sm font-semibold text-gray-900">{selectedWalletData.chain}</div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="pt-4 border-t space-y-3">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Activity className="h-4 w-4 mr-2" />
+                      View Transactions
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50">
+                      Remove Wallet
+                    </Button>
+                  </div>
+                </div>
+              </>
+            )}
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );

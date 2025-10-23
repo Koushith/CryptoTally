@@ -84,7 +84,7 @@ export const SettingsPage = () => {
       <div className="w-full max-w-6xl">
         {/* Header */}
         <div className="mb-5 md:mb-12">
-          <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Settings</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Settings</h1>
           <p className="text-gray-500 text-sm mt-1 md:mt-2">Manage your account and workspace preferences</p>
         </div>
 
@@ -94,7 +94,7 @@ export const SettingsPage = () => {
             <div key={categoryGroup.category}>
               {/* Category Header */}
               <div className="mb-4 pb-3 border-b border-gray-200">
-                <h2 className="text-base md:text-lg font-bold text-gray-800">{categoryGroup.category}</h2>
+                <h2 className="text-lg font-semibold text-gray-800">{categoryGroup.category}</h2>
                 <p className="text-sm text-gray-500 mt-1">{categoryGroup.description}</p>
               </div>
 
@@ -116,7 +116,7 @@ export const SettingsPage = () => {
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2 mb-1">
-                          <h3 className="text-base font-semibold text-gray-800">{card.title}</h3>
+                          <h3 className="text-sm font-semibold text-gray-800">{card.title}</h3>
                           <svg
                             className="h-4 w-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
                             fill="none"
@@ -153,7 +153,7 @@ export const SettingsPage = () => {
             <div className="space-y-5 mt-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-sm text-gray-700">First Name</Label>
+                  <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</Label>
                   <Input
                     id="firstName"
                     defaultValue="Koushith"
@@ -161,7 +161,7 @@ export const SettingsPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-sm text-gray-700">Last Name</Label>
+                  <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</Label>
                   <Input
                     id="lastName"
                     defaultValue="Amin"
@@ -170,7 +170,7 @@ export const SettingsPage = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm text-gray-700">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -179,7 +179,7 @@ export const SettingsPage = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="company" className="text-sm text-gray-700">Company/Organization</Label>
+                <Label htmlFor="company" className="text-sm font-medium text-gray-700">Company/Organization</Label>
                 <Input
                   id="company"
                   placeholder="Optional"
@@ -210,7 +210,7 @@ export const SettingsPage = () => {
             </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="space-y-2">
-                <Label htmlFor="workspace" className="text-sm text-gray-700">Workspace Name</Label>
+                <Label htmlFor="workspace" className="text-sm font-medium text-gray-700">Workspace Name</Label>
                 <Input
                   id="workspace"
                   defaultValue="Personal Workspace"
@@ -218,7 +218,7 @@ export const SettingsPage = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="workspaceType" className="text-sm text-gray-700">Workspace Type</Label>
+                <Label htmlFor="workspaceType" className="text-sm font-medium text-gray-700">Workspace Type</Label>
                 <select
                   id="workspaceType"
                   className="w-full text-sm border border-gray-200 rounded-md px-3 py-2 bg-white focus:border-gray-900 focus:ring-0 focus:outline-none"
@@ -347,7 +347,7 @@ export const SettingsPage = () => {
             </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="space-y-2">
-                <Label htmlFor="currency" className="text-sm text-gray-700">Default Currency</Label>
+                <Label htmlFor="currency" className="text-sm font-medium text-gray-700">Default Currency</Label>
                 <select
                   id="currency"
                   className="w-full text-sm border border-gray-200 rounded-md px-3 py-2 bg-white focus:border-gray-900 focus:ring-0 focus:outline-none"
@@ -359,7 +359,7 @@ export const SettingsPage = () => {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="timezone" className="text-sm text-gray-700">Timezone</Label>
+                <Label htmlFor="timezone" className="text-sm font-medium text-gray-700">Timezone</Label>
                 <select
                   id="timezone"
                   className="w-full text-sm border border-gray-200 rounded-md px-3 py-2 bg-white focus:border-gray-900 focus:ring-0 focus:outline-none"
@@ -372,7 +372,7 @@ export const SettingsPage = () => {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="dateFormat" className="text-sm text-gray-700">Date Format</Label>
+                <Label htmlFor="dateFormat" className="text-sm font-medium text-gray-700">Date Format</Label>
                 <select
                   id="dateFormat"
                   className="w-full text-sm border border-gray-200 rounded-md px-3 py-2 bg-white focus:border-gray-900 focus:ring-0 focus:outline-none"
@@ -443,7 +443,7 @@ export const SettingsPage = () => {
             </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword" className="text-sm text-gray-700">Current Password</Label>
+                <Label htmlFor="currentPassword" className="text-sm font-medium text-gray-700">Current Password</Label>
                 <Input
                   id="currentPassword"
                   type="password"
@@ -452,7 +452,7 @@ export const SettingsPage = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="newPassword" className="text-sm text-gray-700">New Password</Label>
+                <Label htmlFor="newPassword" className="text-sm font-medium text-gray-700">New Password</Label>
                 <Input
                   id="newPassword"
                   type="password"
@@ -461,7 +461,7 @@ export const SettingsPage = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-sm text-gray-700">Confirm New Password</Label>
+                <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Confirm New Password</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -502,7 +502,7 @@ export const SettingsPage = () => {
             </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="space-y-2">
-                <Label className="text-sm text-gray-700">Theme</Label>
+                <Label className="text-sm font-medium text-gray-700">Theme</Label>
                 <div className="grid grid-cols-3 gap-3">
                   {['Light', 'Dark', 'System'].map((theme) => (
                     <button
@@ -519,7 +519,7 @@ export const SettingsPage = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="text-sm text-gray-700">Compact Mode</Label>
+                <Label className="text-sm font-medium text-gray-700">Compact Mode</Label>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" className="rounded border-gray-300" />
                   <span className="text-sm text-gray-600">Use compact table rows and smaller spacing</span>

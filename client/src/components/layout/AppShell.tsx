@@ -9,7 +9,6 @@ import {
   Key,
   Webhook,
   FileCode,
-  Menu,
   X,
   Bell,
 } from 'lucide-react';
@@ -31,6 +30,42 @@ const user = {
   imageUrl: 'https://pbs.twimg.com/profile_images/1733931010977640448/KTlA02mC_400x400.jpg', // Replace with actual user image
 };
 
+// Mock notifications data
+const notifications = [
+  {
+    id: 1,
+    title: 'New transaction detected',
+    description: '+5,000 USDC received in Treasury Wallet',
+    time: '2h ago',
+    unread: true,
+    icon: '↓',
+  },
+  {
+    id: 2,
+    title: 'Wallet balance updated',
+    description: 'Operations wallet balance changed by 15%',
+    time: '5h ago',
+    unread: true,
+    icon: '📊',
+  },
+  {
+    id: 3,
+    title: 'Weekly report ready',
+    description: 'Your weekly transaction summary is ready',
+    time: '1d ago',
+    unread: true,
+    icon: '📄',
+  },
+  {
+    id: 4,
+    title: 'New team member',
+    description: 'Sarah Johnson joined your workspace',
+    time: '2d ago',
+    unread: false,
+    icon: '👤',
+  },
+];
+
 function Logo() {
   return (
     <div className="flex items-center gap-2.5">
@@ -46,41 +81,6 @@ export function AppShell() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [hasUnread, setHasUnread] = useState(true);
-
-  const notifications = [
-    {
-      id: 1,
-      title: 'New transaction detected',
-      description: '+5,000 USDC received in Treasury Wallet',
-      time: '2h ago',
-      unread: true,
-      icon: '↓',
-    },
-    {
-      id: 2,
-      title: 'Wallet balance updated',
-      description: 'Operations wallet balance changed by 15%',
-      time: '5h ago',
-      unread: true,
-      icon: '📊',
-    },
-    {
-      id: 3,
-      title: 'Weekly report ready',
-      description: 'Your weekly transaction summary is ready',
-      time: '1d ago',
-      unread: true,
-      icon: '📄',
-    },
-    {
-      id: 4,
-      title: 'New team member',
-      description: 'Sarah Johnson joined your workspace',
-      time: '2d ago',
-      unread: false,
-      icon: '👤',
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -106,7 +106,7 @@ export function AppShell() {
           </button>
 
           <button className="h-8 w-8 rounded-full overflow-hidden border border-gray-200 bg-gray-900 flex items-center justify-center">
-            <span className="text-white text-xs font-semibold">K</span>
+            <span className="text-white text-sm font-semibold">K</span>
           </button>
         </div>
       </div>
@@ -122,7 +122,7 @@ export function AppShell() {
             >
               <X className="h-5 w-5" />
             </button>
-            <h1 className="text-base font-semibold text-gray-900">Notifications</h1>
+            <h1 className="text-sm font-semibold text-gray-900">Notifications</h1>
             <button
               onClick={() => setHasUnread(false)}
               className="text-xs text-gray-700 active:text-gray-900 font-medium px-2"
@@ -133,7 +133,7 @@ export function AppShell() {
 
           {/* Notifications List */}
           <div className="flex-1 overflow-y-auto">
-            {notifications.map((notification, idx) => (
+            {notifications.map((notification) => (
               <div
                 key={notification.id}
                 className={cn(
@@ -287,40 +287,7 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
                 <h3 className="font-semibold text-sm text-gray-900">Notifications</h3>
               </div>
               <div className="max-h-[420px] overflow-y-auto">
-                {[
-                  {
-                    id: 1,
-                    title: 'New transaction detected',
-                    description: '+5,000 USDC received in Treasury Wallet',
-                    time: '2h ago',
-                    unread: true,
-                    icon: '↓',
-                  },
-                  {
-                    id: 2,
-                    title: 'Wallet balance updated',
-                    description: 'Operations wallet balance changed by 15%',
-                    time: '5h ago',
-                    unread: true,
-                    icon: '📊',
-                  },
-                  {
-                    id: 3,
-                    title: 'Weekly report ready',
-                    description: 'Your weekly transaction summary is ready',
-                    time: '1d ago',
-                    unread: true,
-                    icon: '📄',
-                  },
-                  {
-                    id: 4,
-                    title: 'New team member',
-                    description: 'Sarah Johnson joined your workspace',
-                    time: '2d ago',
-                    unread: false,
-                    icon: '👤',
-                  },
-                ].map((notification, idx, arr) => (
+                {notifications.map((notification, idx, arr) => (
                   <div
                     key={notification.id}
                     className={cn(
@@ -335,7 +302,7 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="text-sm font-semibold text-gray-900">
                             {notification.title}
                           </p>
                           {notification.unread && (
@@ -447,8 +414,8 @@ function NavItem({ icon, label, to, onClick }: { icon: React.ReactNode; label: s
       onClick={onClick}
       className={({ isActive }) =>
         cn(
-          'flex items-center gap-3 w-full px-3 py-2 text-[13px] rounded-md transition-colors',
-          isActive ? 'bg-primary/10 text-primary font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+          'flex items-center gap-3 w-full px-3 py-2 text-sm rounded-md transition-colors',
+          isActive ? 'bg-primary/10 text-primary font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
         )
       }
     >

@@ -78,7 +78,7 @@ export const WalletsPage = () => {
         {/* Header */}
         <div className="mb-8 md:mb-16 flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Wallets</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Wallets</h1>
             <p className="text-gray-500 text-sm mt-1 md:mt-2">Manage your connected wallets across multiple chains</p>
           </div>
           <Button onClick={() => setIsAddWalletOpen(true)} className="flex-shrink-0">
@@ -100,7 +100,7 @@ export const WalletsPage = () => {
                     <Wallet className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-semibold text-gray-800 mb-1">{wallet.label}</h3>
+                    <h3 className="text-sm font-semibold text-gray-800 mb-1">{wallet.label}</h3>
                     <p className="text-xs text-gray-500">{wallet.chain}</p>
                   </div>
                 </div>
@@ -108,7 +108,7 @@ export const WalletsPage = () => {
                 <div className="space-y-3 mb-4">
                   <div>
                     <div className="text-xs text-gray-500 mb-1">Balance</div>
-                    <div className="text-2xl font-bold text-gray-800">{wallet.balance}</div>
+                    <div className="text-3xl font-bold text-gray-800">{wallet.balance}</div>
                   </div>
 
                   <div className="flex items-center gap-4">

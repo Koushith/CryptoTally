@@ -24,7 +24,7 @@ export const DashboardPage = () => {
 
         {/* Header */}
         <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Dashboard</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Dashboard</h1>
           <p className="text-gray-500 text-sm mt-1 md:mt-2">Overview of your crypto accounting</p>
         </div>
 
@@ -77,7 +77,7 @@ export const DashboardPage = () => {
                     )}
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-gray-900">{item.tag}</div>
+                    <div className="text-sm font-semibold text-gray-900">{item.tag}</div>
                     <div className="text-xs text-gray-500">{item.count} transactions</div>
                   </div>
                 </div>

@@ -165,15 +165,26 @@ type TabType = 'all' | 'untagged' | 'tagged';
 export const TransactionsPage = () => {
   const [selectedTx, setSelectedTx] = useState<typeof mockTransactions[0] | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [editedTags, setEditedTags] = useState<string[]>([]);
   const [editedNotes, setEditedNotes] = useState('');
   const [newTag, setNewTag] = useState('');
   const [activeTab, setActiveTab] = useState<TabType>('all');
 
-  const handleTransactionClick = (tx: typeof mockTransactions[0]) => {
+  const handleViewTransaction = (tx: typeof mockTransactions[0]) => {
     setSelectedTx(tx);
     setEditedTags(tx.tags);
     setEditedNotes(tx.notes || '');
+    setIsEditMode(false);
+    setIsDetailOpen(true);
+  };
+
+  const handleEditTransaction = (tx: typeof mockTransactions[0], e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedTx(tx);
+    setEditedTags(tx.tags);
+    setEditedNotes(tx.notes || '');
+    setIsEditMode(true);
     setIsDetailOpen(true);
   };
 
@@ -195,16 +206,14 @@ export const TransactionsPage = () => {
   };
 
   const handleSave = () => {
-    // In real app, this would save to backend
     console.log('Saving:', { tags: editedTags, notes: editedNotes });
     setIsDetailOpen(false);
   };
 
-  // Filter transactions based on active tab
   const filteredTransactions = mockTransactions.filter((tx) => {
     if (activeTab === 'untagged') return tx.tags.length === 0;
     if (activeTab === 'tagged') return tx.tags.length > 0;
-    return true; // 'all'
+    return true;
   });
 
   const untaggedCount = mockTransactions.filter(tx => tx.tags.length === 0).length;
@@ -342,91 +351,108 @@ export const TransactionsPage = () => {
               return (
                 <div
                   key={tx.id}
-                  className={`bg-white border rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none transition-all group ${
-                    isUntagged
-                      ? 'border-gray-300 bg-gray-50'
-                      : 'border-gray-200 md:hover:border-gray-300 md:hover:shadow-md'
-                  }`}
+                  onClick={() => handleViewTransaction(tx)}
+                  className="bg-white border border-gray-200 md:hover:border-gray-300 md:hover:shadow-md rounded-2xl md:rounded-xl p-5 shadow-sm md:shadow-none transition-all cursor-pointer group"
                 >
-                  <div className="flex items-start gap-3 md:gap-4">
-                    {/* Icon */}
-                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                      tx.type === 'in' ? 'bg-emerald-50' : 'bg-rose-50'
-                    }`}>
-                      {tx.type === 'in' ? (
-                        <ArrowDownLeft className="h-5 w-5 md:h-6 md:w-6 text-emerald-600" />
-                      ) : (
-                        <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-rose-600" />
-                      )}
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                      {/* Icon */}
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                        tx.type === 'in' ? 'bg-emerald-50' : 'bg-rose-50'
+                      }`}>
+                        {tx.type === 'in' ? (
+                          <ArrowDownLeft className="h-6 w-6 text-emerald-600" />
+                        ) : (
+                          <ArrowUpRight className="h-6 w-6 text-rose-600" />
+                        )}
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        {/* Amount & Timestamp */}
+                        <div className="flex items-start justify-between gap-2 mb-3">
+                          <div>
+                            <h3 className="text-lg font-bold mb-1">
+                              <span className={tx.type === 'in' ? 'text-emerald-600' : 'text-rose-600'}>
+                                {tx.type === 'in' ? '+' : '−'} {tx.amount} {tx.token}
+                              </span>
+                            </h3>
+                            <span className="text-sm text-gray-500">{tx.fiatValue}</span>
+                          </div>
+                        </div>
+
+                        {/* Wallet & Chain */}
+                        <div className="flex flex-wrap items-center gap-2 mb-3">
+                          <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                            <Wallet className="h-4 w-4" />
+                            <span>{tx.wallet}</span>
+                          </div>
+                          <span className="text-gray-300">•</span>
+                          <span className={`px-2 py-1 rounded-md text-xs font-medium ${chainColors[tx.chain].bg} ${chainColors[tx.chain].text}`}>
+                            {tx.chain}
+                          </span>
+                          <span className="text-gray-300">•</span>
+                          <span className="text-sm text-gray-500">{tx.timestamp}</span>
+                        </div>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap items-center gap-2">
+                          {isUntagged ? (
+                            <div className="flex items-center gap-1.5 text-sm text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg">
+                              <AlertCircle className="h-4 w-4" />
+                              <span>No tags yet</span>
+                            </div>
+                          ) : (
+                            <>
+                              {tx.tags.map((tag, idx) => (
+                                <Badge key={idx} variant="secondary" className="text-xs px-2.5 py-1">
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </>
+                          )}
+                          {tx.notes && (
+                            <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                              <FileText className="h-4 w-4" />
+                              <span className="max-w-[200px] truncate">{tx.notes}</span>
+                            </div>
+                          )}
+                          {tx.attachments.length > 0 && (
+                            <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                              <Paperclip className="h-4 w-4" />
+                              <span>{tx.attachments.length} file{tx.attachments.length > 1 ? 's' : ''}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      {/* Amount */}
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="text-base md:text-lg font-semibold">
-                          <span className={tx.type === 'in' ? 'text-emerald-600' : 'text-rose-600'}>
-                            {tx.type === 'in' ? '+' : '−'} {tx.amount} {tx.token}
-                          </span>
-                          <span className="text-gray-400 font-normal text-sm ml-2">≈ {tx.fiatValue}</span>
-                        </h3>
-                        <span className="text-xs text-gray-500 whitespace-nowrap">{tx.timestamp}</span>
-                      </div>
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button
+                        onClick={(e) => handleEditTransaction(tx, e)}
+                        size="sm"
+                        variant={isUntagged ? 'default' : 'outline'}
+                      >
+                        <Edit3 className="h-4 w-4 mr-1.5" />
+                        {isUntagged ? 'Add Tags' : 'Edit'}
+                      </Button>
+                    </div>
+                  </div>
 
-                      {/* Metadata */}
-                      <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                          <Wallet className="h-3.5 w-3.5" />
-                          <span>{tx.wallet}</span>
-                        </div>
-                        <span className={`px-2 py-0.5 rounded-md text-xs ${chainColors[tx.chain].bg} ${chainColors[tx.chain].text}`}>
-                          {tx.chain}
-                        </span>
-                      </div>
-
-                      {/* Tags and Info */}
-                      <div className="flex flex-wrap items-center gap-2 mb-3">
-                        {isUntagged ? (
-                          <div className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
-                            <AlertCircle className="h-3.5 w-3.5" />
-                            <span>Needs tagging</span>
-                          </div>
-                        ) : (
-                          <>
-                            {tx.tags.map((tag, idx) => (
-                              <Badge key={idx} variant="secondary" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </>
-                        )}
-                        {tx.notes && (
-                          <div className="flex items-center gap-1 text-xs text-gray-500">
-                            <FileText className="h-3.5 w-3.5" />
-                            <span className="max-w-[200px] truncate">{tx.notes}</span>
-                          </div>
-                        )}
-                        {tx.attachments.length > 0 && (
-                          <div className="flex items-center gap-1 text-xs text-gray-500">
-                            <Paperclip className="h-3.5 w-3.5" />
-                            <span>{tx.attachments.length}</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Hash and Action Button */}
-                      <div className="flex items-center justify-between gap-2">
-                        <code className="text-xs font-mono text-gray-400">{tx.hash}</code>
-                        <Button
-                          onClick={() => handleTransactionClick(tx)}
-                          size="sm"
-                          variant={isUntagged ? 'default' : 'outline'}
-                          className="flex-shrink-0"
-                        >
-                          <Edit3 className="h-3.5 w-3.5 mr-1.5" />
-                          {isUntagged ? 'Add Tags' : 'Edit'}
-                        </Button>
-                      </div>
+                  {/* Hash at bottom */}
+                  <div className="mt-3 pt-3 border-t border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <code className="text-xs font-mono text-gray-400">{tx.hash}</code>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // Open block explorer
+                        }}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -441,9 +467,13 @@ export const TransactionsPage = () => {
             {selectedTx && (
               <>
                 <SheetHeader>
-                  <SheetTitle>Transaction Details</SheetTitle>
+                  <SheetTitle>
+                    {isEditMode ? 'Edit Transaction' : 'Transaction Details'}
+                  </SheetTitle>
                   <SheetDescription>
-                    Add tags, notes, and attachments to organize this transaction
+                    {isEditMode
+                      ? 'Add tags, notes, and attachments to organize this transaction'
+                      : 'View transaction details and metadata'}
                   </SheetDescription>
                 </SheetHeader>
 
@@ -501,80 +531,109 @@ export const TransactionsPage = () => {
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                       <TagIcon className="h-4 w-4" />
-                      Tags {editedTags.length === 0 && <span className="text-red-600 text-xs">(Required)</span>}
+                      Tags
+                      {isEditMode && editedTags.length === 0 && (
+                        <span className="text-red-600 text-xs">(Required)</span>
+                      )}
                     </Label>
 
-                    {/* Current Tags */}
-                    {editedTags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        {editedTags.map((tag, idx) => (
-                          <Badge key={idx} variant="secondary" className="text-sm gap-1">
-                            {tag}
-                            <button onClick={() => handleRemoveTag(tag)}>
-                              <X className="h-3 w-3" />
-                            </button>
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Predefined Tags */}
-                    <div className="space-y-2">
-                      <div className="text-xs text-gray-500 font-medium">Quick Add:</div>
+                    {!isEditMode ? (
+                      // Read-only view
                       <div className="flex flex-wrap gap-2">
-                        {PREDEFINED_TAGS.filter(tag => !editedTags.includes(tag)).map((tag) => (
-                          <Button
-                            key={tag}
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleAddTag(tag)}
-                            className="text-xs h-7"
-                          >
-                            <Plus className="h-3 w-3 mr-1" />
-                            {tag}
-                          </Button>
-                        ))}
+                        {selectedTx.tags.length > 0 ? (
+                          selectedTx.tags.map((tag, idx) => (
+                            <Badge key={idx} variant="secondary" className="text-sm">
+                              {tag}
+                            </Badge>
+                          ))
+                        ) : (
+                          <p className="text-sm text-gray-500">No tags added yet</p>
+                        )}
                       </div>
-                    </div>
+                    ) : (
+                      // Edit mode
+                      <>
+                        {editedTags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {editedTags.map((tag, idx) => (
+                              <Badge key={idx} variant="secondary" className="text-sm gap-1">
+                                {tag}
+                                <button onClick={() => handleRemoveTag(tag)}>
+                                  <X className="h-3 w-3" />
+                                </button>
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
 
-                    {/* Custom Tag Input */}
-                    <div className="flex gap-2 mt-3">
-                      <Input
-                        placeholder="Add custom tag..."
-                        value={newTag}
-                        onChange={(e) => setNewTag(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleAddCustomTag()}
-                        className="text-sm"
-                      />
-                      <Button onClick={handleAddCustomTag} size="sm">
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
+                        <div className="space-y-2">
+                          <div className="text-xs text-gray-500 font-medium">Quick Add:</div>
+                          <div className="flex flex-wrap gap-2">
+                            {PREDEFINED_TAGS.filter(tag => !editedTags.includes(tag)).map((tag) => (
+                              <Button
+                                key={tag}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleAddTag(tag)}
+                                className="text-xs h-7"
+                              >
+                                <Plus className="h-3 w-3 mr-1" />
+                                {tag}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 mt-3">
+                          <Input
+                            placeholder="Add custom tag..."
+                            value={newTag}
+                            onChange={(e) => setNewTag(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleAddCustomTag()}
+                            className="text-sm"
+                          />
+                          <Button onClick={handleAddCustomTag} size="sm">
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   {/* Notes Section */}
                   <div>
-                    <Label htmlFor="notes" className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                    <Label className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                       <FileText className="h-4 w-4" />
-                      Notes <span className="text-gray-400 text-xs font-normal">(Optional)</span>
+                      Notes
+                      {isEditMode && <span className="text-gray-400 text-xs font-normal">(Optional)</span>}
                     </Label>
-                    <textarea
-                      id="notes"
-                      value={editedNotes}
-                      onChange={(e) => setEditedNotes(e.target.value)}
-                      placeholder="Add notes about this transaction..."
-                      className="w-full min-h-[100px] px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 resize-none"
-                    />
+                    {!isEditMode ? (
+                      <p className="text-sm text-gray-700">
+                        {selectedTx.notes || <span className="text-gray-500">No notes added</span>}
+                      </p>
+                    ) : (
+                      <textarea
+                        value={editedNotes}
+                        onChange={(e) => setEditedNotes(e.target.value)}
+                        placeholder="Add notes about this transaction..."
+                        className="w-full min-h-[100px] px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-300 resize-none"
+                      />
+                    )}
                   </div>
 
                   {/* Attachments Section */}
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                       <Paperclip className="h-4 w-4" />
-                      Attachments <span className="text-gray-400 text-xs font-normal">({selectedTx.attachments.length}/10 - Optional)</span>
+                      Attachments
+                      {isEditMode && (
+                        <span className="text-gray-400 text-xs font-normal">
+                          ({selectedTx.attachments.length}/10 - Optional)
+                        </span>
+                      )}
                     </Label>
 
-                    {selectedTx.attachments.length > 0 && (
+                    {selectedTx.attachments.length > 0 ? (
                       <div className="space-y-2 mb-3">
                         {selectedTx.attachments.map((file, idx) => (
                           <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -589,36 +648,58 @@ export const TransactionsPage = () => {
                               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                                 <Download className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-400 hover:text-red-600">
-                                <X className="h-4 w-4" />
-                              </Button>
+                              {isEditMode && (
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-400 hover:text-red-600">
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              )}
                             </div>
                           </div>
                         ))}
                       </div>
+                    ) : (
+                      <p className="text-sm text-gray-500 mb-3">No attachments</p>
                     )}
 
-                    <Button variant="outline" className="w-full" size="sm">
-                      <Upload className="h-4 w-4 mr-2" />
-                      Upload Attachment
-                    </Button>
-                    <p className="text-xs text-gray-500 mt-2">
-                      Upload invoices, receipts, or contracts (PDF, PNG, JPG, XLSX)
-                    </p>
+                    {isEditMode && (
+                      <>
+                        <Button variant="outline" className="w-full" size="sm">
+                          <Upload className="h-4 w-4 mr-2" />
+                          Upload Attachment
+                        </Button>
+                        <p className="text-xs text-gray-500 mt-2">
+                          Upload invoices, receipts, or contracts (PDF, PNG, JPG, XLSX)
+                        </p>
+                      </>
+                    )}
                   </div>
 
-                  {/* Save Button */}
+                  {/* Action Buttons */}
                   <div className="flex gap-2 pt-4 border-t">
-                    <Button variant="outline" onClick={() => setIsDetailOpen(false)} className="flex-1">
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={handleSave}
-                      className="flex-1"
-                      disabled={editedTags.length === 0}
-                    >
-                      Save Changes
-                    </Button>
+                    {isEditMode ? (
+                      <>
+                        <Button variant="outline" onClick={() => setIsEditMode(false)} className="flex-1">
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={handleSave}
+                          className="flex-1"
+                          disabled={editedTags.length === 0}
+                        >
+                          Save Changes
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button variant="outline" onClick={() => setIsDetailOpen(false)} className="flex-1">
+                          Close
+                        </Button>
+                        <Button onClick={() => setIsEditMode(true)} className="flex-1">
+                          <Edit3 className="h-4 w-4 mr-2" />
+                          Edit Transaction
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </>

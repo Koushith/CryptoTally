@@ -227,13 +227,13 @@ export const TransactionsPage = () => {
 
         {/* Stats Banner */}
         {untaggedCount > 0 && (
-          <div className="mb-5 md:mb-6 bg-amber-50 border border-amber-200 rounded-2xl md:rounded-xl p-4 flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="mb-5 md:mb-6 bg-gray-100 border border-gray-200 rounded-2xl md:rounded-xl p-4 flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-gray-600 flex-shrink-0 mt-0.5" />
             <div>
-              <div className="text-sm font-medium text-amber-900">
+              <div className="text-sm font-medium text-gray-900">
                 {untaggedCount} transaction{untaggedCount > 1 ? 's' : ''} need{untaggedCount === 1 ? 's' : ''} tagging
               </div>
-              <div className="text-xs text-amber-700 mt-1">
+              <div className="text-xs text-gray-600 mt-1">
                 Tag your transactions to organize them for accounting and tax reporting
               </div>
             </div>
@@ -241,7 +241,7 @@ export const TransactionsPage = () => {
               variant="outline"
               size="sm"
               onClick={() => setActiveTab('untagged')}
-              className="ml-auto flex-shrink-0 border-amber-300 text-amber-700 hover:bg-amber-100"
+              className="ml-auto flex-shrink-0"
             >
               View Untagged
             </Button>
@@ -271,7 +271,7 @@ export const TransactionsPage = () => {
           >
             Needs Tagging
             {untaggedCount > 0 && (
-              <span className="ml-2 px-1.5 py-0.5 text-xs font-semibold bg-amber-100 text-amber-700 rounded">
+              <span className="ml-2 px-1.5 py-0.5 text-xs font-semibold bg-gray-900 text-white rounded">
                 {untaggedCount}
               </span>
             )}
@@ -344,7 +344,7 @@ export const TransactionsPage = () => {
                   key={tx.id}
                   className={`bg-white border rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none transition-all group ${
                     isUntagged
-                      ? 'border-amber-200 bg-amber-50/30'
+                      ? 'border-gray-300 bg-gray-50'
                       : 'border-gray-200 md:hover:border-gray-300 md:hover:shadow-md'
                   }`}
                 >
@@ -387,7 +387,7 @@ export const TransactionsPage = () => {
                       {/* Tags and Info */}
                       <div className="flex flex-wrap items-center gap-2 mb-3">
                         {isUntagged ? (
-                          <div className="flex items-center gap-1.5 text-xs text-amber-700 font-medium">
+                          <div className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
                             <AlertCircle className="h-3.5 w-3.5" />
                             <span>Needs tagging</span>
                           </div>
@@ -421,11 +421,7 @@ export const TransactionsPage = () => {
                           onClick={() => handleTransactionClick(tx)}
                           size="sm"
                           variant={isUntagged ? 'default' : 'outline'}
-                          className={`flex-shrink-0 ${
-                            isUntagged
-                              ? 'bg-amber-600 hover:bg-amber-700 text-white'
-                              : ''
-                          }`}
+                          className="flex-shrink-0"
                         >
                           <Edit3 className="h-3.5 w-3.5 mr-1.5" />
                           {isUntagged ? 'Add Tags' : 'Edit'}
@@ -505,7 +501,7 @@ export const TransactionsPage = () => {
                   <div>
                     <Label className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
                       <TagIcon className="h-4 w-4" />
-                      Tags {editedTags.length === 0 && <span className="text-amber-600 text-xs">(Required)</span>}
+                      Tags {editedTags.length === 0 && <span className="text-red-600 text-xs">(Required)</span>}
                     </Label>
 
                     {/* Current Tags */}

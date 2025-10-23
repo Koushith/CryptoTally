@@ -1,16 +1,4 @@
-import {
-  Wallet,
-  TrendingUp,
-  TrendingDown,
-  ArrowUpRight,
-  ArrowDownLeft,
-  DollarSign,
-  Receipt,
-  Gift,
-  Banknote,
-  Fuel,
-  Clock,
-} from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 
 export const DashboardPage = () => {
   return (
@@ -23,115 +11,64 @@ export const DashboardPage = () => {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {/* Balance Card - Dark gradient like Wallets page */}
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 text-white">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-white/10 rounded-lg">
-                <Wallet className="h-5 w-5" />
-              </div>
-              <span className="text-xs text-white/70">4 wallets</span>
+        <div className="bg-gray-50 rounded-xl p-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div className="text-sm text-gray-500 mb-2">Total Balance</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">$168,350</div>
+              <div className="text-xs text-gray-500">4 wallets connected</div>
             </div>
-            <div className="text-3xl font-bold mb-1">$168,350</div>
-            <div className="text-sm text-white/70">Total Balance</div>
-          </div>
 
-          {/* Inflow Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-gray-100 rounded-lg">
-                <TrendingUp className="h-5 w-5 text-gray-700" />
-              </div>
-              <span className="text-xs text-green-600 font-medium">+12.5%</span>
+            <div>
+              <div className="text-sm text-gray-500 mb-2">Total Inflow</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">$245,150</div>
+              <div className="text-xs text-green-600">+12.5% vs last month</div>
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">$245,150</div>
-            <div className="text-sm text-gray-500">Total Inflow</div>
-          </div>
 
-          {/* Outflow Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-gray-100 rounded-lg">
-                <TrendingDown className="h-5 w-5 text-gray-700" />
-              </div>
-              <span className="text-xs text-gray-500 font-medium">89 txns</span>
+            <div>
+              <div className="text-sm text-gray-500 mb-2">Total Outflow</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">$76,800</div>
+              <div className="text-xs text-gray-500">89 transactions</div>
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">$76,800</div>
-            <div className="text-sm text-gray-500">Total Outflow</div>
           </div>
         </div>
 
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column - Category Breakdown */}
-          <div className="border border-gray-200 rounded-2xl p-6">
+          <div className="border border-gray-200 rounded-xl p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-5">By Category</h2>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {[
-                {
-                  tag: 'Customer Payment',
-                  amount: '$158,250',
-                  type: 'in',
-                  icon: DollarSign,
-                  color: 'bg-green-100',
-                  iconColor: 'text-green-700',
-                },
-                {
-                  tag: 'Grant',
-                  amount: '$62,400',
-                  type: 'in',
-                  icon: Gift,
-                  color: 'bg-blue-100',
-                  iconColor: 'text-blue-700',
-                },
-                {
-                  tag: 'Vendor Expense',
-                  amount: '$42,150',
-                  type: 'out',
-                  icon: Receipt,
-                  color: 'bg-orange-100',
-                  iconColor: 'text-orange-700',
-                },
-                {
-                  tag: 'Salary',
-                  amount: '$28,900',
-                  type: 'out',
-                  icon: Banknote,
-                  color: 'bg-purple-100',
-                  iconColor: 'text-purple-700',
-                },
-                {
-                  tag: 'Gas Fees',
-                  amount: '$5,750',
-                  type: 'out',
-                  icon: Fuel,
-                  color: 'bg-gray-100',
-                  iconColor: 'text-gray-700',
-                },
+                { tag: 'Customer Payment', amount: '$158,250', type: 'in' },
+                { tag: 'Grant', amount: '$62,400', type: 'in' },
+                { tag: 'Vendor Expense', amount: '$42,150', type: 'out' },
+                { tag: 'Salary', amount: '$28,900', type: 'out' },
+                { tag: 'Gas Fees', amount: '$5,750', type: 'out' },
               ].map((item) => (
                 <div
                   key={item.tag}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+                  className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${item.color}`}>
-                      <item.icon className={`h-4 w-4 ${item.iconColor}`} />
-                    </div>
-                    <span className="text-sm font-medium text-gray-900">{item.tag}</span>
+                    <div
+                      className={`w-2 h-2 rounded-full ${item.type === 'in' ? 'bg-green-500' : 'bg-gray-400'}`}
+                    ></div>
+                    <span className="text-sm text-gray-900">{item.tag}</span>
                   </div>
-                  <span className="text-sm font-bold text-gray-900">{item.amount}</span>
+                  <span className="text-sm font-semibold text-gray-900">{item.amount}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Right Column - Recent Transactions */}
-          <div className="border border-gray-200 rounded-2xl p-6">
+          <div className="border border-gray-200 rounded-xl p-6">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
-              <button className="text-sm text-gray-900 font-medium hover:underline">View All →</button>
+              <button className="text-sm text-gray-600 hover:text-gray-900 font-medium">View All →</button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {[
                 { amount: '5,000', token: 'USDC', tag: 'Customer Payment', time: '2h ago', type: 'in' },
                 { amount: '2.5', token: 'ETH', tag: 'Vendor Expense', time: '5h ago', type: 'out' },
@@ -141,14 +78,18 @@ export const DashboardPage = () => {
               ].map((tx, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 cursor-pointer transition-colors"
+                  className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${tx.type === 'in' ? 'bg-green-100' : 'bg-red-100'}`}>
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                        tx.type === 'in' ? 'bg-green-50' : 'bg-gray-50'
+                      }`}
+                    >
                       {tx.type === 'in' ? (
-                        <ArrowDownLeft className="h-4 w-4 text-green-700" />
+                        <ArrowDownLeft className="h-4 w-4 text-green-600" />
                       ) : (
-                        <ArrowUpRight className="h-4 w-4 text-red-700" />
+                        <ArrowUpRight className="h-4 w-4 text-gray-600" />
                       )}
                     </div>
                     <div>
@@ -158,10 +99,7 @@ export const DashboardPage = () => {
                       <div className="text-xs text-gray-500">{tx.tag}</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5 text-gray-400" />
-                    <span className="text-xs text-gray-500">{tx.time}</span>
-                  </div>
+                  <span className="text-xs text-gray-500">{tx.time}</span>
                 </div>
               ))}
             </div>

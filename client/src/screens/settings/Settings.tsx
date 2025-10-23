@@ -3,11 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
 import { User, Building2, Globe, Bell, Shield, Palette, Users } from 'lucide-react';
 
 type SettingModal = 'profile' | 'workspace' | 'team' | 'preferences' | 'notifications' | 'security' | 'appearance' | null;
@@ -15,48 +16,66 @@ type SettingModal = 'profile' | 'workspace' | 'team' | 'preferences' | 'notifica
 export const SettingsPage = () => {
   const [openModal, setOpenModal] = useState<SettingModal>(null);
 
-  const settingsCards = [
+  const settingsCategories = [
     {
-      id: 'profile' as const,
-      icon: User,
-      title: 'Profile',
-      description: 'Manage your personal information and account details',
+      category: 'Account',
+      description: 'Manage your personal account and workspace',
+      items: [
+        {
+          id: 'profile' as const,
+          icon: User,
+          title: 'Profile',
+          description: 'Manage your personal information and account details',
+        },
+        {
+          id: 'workspace' as const,
+          icon: Building2,
+          title: 'Workspace',
+          description: 'Configure organization settings and preferences',
+        },
+        {
+          id: 'team' as const,
+          icon: Users,
+          title: 'Team',
+          description: 'Invite and manage team members and permissions',
+        },
+      ],
     },
     {
-      id: 'workspace' as const,
-      icon: Building2,
-      title: 'Workspace',
-      description: 'Configure organization settings and preferences',
+      category: 'Preferences',
+      description: 'Customize your experience and settings',
+      items: [
+        {
+          id: 'preferences' as const,
+          icon: Globe,
+          title: 'Regional Settings',
+          description: 'Set your currency, timezone, and date format',
+        },
+        {
+          id: 'notifications' as const,
+          icon: Bell,
+          title: 'Notifications',
+          description: 'Control email notifications and alerts',
+        },
+        {
+          id: 'appearance' as const,
+          icon: Palette,
+          title: 'Appearance',
+          description: 'Customize theme and display settings',
+        },
+      ],
     },
     {
-      id: 'team' as const,
-      icon: Users,
-      title: 'Team',
-      description: 'Invite and manage team members and permissions',
-    },
-    {
-      id: 'preferences' as const,
-      icon: Globe,
-      title: 'Preferences',
-      description: 'Set your currency, timezone, and date format',
-    },
-    {
-      id: 'notifications' as const,
-      icon: Bell,
-      title: 'Notifications',
-      description: 'Control email notifications and alerts',
-    },
-    {
-      id: 'security' as const,
-      icon: Shield,
-      title: 'Security',
-      description: 'Update password and two-factor authentication',
-    },
-    {
-      id: 'appearance' as const,
-      icon: Palette,
-      title: 'Appearance',
-      description: 'Customize theme and display settings',
+      category: 'Security',
+      description: 'Keep your account safe and secure',
+      items: [
+        {
+          id: 'security' as const,
+          icon: Shield,
+          title: 'Security',
+          description: 'Update password and two-factor authentication',
+        },
+      ],
     },
   ];
 
@@ -69,42 +88,68 @@ export const SettingsPage = () => {
           <p className="text-gray-500 text-sm mt-2">Manage your account and workspace preferences</p>
         </div>
 
-        {/* Settings Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {settingsCards.map((card) => {
-            const Icon = card.icon;
-            return (
-              <button
-                key={card.id}
-                onClick={() => setOpenModal(card.id)}
-                className="flex items-start gap-4 p-6 rounded-xl hover:bg-gray-50 transition-all duration-200 text-left group"
-              >
-                <div className="flex-shrink-0 p-4 bg-gray-900 rounded-lg group-hover:bg-gray-800 transition-colors">
-                  <Icon className="h-5 w-5 text-white" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-semibold text-gray-900 mb-1">{card.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{card.description}</p>
-                </div>
-              </button>
-            );
-          })}
+        {/* Settings Categories */}
+        <div className="space-y-8">
+          {settingsCategories.map((categoryGroup) => (
+            <div key={categoryGroup.category}>
+              {/* Category Header */}
+              <div className="mb-4">
+                <h2 className="text-lg font-bold text-gray-900">{categoryGroup.category}</h2>
+                <p className="text-sm text-gray-500 mt-1">{categoryGroup.description}</p>
+              </div>
+
+              {/* Settings Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {categoryGroup.items.map((card) => {
+                  const Icon = card.icon;
+                  return (
+                    <button
+                      key={card.id}
+                      onClick={() => setOpenModal(card.id)}
+                      className="flex items-center gap-4 p-5 border border-gray-200 rounded-xl hover:shadow-md bg-white transition-all text-left group"
+                    >
+                      {/* Icon */}
+                      <div className="flex-shrink-0 w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
+                        <Icon className="h-5 w-5 text-white" />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <h3 className="text-base font-semibold text-gray-900">{card.title}</h3>
+                          <svg
+                            className="h-4 w-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                        <p className="text-sm text-gray-500 leading-snug">{card.description}</p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Profile Modal */}
-        <Dialog open={openModal === 'profile'} onOpenChange={() => setOpenModal(null)}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gray-900">
+        {/* Profile Sheet */}
+        <Sheet open={openModal === 'profile'} onOpenChange={() => setOpenModal(null)}>
+          <SheetContent className="overflow-y-auto">
+            <SheetHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
                   <User className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">Profile</div>
-                  <div className="text-xs text-gray-500 font-normal">Manage your personal information and account details</div>
+                  <SheetTitle>Profile</SheetTitle>
                 </div>
-              </DialogTitle>
-            </DialogHeader>
+              </div>
+              <SheetDescription>Manage your personal information and account details</SheetDescription>
+            </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -146,23 +191,23 @@ export const SettingsPage = () => {
                 <Button>Save Changes</Button>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
 
         {/* Workspace Modal */}
-        <Dialog open={openModal === 'workspace'} onOpenChange={() => setOpenModal(null)}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gray-900">
+        <Sheet open={openModal === 'workspace'} onOpenChange={() => setOpenModal(null)}>
+          <SheetContent className="overflow-y-auto">
+            <SheetHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
                   <Building2 className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">Workspace</div>
-                  <div className="text-xs text-gray-500 font-normal">Configure organization settings and preferences</div>
+                  <SheetTitle>Workspace</SheetTitle>
                 </div>
-              </DialogTitle>
-            </DialogHeader>
+              </div>
+              <SheetDescription>Configure organization settings and preferences</SheetDescription>
+            </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="workspace" className="text-sm text-gray-700">Workspace Name</Label>
@@ -187,23 +232,23 @@ export const SettingsPage = () => {
                 <Button>Save Changes</Button>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
 
         {/* Team Modal */}
-        <Dialog open={openModal === 'team'} onOpenChange={() => setOpenModal(null)}>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gray-900">
+        <Sheet open={openModal === 'team'} onOpenChange={() => setOpenModal(null)}>
+          <SheetContent className="overflow-y-auto sm:max-w-2xl">
+            <SheetHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
                   <Users className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">Team</div>
-                  <div className="text-xs text-gray-500 font-normal">Invite and manage team members and permissions</div>
+                  <SheetTitle>Team</SheetTitle>
                 </div>
-              </DialogTitle>
-            </DialogHeader>
+              </div>
+              <SheetDescription>Invite and manage team members and permissions</SheetDescription>
+            </SheetHeader>
             <div className="mt-4">
               <div className="border border-gray-200 rounded-lg p-5 mb-6">
                 <h3 className="text-sm font-medium text-gray-900 mb-4">Invite Team Member</h3>
@@ -283,23 +328,23 @@ export const SettingsPage = () => {
                 </div>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
 
         {/* Preferences Modal */}
-        <Dialog open={openModal === 'preferences'} onOpenChange={() => setOpenModal(null)}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gray-900">
+        <Sheet open={openModal === 'preferences'} onOpenChange={() => setOpenModal(null)}>
+          <SheetContent className="overflow-y-auto">
+            <SheetHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
                   <Globe className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">Preferences</div>
-                  <div className="text-xs text-gray-500 font-normal">Set your currency, timezone, and date format</div>
+                  <SheetTitle>Preferences</SheetTitle>
                 </div>
-              </DialogTitle>
-            </DialogHeader>
+              </div>
+              <SheetDescription>Set your currency, timezone, and date format</SheetDescription>
+            </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="currency" className="text-sm text-gray-700">Default Currency</Label>
@@ -342,23 +387,23 @@ export const SettingsPage = () => {
                 <Button>Save Changes</Button>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
 
         {/* Notifications Modal */}
-        <Dialog open={openModal === 'notifications'} onOpenChange={() => setOpenModal(null)}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gray-900">
+        <Sheet open={openModal === 'notifications'} onOpenChange={() => setOpenModal(null)}>
+          <SheetContent className="overflow-y-auto">
+            <SheetHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
                   <Bell className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">Notifications</div>
-                  <div className="text-xs text-gray-500 font-normal">Control email notifications and alerts</div>
+                  <SheetTitle>Notifications</SheetTitle>
                 </div>
-              </DialogTitle>
-            </DialogHeader>
+              </div>
+              <SheetDescription>Control email notifications and alerts</SheetDescription>
+            </SheetHeader>
             <div className="space-y-5 mt-4">
               {[
                 { label: 'New transactions detected', description: 'Get notified when new transactions are synced' },
@@ -379,23 +424,23 @@ export const SettingsPage = () => {
                 <Button>Save Changes</Button>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
 
         {/* Security Modal */}
-        <Dialog open={openModal === 'security'} onOpenChange={() => setOpenModal(null)}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gray-900">
+        <Sheet open={openModal === 'security'} onOpenChange={() => setOpenModal(null)}>
+          <SheetContent className="overflow-y-auto">
+            <SheetHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
                   <Shield className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">Security</div>
-                  <div className="text-xs text-gray-500 font-normal">Update password and two-factor authentication</div>
+                  <SheetTitle>Security</SheetTitle>
                 </div>
-              </DialogTitle>
-            </DialogHeader>
+              </div>
+              <SheetDescription>Update password and two-factor authentication</SheetDescription>
+            </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="currentPassword" className="text-sm text-gray-700">Current Password</Label>
@@ -438,23 +483,23 @@ export const SettingsPage = () => {
                 <Button>Update Password</Button>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
 
         {/* Appearance Modal */}
-        <Dialog open={openModal === 'appearance'} onOpenChange={() => setOpenModal(null)}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gray-900">
+        <Sheet open={openModal === 'appearance'} onOpenChange={() => setOpenModal(null)}>
+          <SheetContent className="overflow-y-auto">
+            <SheetHeader>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center">
                   <Palette className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-semibold">Appearance</div>
-                  <div className="text-xs text-gray-500 font-normal">Customize theme and display settings</div>
+                  <SheetTitle>Appearance</SheetTitle>
                 </div>
-              </DialogTitle>
-            </DialogHeader>
+              </div>
+              <SheetDescription>Customize theme and display settings</SheetDescription>
+            </SheetHeader>
             <div className="space-y-5 mt-4">
               <div className="space-y-2">
                 <Label className="text-sm text-gray-700">Theme</Label>
@@ -485,8 +530,8 @@ export const SettingsPage = () => {
                 <Button>Save Changes</Button>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </SheetContent>
+        </Sheet>
       </div>
     </div>
   );

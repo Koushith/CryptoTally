@@ -84,8 +84,41 @@ function AppSidebar({ isMobileMenuOpen }: { isMobileMenuOpen: boolean }) {
           <NavItem icon={<FileCode size={18} />} label="Documentation" to="/documentation" />
         </div>
 
+        {/* Promotional Card */}
+        <div className="px-4 pb-4 mt-auto">
+          <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-4">
+            {/* Subtle pattern overlay */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0" style={{
+                backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+                backgroundSize: '24px 24px'
+              }} />
+            </div>
+
+            <div className="relative">
+              <div className="mb-3">
+                <div className="inline-flex items-center justify-center w-8 h-8 bg-white/10 rounded-lg mb-2">
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-white mb-1">Join the Waitlist</h3>
+                <p className="text-xs text-gray-300 leading-relaxed">
+                  Get early access to new features and updates. Be the first to know.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                className="w-full bg-white text-gray-900 hover:bg-gray-100 font-semibold"
+              >
+                Join Waitlist
+              </Button>
+            </div>
+          </div>
+        </div>
+
         {/* User Profile Section with Dropdown */}
-        <div className="p-4 border-t mt-auto">
+        <div className="p-4 border-t">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="w-full justify-start p-2 px-3 -ml-3 h-auto">

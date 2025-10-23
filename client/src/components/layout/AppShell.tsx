@@ -11,6 +11,7 @@ import {
   FileCode,
   X,
   Bell,
+  User,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Outlet, NavLink } from 'react-router-dom';
@@ -232,15 +233,15 @@ export function AppShell() {
             )}
           </NavLink>
           <NavLink
-            to="/settings"
+            to="/profile"
             className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
               isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
             }`}
           >
             {({ isActive }) => (
               <>
-                <Settings size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
-                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Settings</span>
+                <User size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Profile</span>
               </>
             )}
           </NavLink>
@@ -334,6 +335,11 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
           <NavItem icon={<Wallet size={18} />} label="Wallets" to="/wallets" onClick={() => setIsMobileMenuOpen(false)} />
           <NavItem icon={<ArrowLeftRight size={18} />} label="Transactions" to="/transactions" onClick={() => setIsMobileMenuOpen(false)} />
           <NavItem icon={<FileText size={18} />} label="Reports" to="/reports" onClick={() => setIsMobileMenuOpen(false)} />
+
+          <div className="mt-6 mb-2 px-3">
+            <div className="text-xs font-medium text-[#697386] uppercase">Account</div>
+          </div>
+          <NavItem icon={<User size={18} />} label="Profile" to="/profile" onClick={() => setIsMobileMenuOpen(false)} />
           <NavItem icon={<Settings size={18} />} label="Settings" to="/settings" onClick={() => setIsMobileMenuOpen(false)} />
 
           <div className="mt-6 mb-2 px-3">

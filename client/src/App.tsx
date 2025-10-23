@@ -6,6 +6,7 @@ import {
   TransactionsPage,
   ReportsPage,
   SettingsPage,
+  ProfilePage,
   ErrorScreen
 } from './screens';
 import { ComingSoon } from '@/components/ComingSoon';
@@ -39,6 +40,11 @@ const router = createBrowserRouter([
       {
         path: '/settings',
         element: <SettingsPage />,
+        errorElement: <ErrorScreen />,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
         errorElement: <ErrorScreen />,
       },
       // Developer routes

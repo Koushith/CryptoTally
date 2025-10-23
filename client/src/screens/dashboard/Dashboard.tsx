@@ -81,15 +81,11 @@ export const DashboardPage = () => {
                   className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        tx.type === 'in' ? 'bg-green-50' : 'bg-gray-50'
-                      }`}
-                    >
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-900">
                       {tx.type === 'in' ? (
-                        <ArrowDownLeft className="h-4 w-4 text-green-600" />
+                        <ArrowDownLeft className="h-4 w-4 text-white" />
                       ) : (
-                        <ArrowUpRight className="h-4 w-4 text-gray-600" />
+                        <ArrowUpRight className="h-4 w-4 text-white" />
                       )}
                     </div>
                     <div>

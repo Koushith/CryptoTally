@@ -124,8 +124,8 @@ export const WalletsPage = () => {
               <div className="flex items-center justify-between gap-4">
                 {/* Left: Wallet Info */}
                 <div className="flex items-center gap-4 flex-1 min-w-0">
-                  <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
-                    <Wallet className="h-5 w-5 text-gray-600" />
+                  <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0">
+                    <Wallet className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">

@@ -6,7 +6,7 @@ export const DashboardPage = () => {
       <div className="w-full max-w-6xl">
         {/* Header */}
         <div className="mb-5 md:mb-10">
-          <h1 className="text-2xl md:text-[32px] font-bold text-gray-900">Dashboard</h1>
+          <h1 className="text-2xl md:text-[32px] font-bold text-gray-800">Dashboard</h1>
           <p className="text-gray-500 text-sm mt-1 md:mt-2">Overview of your crypto accounting</p>
         </div>
 
@@ -15,19 +15,19 @@ export const DashboardPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-8">
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Balance</div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$168,350</div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-800 mb-1">$168,350</div>
               <div className="text-xs text-gray-500">4 wallets connected</div>
             </div>
 
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Inflow</div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$245,150</div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-800 mb-1">$245,150</div>
               <div className="text-xs text-green-600">+12.5% vs last month</div>
             </div>
 
             <div>
               <div className="text-sm text-gray-500 mb-2">Total Outflow</div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">$76,800</div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-800 mb-1">$76,800</div>
               <div className="text-xs text-gray-500">89 transactions</div>
             </div>
           </div>
@@ -37,7 +37,7 @@ export const DashboardPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {/* Left Column - Category Breakdown */}
           <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-5 md:p-6 shadow-sm md:shadow-none">
-            <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4 md:mb-5">By Category</h2>
+            <h2 className="text-base md:text-lg font-semibold text-gray-800 mb-4 md:mb-5">By Category</h2>
             <div className="space-y-2">
               {[
                 { tag: 'Customer Payment', amount: '$158,250', type: 'in' },
@@ -54,9 +54,9 @@ export const DashboardPage = () => {
                     <div
                       className={`w-2 h-2 rounded-full ${item.type === 'in' ? 'bg-green-500' : 'bg-gray-400'}`}
                     ></div>
-                    <span className="text-sm text-gray-900">{item.tag}</span>
+                    <span className="text-sm text-gray-800">{item.tag}</span>
                   </div>
-                  <span className="text-sm font-semibold text-gray-900">{item.amount}</span>
+                  <span className="text-sm font-semibold text-gray-800">{item.amount}</span>
                 </div>
               ))}
             </div>
@@ -65,8 +65,8 @@ export const DashboardPage = () => {
           {/* Right Column - Recent Transactions */}
           <div className="bg-white border border-gray-200 rounded-2xl md:rounded-xl p-5 md:p-6 shadow-sm md:shadow-none">
             <div className="flex items-center justify-between mb-4 md:mb-5">
-              <h2 className="text-base md:text-lg font-semibold text-gray-900">Recent Activity</h2>
-              <button className="text-xs md:text-sm text-gray-600 active:text-gray-900 md:hover:text-gray-900 font-medium">View All →</button>
+              <h2 className="text-base md:text-lg font-semibold text-gray-800">Recent Activity</h2>
+              <button className="text-xs md:text-sm text-gray-600 active:text-gray-800 md:hover:text-gray-800 font-medium">View All →</button>
             </div>
             <div className="space-y-2">
               {[
@@ -89,7 +89,7 @@ export const DashboardPage = () => {
                       )}
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">
+                      <div className="text-sm font-semibold text-gray-800">
                         {tx.type === 'in' ? '+' : '−'} {tx.amount} {tx.token}
                       </div>
                       <div className="text-xs text-gray-500">{tx.tag}</div>

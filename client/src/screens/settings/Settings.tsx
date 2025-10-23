@@ -94,7 +94,7 @@ export const SettingsPage = () => {
             <div key={categoryGroup.category}>
               {/* Category Header */}
               <div className="mb-3 md:mb-4">
-                <h2 className="text-base md:text-lg font-bold text-gray-900">{categoryGroup.category}</h2>
+                <h2 className="text-base md:text-lg font-bold text-gray-800">{categoryGroup.category}</h2>
                 <p className="text-sm text-gray-500 mt-1">{categoryGroup.description}</p>
               </div>
 
@@ -116,7 +116,7 @@ export const SettingsPage = () => {
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2 mb-1">
-                          <h3 className="text-base font-semibold text-gray-900">{card.title}</h3>
+                          <h3 className="text-base font-semibold text-gray-800">{card.title}</h3>
                           <svg
                             className="h-4 w-4 text-gray-400 group-hover:text-gray-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
                             fill="none"
@@ -251,7 +251,7 @@ export const SettingsPage = () => {
             </SheetHeader>
             <div className="mt-4">
               <div className="border border-gray-200 rounded-lg p-5 mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-4">Invite Team Member</h3>
+                <h3 className="text-sm font-medium text-gray-800 mb-4">Invite Team Member</h3>
                 <div className="flex gap-3">
                   <div className="flex-1">
                     <Input
@@ -273,7 +273,7 @@ export const SettingsPage = () => {
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-sm font-medium text-gray-900">Current Members (3)</h3>
+                <h3 className="text-sm font-medium text-gray-800">Current Members (3)</h3>
                 {[
                   { name: 'Koushith Amin', email: 'koushith@def.com', role: 'Admin', status: 'Active' },
                   { name: 'Sarah Johnson', email: 'sarah@def.com', role: 'Contributor', status: 'Active' },
@@ -287,7 +287,7 @@ export const SettingsPage = () => {
                         </span>
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{member.name}</div>
+                        <div className="text-sm font-medium text-gray-800">{member.name}</div>
                         <div className="text-xs text-gray-500">{member.email}</div>
                       </div>
                     </div>
@@ -320,11 +320,11 @@ export const SettingsPage = () => {
               </div>
 
               <div className="mt-6 p-5 bg-gray-50 rounded-lg">
-                <h3 className="text-sm font-medium text-gray-900 mb-3">Role Permissions</h3>
+                <h3 className="text-sm font-medium text-gray-800 mb-3">Role Permissions</h3>
                 <div className="space-y-2 text-xs text-gray-600">
-                  <div><span className="font-medium text-gray-900">Admin:</span> Full access to all settings, can manage team members and billing</div>
-                  <div><span className="font-medium text-gray-900">Contributor:</span> Can add/edit wallets, tag transactions, and generate reports</div>
-                  <div><span className="font-medium text-gray-900">Viewer:</span> Read-only access to view transactions and reports</div>
+                  <div><span className="font-medium text-gray-800">Admin:</span> Full access to all settings, can manage team members and billing</div>
+                  <div><span className="font-medium text-gray-800">Contributor:</span> Can add/edit wallets, tag transactions, and generate reports</div>
+                  <div><span className="font-medium text-gray-800">Viewer:</span> Read-only access to view transactions and reports</div>
                 </div>
               </div>
             </div>
@@ -414,7 +414,7 @@ export const SettingsPage = () => {
                 <label key={idx} className="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" className="mt-1 rounded border-gray-300" defaultChecked={idx < 2} />
                   <div>
-                    <div className="text-sm font-medium text-gray-900">{item.label}</div>
+                    <div className="text-sm font-medium text-gray-800">{item.label}</div>
                     <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
                   </div>
                 </label>
@@ -473,7 +473,7 @@ export const SettingsPage = () => {
                 <label className="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" className="mt-1 rounded border-gray-300" />
                   <div>
-                    <div className="text-sm font-medium text-gray-900">Enable Two-Factor Authentication</div>
+                    <div className="text-sm font-medium text-gray-800">Enable Two-Factor Authentication</div>
                     <div className="text-xs text-gray-500 mt-0.5">Add an extra layer of security to your account</div>
                   </div>
                 </label>

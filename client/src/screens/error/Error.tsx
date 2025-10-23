@@ -22,7 +22,7 @@ export const ErrorScreen = ({ error, message = "We couldn't find the page you're
 
         {/* Main Message */}
         <div className="space-y-2 mb-6">
-          <h2 className="text-2xl font-semibold text-gray-900">Page not found</h2>
+          <h2 className="text-2xl font-semibold text-gray-800">Page not found</h2>
           <p className="text-gray-500 text-[15px] leading-relaxed">
             {message}
             {error?.message && <span className="block mt-2 text-sm">{error.message}</span>}

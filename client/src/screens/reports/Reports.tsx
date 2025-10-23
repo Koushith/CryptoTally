@@ -17,7 +17,7 @@ export const ReportsPage = () => {
         {/* Quick Export Cards */}
         <div className="mb-8 md:mb-16">
           <div className="mb-4 md:mb-8">
-            <h2 className="text-base md:text-lg font-semibold text-gray-900">Quick Reports</h2>
+            <h2 className="text-base md:text-lg font-semibold text-gray-800">Quick Reports</h2>
             <p className="text-sm text-gray-500 mt-1">Pre-configured reports ready to download</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5">
@@ -50,7 +50,7 @@ export const ReportsPage = () => {
                     <report.icon className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-semibold text-gray-900 mb-1">{report.title}</h3>
+                    <h3 className="text-base font-semibold text-gray-800 mb-1">{report.title}</h3>
                     <p className="text-sm text-gray-500 leading-snug">{report.description}</p>
                   </div>
                 </div>
@@ -59,7 +59,7 @@ export const ReportsPage = () => {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    className="text-gray-600 hover:text-gray-800 hover:bg-gray-50"
                   >
                     <Download className="h-4 w-4 mr-1.5" />
                     Export
@@ -77,7 +77,7 @@ export const ReportsPage = () => {
             className="w-full flex items-center justify-between bg-white border border-gray-200 md:hover:border-gray-300 rounded-2xl md:rounded-xl p-4 md:p-5 shadow-sm md:shadow-none active:scale-[0.99] transition-all mb-4"
           >
             <div className="text-left">
-              <h2 className="text-base md:text-lg font-semibold text-gray-900">Custom Report Builder</h2>
+              <h2 className="text-base md:text-lg font-semibold text-gray-800">Custom Report Builder</h2>
               <p className="text-sm text-gray-500 mt-1">Create custom reports with filters</p>
             </div>
             <ChevronDown
@@ -223,7 +223,7 @@ export const ReportsPage = () => {
         {/* Recent Exports */}
         <div>
           <div className="mb-4 md:mb-8">
-            <h2 className="text-base md:text-lg font-semibold text-gray-900">Recent Exports</h2>
+            <h2 className="text-base md:text-lg font-semibold text-gray-800">Recent Exports</h2>
             <p className="text-sm text-gray-500 mt-1">Download previously generated reports</p>
           </div>
           <div className="space-y-3">
@@ -259,7 +259,7 @@ export const ReportsPage = () => {
                     <export_item.icon className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900 mb-0.5">{export_item.name}</h3>
+                    <h3 className="text-sm font-semibold text-gray-800 mb-0.5">{export_item.name}</h3>
                     <div className="flex items-center gap-2 text-xs text-gray-500">
                       <span>{export_item.date}</span>
                       <span>•</span>
@@ -272,7 +272,7 @@ export const ReportsPage = () => {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                  className="text-gray-600 hover:text-gray-800 hover:bg-gray-50"
                 >
                   <Download className="h-4 w-4 mr-1.5" />
                   Download

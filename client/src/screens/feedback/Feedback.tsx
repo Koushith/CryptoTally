@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Bug, Lightbulb, MessageCircle, Send, CheckCircle2, ArrowUp, Clock } from 'lucide-react';
+import { Bug, Lightbulb, MessageCircle, Send, CheckCircle2, ArrowUp, Clock, Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 type FeedbackType = 'bug' | 'feature' | 'feedback';
 
@@ -23,71 +24,34 @@ export const FeedbackPage = () => {
   const [description, setDescription] = useState('');
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | Issue['status']>('all');
+  const [userIssues, setUserIssues] = useState<Issue[]>([]);
+  const [isLoadingIssues, setIsLoadingIssues] = useState(true);
+  const { toast } = useToast();
 
-  // Mock user-submitted issues
-  const userIssues: Issue[] = [
-    {
-      id: '1',
-      type: 'feature',
-      title: 'Add export to QuickBooks format',
-      description: 'It would be great to export transactions in QuickBooks compatible format for easier bookkeeping.',
-      author: 'Sarah M.',
-      date: '2 days ago',
-      votes: 24,
-      status: 'planned',
-    },
-    {
-      id: '2',
-      type: 'bug',
-      title: 'Transaction sync stuck on Polygon',
-      description: 'Transactions from Polygon network are not syncing for the past 3 hours. Other chains work fine.',
-      author: 'Mike K.',
-      date: '5 hours ago',
-      votes: 12,
-      status: 'in-progress',
-    },
-    {
-      id: '3',
-      type: 'feature',
-      title: 'Support for Solana wallets',
-      description: 'Would love to see support for Solana blockchain transactions and wallets.',
-      author: 'Alex P.',
-      date: '1 week ago',
-      votes: 45,
-      status: 'open',
-    },
-    {
-      id: '4',
-      type: 'feature',
-      title: 'Dark mode support',
-      description: 'A dark mode would be great for working late at night when tracking transactions.',
-      author: 'Emma L.',
-      date: '3 days ago',
-      votes: 67,
-      status: 'planned',
-    },
-    {
-      id: '5',
-      type: 'bug',
-      title: 'CSV export missing gas fees column',
-      description: 'When exporting to CSV, the gas fees column is not included in the export.',
-      author: 'David R.',
-      date: '1 day ago',
-      votes: 8,
-      status: 'open',
-    },
-    {
-      id: '6',
-      type: 'feedback',
-      title: 'Love the new transaction tagging UI!',
-      description: 'The recent update to the tagging interface is so much better. Much easier to categorize now.',
-      author: 'Lisa T.',
-      date: '4 days ago',
-      votes: 31,
-      status: 'closed',
-    },
-  ];
+  // Fetch feedback from backend
+  const fetchFeedback = async () => {
+    try {
+      setIsLoadingIssues(true);
+      const response = await fetch('http://localhost:3001/api/feedback');
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setUserIssues(result.data);
+      }
+    } catch (error) {
+      console.error('Error fetching feedback:', error);
+    } finally {
+      setIsLoadingIssues(false);
+    }
+  };
+
+  // Fetch feedback on mount
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
+
 
   const filteredIssues = filterStatus === 'all'
     ? userIssues
@@ -120,19 +84,72 @@ export const FeedbackPage = () => {
     },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ selectedType, title, description, email });
-    setIsSubmitted(true);
 
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setSelectedType(null);
-      setTitle('');
-      setDescription('');
-      setEmail('');
-    }, 3000);
+    if (!title.trim() || !description.trim()) {
+      toast({
+        title: 'Missing information',
+        description: 'Please fill in all required fields',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // TODO: After auth integration, include user name from auth context
+      // const { user } = useAuth();
+      // name: user?.name || undefined,
+
+      const response = await fetch('http://localhost:3001/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: selectedType,
+          message: `${title}\n\n${description}`,
+          email: email.trim() || undefined,
+          // name: user?.name || undefined, // TODO: Add after auth
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to submit feedback');
+      }
+
+      // Success!
+      setIsSubmitted(true);
+      toast({
+        title: 'Feedback submitted!',
+        description: 'Thank you for helping us improve CryptoTally.',
+      });
+
+      // Refresh feedback list to show new submission
+      fetchFeedback();
+
+      // Reset after 3 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setSelectedType(null);
+        setTitle('');
+        setDescription('');
+        setEmail('');
+      }, 3000);
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      toast({
+        title: 'Submission failed',
+        description: error instanceof Error ? error.message : 'Please try again later',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
@@ -277,12 +294,21 @@ export const FeedbackPage = () => {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <Button type="button" variant="outline" onClick={handleReset} className="flex-1">
+                <Button type="button" variant="outline" onClick={handleReset} className="flex-1" disabled={isSubmitting}>
                   Cancel
                 </Button>
-                <Button type="submit" className="flex-1">
-                  <Send className="h-4 w-4 mr-2" />
-                  Submit Feedback
+                <Button type="submit" className="flex-1" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4 mr-2" />
+                      Submit Feedback
+                    </>
+                  )}
                 </Button>
               </div>
             </form>
@@ -322,7 +348,25 @@ export const FeedbackPage = () => {
             </div>
 
             <div className="space-y-3">
-              {filteredIssues.map((issue) => {
+              {isLoadingIssues ? (
+                // Loading skeleton
+                Array.from({ length: 3 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-white border border-gray-200 rounded-2xl md:rounded-xl shadow-sm p-4 md:p-5 animate-pulse"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-gray-200 flex-shrink-0" />
+                      <div className="flex-1">
+                        <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+                        <div className="h-3 bg-gray-200 rounded w-full mb-2" />
+                        <div className="h-3 bg-gray-200 rounded w-1/2" />
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                filteredIssues.map((issue) => {
                 const getTypeIcon = (type: FeedbackType) => {
                   switch (type) {
                     case 'bug':
@@ -400,10 +444,11 @@ export const FeedbackPage = () => {
                     </div>
                   </div>
                 );
-              })}
+              })
+              )}
             </div>
 
-            {filteredIssues.length === 0 && (
+            {!isLoadingIssues && filteredIssues.length === 0 && (
               <div className="text-center py-12 bg-white border border-gray-200 rounded-2xl md:rounded-xl">
                 <p className="text-sm text-gray-500">No issues found for this filter.</p>
               </div>

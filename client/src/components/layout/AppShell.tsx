@@ -387,8 +387,9 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
               <Button
                 size="sm"
                 className="w-full bg-white text-gray-900 hover:bg-gray-100 font-semibold"
+                asChild
               >
-                Join Waitlist
+                <NavLink to="/waitlist">Join Waitlist</NavLink>
               </Button>
             </div>
           </div>

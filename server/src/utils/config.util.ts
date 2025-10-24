@@ -10,7 +10,8 @@ const PROD_URLS = {
 // Local development URLs
 const LOCAL_URLS = {
   API: `http://localhost:${env.PORT}`,
-  FRONTEND: 'http://localhost:5173',  // Vite dev server
+  FRONTEND: 'http://localhost:5173',  // Vite dev server default
+  FRONTEND_ALT: 'http://localhost:5174',  // Vite dev server alternate
   WEB: 'http://localhost:3000',       // Landing page
 } as const;
 
@@ -30,7 +31,7 @@ export const getUrl = () => {
  */
 export const getCorsOrigin = () => {
   if (isDevelopment) {
-    return [LOCAL_URLS.FRONTEND, LOCAL_URLS.WEB];
+    return [LOCAL_URLS.FRONTEND, LOCAL_URLS.FRONTEND_ALT, LOCAL_URLS.WEB];
   }
   return [PROD_URLS.FRONTEND, PROD_URLS.WEB];
 };

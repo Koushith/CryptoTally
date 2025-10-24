@@ -16,9 +16,9 @@ export const DashboardPage = () => {
               <div className="flex-1 min-w-0">
                 <p className="text-sm leading-relaxed">
                   <span className="font-medium">UI Preview</span> — This is how the app will look. Design and features are still in development.{' '}
-                  <a href="https://www.cryptotally.xyz" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-300">
+                  <Link to="/waitlist" className="underline hover:text-gray-300">
                     Join waitlist
-                  </a>
+                  </Link>
                   {' • '}
                   <Link to="/feedback" className="underline hover:text-gray-300">
                     Share feedback

@@ -10,9 +10,14 @@ const app = express();
 /**
  * Middleware
  */
-app.use(helmet());
+// Disable helmet in development for easier testing
+if (!isDevelopment) {
+  app.use(helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  }));
+}
 app.use(cors({
-  origin: getCorsOrigin(),
+  origin: isDevelopment ? '*' : getCorsOrigin(), // Allow all origins in development
   credentials: true,
 }));
 app.use(express.json());

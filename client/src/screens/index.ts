@@ -6,5 +6,6 @@ export * from './settings';
 export * from './integrations';
 export * from './profile';
 export * from './feedback';
+export * from './waitlist';
 export * from './error/Error';
 export * from './auth/Auth';

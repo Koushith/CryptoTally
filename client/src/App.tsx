@@ -9,6 +9,7 @@ import {
   IntegrationsPage,
   ProfilePage,
   FeedbackPage,
+  WaitlistPage,
   ErrorScreen,
 } from './screens';
 import { ComingSoon } from '@/components/ComingSoon';
@@ -60,6 +61,11 @@ const router = createBrowserRouter([
       {
         path: '/feedback',
         element: <FeedbackPage />,
+        errorElement: <ErrorScreen />,
+      },
+      {
+        path: '/waitlist',
+        element: <WaitlistPage />,
         errorElement: <ErrorScreen />,
       },
       // Developer routes

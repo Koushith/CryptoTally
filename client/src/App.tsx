@@ -9,13 +9,13 @@ import {
   IntegrationsPage,
   ProfilePage,
   FeedbackPage,
-  ErrorScreen
+  ErrorScreen,
 } from './screens';
 import { ComingSoon } from '@/components/ComingSoon';
 import { Key, Webhook, FileCode } from 'lucide-react';
 import dataAnalystImg from '@/assets/illustrations/data-analyst.png';
 import analyticsImg from '@/assets/illustrations/analytics.png';
-import reportingStatsImg from '@/assets/illustrations/reporting-stats.png';
+import reportingStatsImg from '@/assets/illustrations/reporting.png';
 
 const router = createBrowserRouter([
   {

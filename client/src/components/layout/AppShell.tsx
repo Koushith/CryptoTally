@@ -106,9 +106,7 @@ export function AppShell() {
             className="relative h-8 w-8 flex items-center justify-center border border-gray-200 rounded-xl active:bg-gray-50 transition-colors"
           >
             <Bell className="h-4 w-4" />
-            {hasUnread && (
-              <span className="absolute top-0.5 right-0.5 h-2 w-2 bg-red-600 rounded-full" />
-            )}
+            {hasUnread && <span className="absolute top-0.5 right-0.5 h-2 w-2 bg-red-600 rounded-full" />}
           </button>
 
           <button className="h-8 w-8 rounded-full overflow-hidden border border-gray-200 bg-gray-900 flex items-center justify-center">
@@ -153,16 +151,10 @@ export function AppShell() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <p className="text-sm font-semibold text-gray-900">
-                        {notification.title}
-                      </p>
-                      {notification.unread && (
-                        <div className="w-2 h-2 bg-gray-900 rounded-full flex-shrink-0 mt-1.5" />
-                      )}
+                      <p className="text-sm font-semibold text-gray-900">{notification.title}</p>
+                      {notification.unread && <div className="w-2 h-2 bg-gray-900 rounded-full flex-shrink-0 mt-1.5" />}
                     </div>
-                    <p className="text-sm text-gray-600 mb-2 leading-relaxed">
-                      {notification.description}
-                    </p>
+                    <p className="text-sm text-gray-600 mb-2 leading-relaxed">{notification.description}</p>
                     <p className="text-xs text-gray-500">{notification.time}</p>
                   </div>
                 </div>
@@ -182,70 +174,104 @@ export function AppShell() {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[100]"
-           style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[100]"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
         <div className="flex items-center justify-around h-16 px-2">
           <NavLink
             to="/"
-            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-              isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-            }`}
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
+                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
+              }`
+            }
           >
             {({ isActive }) => (
               <>
-                <LayoutDashboard size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <LayoutDashboard
+                  size={20}
+                  strokeWidth={isActive ? 2.5 : 2}
+                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
+                />
                 <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Dashboard</span>
               </>
             )}
           </NavLink>
           <NavLink
             to="/wallets"
-            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-              isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-            }`}
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
+                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
+              }`
+            }
           >
             {({ isActive }) => (
               <>
-                <Wallet size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <Wallet
+                  size={20}
+                  strokeWidth={isActive ? 2.5 : 2}
+                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
+                />
                 <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Wallets</span>
               </>
             )}
           </NavLink>
           <NavLink
             to="/transactions"
-            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-              isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-            }`}
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
+                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
+              }`
+            }
           >
             {({ isActive }) => (
               <>
-                <ArrowLeftRight size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
-                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Transactions</span>
+                <ArrowLeftRight
+                  size={20}
+                  strokeWidth={isActive ? 2.5 : 2}
+                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
+                />
+                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>
+                  Transactions
+                </span>
               </>
             )}
           </NavLink>
           <NavLink
             to="/reports"
-            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-              isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-            }`}
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
+                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
+              }`
+            }
           >
             {({ isActive }) => (
               <>
-                <FileText size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <FileText
+                  size={20}
+                  strokeWidth={isActive ? 2.5 : 2}
+                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
+                />
                 <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Reports</span>
               </>
             )}
           </NavLink>
           <NavLink
             to="/profile"
-            className={({ isActive }) => `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-              isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-            }`}
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
+                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
+              }`
+            }
           >
             {({ isActive }) => (
               <>
-                <User size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-gray-900' : 'text-gray-500'} />
+                <User
+                  size={20}
+                  strokeWidth={isActive ? 2.5 : 2}
+                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
+                />
                 <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Profile</span>
               </>
             )}
@@ -255,16 +281,19 @@ export function AppShell() {
 
       {/* Mobile overlay */}
       {isMobileMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/60 z-[35]"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
+        <div className="md:hidden fixed inset-0 bg-black/60 z-[35]" onClick={() => setIsMobileMenuOpen(false)} />
       )}
     </div>
   );
 }
 
-function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpen: boolean; setIsMobileMenuOpen: (open: boolean) => void }) {
+function AppSidebar({
+  isMobileMenuOpen,
+  setIsMobileMenuOpen,
+}: {
+  isMobileMenuOpen: boolean;
+  setIsMobileMenuOpen: (open: boolean) => void;
+}) {
   const [hasUnread, setHasUnread] = useState(true);
 
   return (
@@ -283,9 +312,7 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0">
                 <Bell className="h-4 w-4" />
-                {hasUnread && (
-                  <span className="absolute top-1 right-1 h-2 w-2 bg-red-600 rounded-full" />
-                )}
+                {hasUnread && <span className="absolute top-1 right-1 h-2 w-2 bg-red-600 rounded-full" />}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-80 p-0">
@@ -308,16 +335,12 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <p className="text-sm font-semibold text-gray-900">
-                            {notification.title}
-                          </p>
+                          <p className="text-sm font-semibold text-gray-900">{notification.title}</p>
                           {notification.unread && (
                             <div className="w-2 h-2 bg-gray-900 rounded-full flex-shrink-0 mt-1.5" />
                           )}
                         </div>
-                        <p className="text-xs text-gray-600 mb-1.5 line-clamp-2">
-                          {notification.description}
-                        </p>
+                        <p className="text-xs text-gray-600 mb-1.5 line-clamp-2">{notification.description}</p>
                         <p className="text-xs text-gray-500">{notification.time}</p>
                       </div>
                     </div>
@@ -336,29 +359,85 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
           </DropdownMenu>
         </div>
         <div className="flex flex-col gap-1 p-3 flex-1 pt-6 md:pt-3">
-          <NavItem icon={<LayoutDashboard size={18} />} label="Dashboard" to="/" onClick={() => setIsMobileMenuOpen(false)} />
-          <NavItem icon={<Wallet size={18} />} label="Wallets" to="/wallets" onClick={() => setIsMobileMenuOpen(false)} />
-          <NavItem icon={<ArrowLeftRight size={18} />} label="Transactions" to="/transactions" onClick={() => setIsMobileMenuOpen(false)} />
-          <NavItem icon={<FileText size={18} />} label="Reports" to="/reports" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem
+            icon={<LayoutDashboard size={18} />}
+            label="Dashboard"
+            to="/"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <NavItem
+            icon={<Wallet size={18} />}
+            label="Wallets"
+            to="/wallets"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <NavItem
+            icon={<ArrowLeftRight size={18} />}
+            label="Transactions"
+            to="/transactions"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <NavItem
+            icon={<FileText size={18} />}
+            label="Reports"
+            to="/reports"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
 
           <div className="mt-6 mb-2 px-3">
             <div className="text-xs font-medium text-[#697386] uppercase">Account</div>
           </div>
           <NavItem icon={<User size={18} />} label="Profile" to="/profile" onClick={() => setIsMobileMenuOpen(false)} />
-          <NavItem icon={<Settings size={18} />} label="Settings" to="/settings" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem
+            icon={<Settings size={18} />}
+            label="Settings"
+            to="/settings"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
 
           <div className="mt-6 mb-2 px-3">
             <div className="text-xs font-medium text-[#697386] uppercase">Support</div>
           </div>
-          <NavItem icon={<MessageSquare size={18} />} label="Feedback" to="/feedback" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem
+            icon={<MessageSquare size={18} />}
+            label="Feedback"
+            to="/feedback"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
 
           <div className="mt-6 mb-2 px-3">
             <div className="text-xs font-medium text-[#697386] uppercase">Developer</div>
           </div>
-          <NavItem icon={<Plug size={18} />} label="Integrations" to="/integrations" onClick={() => setIsMobileMenuOpen(false)} />
-          <NavItem icon={<Key size={18} />} label="API Keys" to="/api-keys" onClick={() => setIsMobileMenuOpen(false)} />
-          <NavItem icon={<Webhook size={18} />} label="Webhooks" to="/webhooks" onClick={() => setIsMobileMenuOpen(false)} />
-          <NavItem icon={<FileCode size={18} />} label="Documentation" to="/documentation" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem
+            icon={<Plug size={18} />}
+            label="Integrations"
+            to="/integrations"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <NavItem
+            icon={<Key size={18} />}
+            label="API Keys"
+            to="/api-keys"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <NavItem
+            icon={<Webhook size={18} />}
+            label="Webhooks"
+            to="/webhooks"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <button
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              window.open('https://docs.cryptotally.xyz/', '_blank');
+            }}
+            className="flex items-center gap-3 w-full px-3 py-2 text-sm rounded-md transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+          >
+            <span className="flex-shrink-0 w-[18px] h-[18px]">
+              <FileCode size={18} />
+            </span>
+            <span>Documentation</span>
+          </button>
         </div>
 
         {/* Promotional Card */}
@@ -366,17 +445,25 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
           <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-4">
             {/* Subtle pattern overlay */}
             <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0" style={{
-                backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-                backgroundSize: '24px 24px'
-              }} />
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+                  backgroundSize: '24px 24px',
+                }}
+              />
             </div>
 
             <div className="relative">
               <div className="mb-3">
                 <div className="inline-flex items-center justify-center w-8 h-8 bg-white/10 rounded-lg mb-2">
                   <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
                   </svg>
                 </div>
                 <h3 className="text-sm font-semibold text-white mb-1">Join the Waitlist</h3>
@@ -384,11 +471,7 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
                   Get early access to new features and updates. Be the first to know.
                 </p>
               </div>
-              <Button
-                size="sm"
-                className="w-full bg-white text-gray-900 hover:bg-gray-100 font-semibold"
-                asChild
-              >
+              <Button size="sm" className="w-full bg-white text-gray-900 hover:bg-gray-100 font-semibold" asChild>
                 <NavLink to="/waitlist">Join Waitlist</NavLink>
               </Button>
             </div>
@@ -425,7 +508,17 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
   );
 }
 
-function NavItem({ icon, label, to, onClick }: { icon: React.ReactNode; label: string; to: string; onClick?: () => void }) {
+function NavItem({
+  icon,
+  label,
+  to,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  to: string;
+  onClick?: () => void;
+}) {
   return (
     <NavLink
       to={to}

@@ -12,13 +12,18 @@ import {
   WaitlistPage,
   ErrorScreen,
 } from './screens';
+import { Auth } from './screens/auth/Auth';
 import { ComingSoon } from '@/components/ComingSoon';
-import { Key, Webhook, FileCode } from 'lucide-react';
+import { Key, Webhook } from 'lucide-react';
 import dataAnalystImg from '@/assets/illustrations/data-analyst.png';
 import analyticsImg from '@/assets/illustrations/analytics.png';
-import reportingStatsImg from '@/assets/illustrations/reporting.png';
 
 const router = createBrowserRouter([
+  {
+    path: '/auth',
+    element: <Auth />,
+    errorElement: <ErrorScreen />,
+  },
   {
     path: '/',
     element: <AppShell />,
@@ -88,17 +93,6 @@ const router = createBrowserRouter([
             title="Webhooks"
             description="Set up webhooks to receive real-time notifications about new transactions and wallet events."
             illustrationUrl={analyticsImg}
-          />
-        ),
-      },
-      {
-        path: '/documentation',
-        element: (
-          <ComingSoon
-            icon={FileCode}
-            title="API Documentation"
-            description="Comprehensive guides and references for integrating with the CryptoTally API."
-            illustrationUrl={reportingStatsImg}
           />
         ),
       },

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Wallet, Copy, ExternalLink, TrendingUp, Activity, Plus } from 'lucide-react';
+import { Copy, ExternalLink, TrendingUp, Activity, Plus } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -10,6 +10,39 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+
+const chainLogos: Record<string, JSX.Element> = {
+  Ethereum: (
+    <svg viewBox="0 0 256 417" className="w-6 h-6">
+      <path fill="#343434" d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z"/>
+      <path fill="#8C8C8C" d="M127.962 0L0 212.32l127.962 75.639V154.158z"/>
+      <path fill="#3C3C3B" d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.6L256 236.587z"/>
+      <path fill="#8C8C8C" d="M127.962 416.905v-104.72L0 236.585z"/>
+      <path fill="#141414" d="M127.961 287.958l127.96-75.637-127.96-58.162z"/>
+      <path fill="#393939" d="M0 212.32l127.96 75.638v-133.8z"/>
+    </svg>
+  ),
+  Polygon: (
+    <svg viewBox="0 0 38.4 33.5" className="w-6 h-6">
+      <path fill="#8247E5" d="M29,10.2c-0.7-0.4-1.6-0.4-2.4,0L21,13.5l-3.8,2.1l-5.5,3.3c-0.7,0.4-1.6,0.4-2.4,0L5,16.3 c-0.7-0.4-1.2-1.2-1.2-2.1v-5c0-0.8,0.4-1.6,1.2-2.1l4.3-2.5c0.7-0.4,1.6-0.4,2.4,0L16,7.2c0.7,0.4,1.2,1.2,1.2,2.1v3.3l3.8-2.2V7 c0-0.8-0.4-1.6-1.2-2.1l-8-4.7c-0.7-0.4-1.6-0.4-2.4,0L1.2,5C0.4,5.4,0,6.2,0,7v9.4c0,0.8,0.4,1.6,1.2,2.1l8.1,4.7 c0.7,0.4,1.6,0.4,2.4,0l5.5-3.2l3.8-2.2l5.5-3.2c0.7-0.4,1.6-0.4,2.4,0l4.3,2.5c0.7,0.4,1.2,1.2,1.2,2.1v5c0,0.8-0.4,1.6-1.2,2.1 L29,28.8c-0.7,0.4-1.6,0.4-2.4,0l-4.3-2.5c-0.7-0.4-1.2-1.2-1.2-2.1V21l-3.8,2.2v3.3c0,0.8,0.4,1.6,1.2,2.1l8.1,4.7 c0.7,0.4,1.6,0.4,2.4,0l8.1-4.7c0.7-0.4,1.2-1.2,1.2-2.1V17c0-0.8-0.4-1.6-1.2-2.1L29,10.2z"/>
+    </svg>
+  ),
+  Arbitrum: (
+    <svg viewBox="0 0 32 32" className="w-6 h-6">
+      <path fill="#28A0F0" d="M24.4 8.9l-7.7 13.3-1.6 2.8-5-8.6 3.3-5.8 2.7-4.6 4.1 7.1 1.3 2.3 2.9-6.5z"/>
+      <path fill="#96BEDC" d="M11.1 15.5l-2.7 4.7-1.5 2.6 7.9 1.3 5.8-1-2.7-4.7z"/>
+      <path fill="#213147" d="M24.3 8.9l-4-7c-.3-.6-1-.9-1.6-.9H13.2c-.7 0-1.3.4-1.6.9l-7.7 13.4c-.3.6-.3 1.3 0 1.9l4 7c.3.6 1 .9 1.6.9h11.1c.7 0 1.3-.4 1.6-.9l7.7-13.4c.3-.6.3-1.3 0-1.9z"/>
+      <path fill="#12AAFF" d="M19.3 12.1l-2.7-4.7-4.1 7.1 2.7 4.7z"/>
+      <path fill="#9DCCED" d="M19.3 12.1l-2.7 4.7h5.4z"/>
+    </svg>
+  ),
+  'BNB Chain': (
+    <svg viewBox="0 0 126.61 126.61" className="w-6 h-6">
+      <path fill="#F3BA2F" d="M38.73 53.2l24.59-24.58 24.6 24.6 14.3-14.31L63.32 0 24.43 38.89l14.3 14.31zM0 63.31l14.3-14.3 14.31 14.3-14.31 14.3L0 63.31zm38.73 10.11l24.59 24.59 24.6-24.6 14.31 14.29-38.9 38.91-38.91-38.88-.01-.01 14.32-14.3zm48.9-10.12l14.31-14.3 14.3 14.3-14.3 14.3-14.31-14.3z"/>
+      <path fill="#F3BA2F" d="M77.83 63.3L63.32 48.78 52.59 59.51l-1.24 1.23-2.54 2.54 14.51 14.5 14.51-14.47v-.01z"/>
+    </svg>
+  ),
+};
 
 const mockWallets = [
   {
@@ -96,8 +129,8 @@ export const WalletsPage = () => {
                 className="group bg-white rounded-2xl md:rounded-xl border border-gray-200 p-4 md:p-6 shadow-sm md:shadow-none md:hover:shadow-md active:scale-[0.98] md:active:scale-100 transition-all cursor-pointer"
               >
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0">
-                    <Wallet className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center flex-shrink-0">
+                    {chainLogos[wallet.chain]}
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm font-semibold text-gray-800 mb-1">{wallet.label}</h3>

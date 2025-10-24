@@ -9,11 +9,23 @@ CryptoTally is a crypto accounting tool designed for startups, freelancers, and 
 This project uses a **feature-based documentation strategy**. Each feature has its own folder with comprehensive specs, user flows, and implementation details.
 
 ### Documentation Structure
+
 - **[DOCS.md](./DOCS.md)** - Complete documentation index and standards
 - **Client Docs**: `client/docs/` - Frontend architecture and feature specs
 - **Server Docs**: `server/docs/` - Backend architecture, API docs, and database schemas
 
+### Feature Documentation Process
+
+Each feature folder contains:
+- **BRAINSTORMING.md** - Initial ideas, discussions, and planning notes
+- **SPEC.md** - Detailed feature specification
+- **USER_FLOW.md** - User journey diagrams
+- **COMPONENTS.md** (client) or **API.md** (server) - Implementation details
+
+> 💡 **Start every feature with BRAINSTORMING.md** - Document your thoughts, questions, and design decisions before implementation.
+
 ### Quick Links
+
 - [Documentation Index](./DOCS.md) - How documentation is organized
 - [Client Architecture](./client/docs/architecture/CLIENT_ARCHITECTURE.md) - Frontend deep dive
 - [Server Architecture](./server/docs/architecture/SERVER_ARCHITECTURE.md) - Backend deep dive
@@ -264,185 +276,23 @@ When receiving payments in USDC, ETH, or other cryptocurrencies:
    - Users can track any wallet address (org treasuries, multi-sigs)
    - Better for accounting/bookkeeping use case
 
-### Animation Strategy
+## Data Model
 
-```tsx
-// Page transitions
-import { motion } from 'framer-motion';
+High-level database schema includes:
+- **Users** - Authentication and profile data
+- **Workspaces** - Personal and organization workspaces with multi-user support
+- **Wallets** - Read-only wallet tracking with chain and label information
+- **Transactions** - Blockchain transaction data with metadata
+- **Tags** - User-defined categorization system
+- **Attachments** - Supporting documents (invoices, receipts, contracts)
 
-const pageVariants = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 },
-};
-
-// Stagger children animations
-const containerVariants = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-// Scroll-triggered animations
-import { useInView } from 'framer-motion';
-const ref = useRef(null);
-const isInView = useInView(ref, { once: true });
-
-// Number animations (for balances)
-import { animate } from 'framer-motion';
-```
-
-### State Management Pattern
-
-```tsx
-// Zustand store for wallet state
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-
-interface WalletStore {
-  address: string | null;
-  setAddress: (address: string | null) => void;
-}
-
-export const useWallet = create<WalletStore>()(
-  persist(
-    (set) => ({
-      address: null,
-      setAddress: (address) => set({ address }),
-    }),
-    { name: 'wallet-storage' }
-  )
-);
-
-// TanStack Query for transactions
-import { useQuery } from '@tanstack/react-query';
-
-export const useTransactions = (address: string) => {
-  return useQuery({
-    queryKey: ['transactions', address],
-    queryFn: () => fetchTransactions(address),
-    staleTime: 30000, // 30s
-    refetchInterval: 60000, // 1min background refetch
-  });
-};
-```
-
-## Data Model (Simplified)
-
-```prisma
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  workspaces WorkspaceMember[]
-}
-
-model Workspace {
-  id       String   @id @default(cuid())
-  name     String
-  currency String   @default("USD")
-  type     WorkspaceType // 'personal' | 'organization'
-  wallets  Wallet[]
-  tags     Tag[]
-  members  WorkspaceMember[]
-}
-
-model WorkspaceMember {
-  userId      String
-  workspaceId String
-  role        Role // 'admin' | 'contributor' | 'viewer'
-  user        User      @relation(fields: [userId], references: [id])
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
-  @@id([userId, workspaceId])
-}
-
-model Wallet {
-  id           String   @id @default(cuid())
-  workspaceId  String
-  address      String
-  label        String?
-  chain        String   // 'ethereum', 'polygon', 'arbitrum', 'bsc'
-  workspace    Workspace @relation(fields: [workspaceId], references: [id])
-  transactions Transaction[]
-}
-
-model Transaction {
-  id          String   @id @default(cuid())
-  walletId    String
-  txHash      String
-  fromAddress String
-  toAddress   String
-  token       String
-  amount      String
-  fiatValue   Float
-  direction   Direction // 'in' | 'out'
-  type        TxType    // 'transfer' | 'swap' | 'bridge'
-  timestamp   DateTime
-  wallet      Wallet @relation(fields: [walletId], references: [id])
-  tags        TransactionTag[]
-  attachments Attachment[]
-  notes       String?
-}
-
-model Tag {
-  id           String   @id @default(cuid())
-  name         String
-  workspaceId  String
-  workspace    Workspace @relation(fields: [workspaceId], references: [id])
-  transactions TransactionTag[]
-}
-
-model TransactionTag {
-  transactionId String
-  tagId         String
-  transaction   Transaction @relation(fields: [transactionId], references: [id])
-  tag           Tag @relation(fields: [tagId], references: [id])
-  @@id([transactionId, tagId])
-}
-
-model Attachment {
-  id            String   @id @default(cuid())
-  transactionId String
-  fileUrl       String
-  fileName      String
-  fileSize      Int
-  uploadedBy    String
-  uploadedAt    DateTime @default(now())
-  transaction   Transaction @relation(fields: [transactionId], references: [id])
-}
-```
+For detailed schema definitions, see `server/docs/architecture/DATABASE_SCHEMA.md`
 
 ## Project Structure
 
-```
-/Accounting/client
-├── src/
-│   ├── App.tsx              # Main app component with routing
-│   ├── main.tsx             # App entry point
-│   ├── screens/             # Page components
-│   │   ├── auth/           # Auth pages (login, signup)
-│   │   ├── home/           # Dashboard/home
-│   │   ├── customer/       # Customer management
-│   │   ├── invoice/        # Invoice management
-│   │   └── error/          # Error pages
-│   ├── components/         # React components
-│   │   ├── ui/            # shadcn/ui components
-│   │   └── layout/        # Layout components (AppShell)
-│   ├── hooks/             # Custom React hooks
-│   │   ├── use-toast.ts
-│   │   └── use-mobile.tsx
-│   ├── lib/               # Utility libraries
-│   │   └── utils.ts       # Utility functions
-│   └── assets/            # Static assets (images, icons)
-├── public/                # Public static files
-├── index.html             # HTML entry point
-├── vite.config.ts         # Vite configuration
-├── tailwind.config.js     # Tailwind CSS configuration
-├── tsconfig.json          # TypeScript configuration
-└── package.json           # Dependencies and scripts
-```
+See documentation for detailed structure:
+- **Client**: `client/docs/architecture/CLIENT_ARCHITECTURE.md`
+- **Server**: `server/docs/architecture/SERVER_ARCHITECTURE.md`
 
 ## Key Configuration Files
 
@@ -454,12 +304,10 @@ model Attachment {
 
 ## Development Commands
 
-```bash
-npm run dev      # Start development server
-npm run build    # Build for production (TypeScript check + Vite build)
-npm run preview  # Preview production build
-npm run lint     # Run ESLint
-```
+- `npm run dev` - Start development server
+- `npm run build` - Build for production (TypeScript check + Vite build)
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
 ## Notable Features (Planned)
 
@@ -498,6 +346,7 @@ npm run lint     # Run ESLint
 ## Current Status
 
 The project currently has a starter template based on an invoice management system. It uses React 18 + Vite 6 with:
+
 - Complete shadcn/ui component library
 - React Router DOM v7 for routing
 - Tailwind CSS for styling
@@ -505,6 +354,7 @@ The project currently has a starter template based on an invoice management syst
 - Basic screens for auth, customer, and invoice management
 
 **Next Steps:**
+
 1. Remove invoice-related code and adapt for crypto accounting use case
 2. Implement blockchain wallet connection and transaction fetching
 3. Add Zustand for state management

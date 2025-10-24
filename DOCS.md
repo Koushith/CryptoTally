@@ -16,16 +16,21 @@ This project follows a **feature-based documentation strategy** where each featu
 │   │   │   └── CLIENT_ARCHITECTURE.md    # Frontend architecture
 │   │   └── features/
 │   │       ├── feedback/
+│   │       │   ├── BRAINSTORMING.md     # Initial planning & discussions
 │   │       │   ├── SPEC.md              # Feature specification
 │   │       │   ├── USER_FLOW.md         # User flow diagrams
 │   │       │   └── COMPONENTS.md        # Component documentation
 │   │       ├── waitlist/
+│   │       │   ├── BRAINSTORMING.md
 │   │       │   ├── SPEC.md
 │   │       │   ├── USER_FLOW.md
 │   │       │   └── COMPONENTS.md
 │   │       ├── transactions/
+│   │       │   └── BRAINSTORMING.md     # Start here for new features!
 │   │       ├── wallets/
+│   │       │   └── BRAINSTORMING.md
 │   │       └── auth/
+│   │           ├── BRAINSTORMING.md
 │   │           ├── SPEC.md
 │   │           └── IMPLEMENTATION.md
 │   └── src/                     # Frontend source code
@@ -36,14 +41,17 @@ This project follows a **feature-based documentation strategy** where each featu
     │   │   └── SERVER_ARCHITECTURE.md    # Backend architecture
     │   └── features/
     │       ├── feedback/
+    │       │   ├── BRAINSTORMING.md     # Initial planning & discussions
     │       │   ├── API.md               # API documentation
     │       │   ├── DATABASE.md          # Database schema
     │       │   └── CONTROLLER.md        # Controller logic
     │       ├── waitlist/
+    │       │   ├── BRAINSTORMING.md
     │       │   ├── API.md
     │       │   ├── DATABASE.md
     │       │   └── CONTROLLER.md
     │       └── auth/
+    │           ├── BRAINSTORMING.md
     │           ├── API.md
     │           ├── JWT.md
     │           └── SECURITY.md
@@ -52,7 +60,21 @@ This project follows a **feature-based documentation strategy** where each featu
 
 ## 📖 Documentation Standards
 
+### Feature Development Workflow
+
+> 🎯 **Always start with BRAINSTORMING.md** - Document your initial thoughts, questions, and design decisions before writing detailed specs.
+
 ### For Each Feature, Include:
+
+#### 0. **BRAINSTORMING.md** - Planning & Discussions (START HERE!)
+- Initial feature ideas and goals
+- Questions to answer before implementation
+- Design decisions and trade-offs
+- Alternative approaches considered
+- Open discussions and unresolved points
+- Links to research, inspiration, or related features
+- Rough sketches of data models or UI flows
+- **Purpose**: Capture early-stage thinking before committing to detailed specs
 
 #### 1. **SPEC.md** - Feature Specification
 - Overview and status
@@ -147,6 +169,74 @@ This project follows a **feature-based documentation strategy** where each featu
 - Transaction sync
 
 ## 📝 Documentation Templates
+
+### Brainstorming Template (START HERE!)
+```markdown
+# [Feature Name] - Brainstorming
+
+## 🎯 Feature Goal
+What problem are we solving? What value does this feature provide?
+
+## 💡 Initial Ideas
+- Idea 1: ...
+- Idea 2: ...
+- Idea 3: ...
+
+## ❓ Questions to Answer
+1. Question about user flow?
+2. Question about data model?
+3. Question about technical approach?
+4. Question about edge cases?
+
+## 🏗️ Rough Architecture
+Quick sketch of how this might work:
+- Frontend: ...
+- Backend: ...
+- Database: ...
+- External APIs: ...
+
+## 🔄 Alternative Approaches
+### Approach A
+- Pros: ...
+- Cons: ...
+
+### Approach B
+- Pros: ...
+- Cons: ...
+
+### Decision: [Chosen approach and why]
+
+## 📊 Data Model (Rough Draft)
+```prisma
+// Quick sketch of potential tables/models
+model Example {
+  // fields...
+}
+```
+
+## 🎨 UI/UX Considerations
+- Screen flow ideas
+- Component hierarchy thoughts
+- User interaction patterns
+- Mobile vs desktop considerations
+
+## 🔗 References
+- [Link to inspiration]
+- [Similar feature in other apps]
+- [Relevant documentation]
+- [Design patterns to consider]
+
+## 🚧 Open Questions / TODO
+- [ ] Unresolved question 1
+- [ ] Need to research: ...
+- [ ] Discuss with team: ...
+
+## 📅 Next Steps
+Once brainstorming is complete:
+1. Create SPEC.md with detailed requirements
+2. Create USER_FLOW.md with diagrams
+3. Create COMPONENTS.md or API.md for implementation
+```
 
 ### Feature Specification Template
 ```markdown

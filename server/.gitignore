@@ -1,5 +1,11 @@
 node_modules
 dist
 .env
+.env.local
+.env.production
 *.log
 .DS_Store
+
+# Firebase service account keys (NEVER commit these!)
+serviceAccountKey.json
+*firebase-adminsdk*.json

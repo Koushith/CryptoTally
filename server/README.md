@@ -8,6 +8,7 @@ Backend API server for CryptoTally crypto accounting application.
 - **Express** - Web framework
 - **PostgreSQL** - Database
 - **Drizzle ORM** - Type-safe database ORM
+- **Firebase Admin SDK** - Authentication and services
 - **Helmet** - Security middleware
 - **CORS** - Cross-origin resource sharing
 
@@ -26,6 +27,21 @@ cp .env.example .env
 3. Update `.env` with your database credentials:
 ```
 DATABASE_URL=postgresql://user:password@localhost:5432/cryptotally
+```
+
+4. **Setup Firebase Admin SDK** (for authentication):
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Navigate to **Project Settings** > **Service Accounts**
+   - Click **Generate New Private Key**
+   - Save the downloaded JSON file as `serviceAccountKey.json` in the server root directory
+   - The file is already gitignored for security
+
+   > ⚠️ **IMPORTANT**: Never commit `serviceAccountKey.json` to git. See [FIREBASE_SECURITY.md](./FIREBASE_SECURITY.md) for details.
+
+5. **Create the database**:
+```bash
+createdb cryptotally
+npm run db:push
 ```
 
 ## Development
@@ -63,7 +79,8 @@ server/
 ├── src/
 │   ├── config/          # Configuration files
 │   │   ├── env.ts       # Environment variables
-│   │   └── database.ts  # Database connection
+│   │   ├── database.ts  # Database connection
+│   │   └── firebase.ts  # Firebase Admin SDK config
 │   ├── controllers/     # Request handlers
 │   │   └── health.controller.ts
 │   ├── routes/          # Route definitions
@@ -72,7 +89,9 @@ server/
 │   ├── db/             # Database schemas
 │   └── index.ts        # App entry point
 ├── drizzle/            # Generated migrations
+├── serviceAccountKey.json  # Firebase service account (gitignored!)
 ├── .env.example        # Example environment variables
+├── FIREBASE_SECURITY.md    # Firebase security best practices
 ├── drizzle.config.ts   # Drizzle ORM config
 ├── nodemon.json        # Nodemon config
 ├── tsconfig.json       # TypeScript config
@@ -92,3 +111,22 @@ To run migrations:
 ```bash
 npm run db:push
 ```
+
+## Deployment
+
+### Railway / Render / Vercel
+
+For production deployment, use environment variables instead of the JSON file:
+
+1. Encode your service account key:
+```bash
+cat serviceAccountKey.json | base64
+```
+
+2. Add to your hosting platform's environment variables:
+   - `FIREBASE_SERVICE_ACCOUNT_BASE64` = (paste the base64 string)
+   - `FIREBASE_PROJECT_ID` = cryptotally-5bdd8
+   - `DATABASE_URL` = (your production database URL)
+   - `NODE_ENV` = production
+
+See [RAILWAY_DEPLOYMENT.md](./RAILWAY_DEPLOYMENT.md) for detailed Railway deployment instructions.

@@ -4,6 +4,22 @@
 
 CryptoTally is a crypto accounting tool designed for startups, freelancers, and individuals who receive payments in cryptocurrency. It solves the common problem of tracking crypto transactions across multiple wallets and chains for tax filing and revenue tracking purposes.
 
+## 📚 Documentation
+
+This project uses a **feature-based documentation strategy**. Each feature has its own folder with comprehensive specs, user flows, and implementation details.
+
+### Documentation Structure
+- **[DOCS.md](./DOCS.md)** - Complete documentation index and standards
+- **Client Docs**: `client/docs/` - Frontend architecture and feature specs
+- **Server Docs**: `server/docs/` - Backend architecture, API docs, and database schemas
+
+### Quick Links
+- [Documentation Index](./DOCS.md) - How documentation is organized
+- [Client Architecture](./client/docs/architecture/CLIENT_ARCHITECTURE.md) - Frontend deep dive
+- [Server Architecture](./server/docs/architecture/SERVER_ARCHITECTURE.md) - Backend deep dive
+- [Feedback Feature Docs](./client/docs/features/feedback/) - Complete feedback feature documentation
+- [Waitlist Feature Docs](./client/docs/features/waitlist/) - Complete waitlist feature documentation
+
 ## Problem Statement
 
 When receiving payments in USDC, ETH, or other cryptocurrencies:

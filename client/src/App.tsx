@@ -6,12 +6,16 @@ import {
   TransactionsPage,
   ReportsPage,
   SettingsPage,
+  IntegrationsPage,
   ProfilePage,
   FeedbackPage,
   ErrorScreen
 } from './screens';
 import { ComingSoon } from '@/components/ComingSoon';
 import { Key, Webhook, FileCode } from 'lucide-react';
+import dataAnalystImg from '@/assets/illustrations/data-analyst.png';
+import analyticsImg from '@/assets/illustrations/analytics.png';
+import reportingStatsImg from '@/assets/illustrations/reporting-stats.png';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +48,11 @@ const router = createBrowserRouter([
         errorElement: <ErrorScreen />,
       },
       {
+        path: '/integrations',
+        element: <IntegrationsPage />,
+        errorElement: <ErrorScreen />,
+      },
+      {
         path: '/profile',
         element: <ProfilePage />,
         errorElement: <ErrorScreen />,
@@ -61,7 +70,7 @@ const router = createBrowserRouter([
             icon={Key}
             title="API Keys"
             description="Generate and manage API keys to programmatically access your transaction data."
-            illustrationUrl="https://notioly.com/wp-content/uploads/2024/07/416.Data-Analyst.png"
+            illustrationUrl={dataAnalystImg}
           />
         ),
       },
@@ -72,7 +81,7 @@ const router = createBrowserRouter([
             icon={Webhook}
             title="Webhooks"
             description="Set up webhooks to receive real-time notifications about new transactions and wallet events."
-            illustrationUrl="https://notioly.com/wp-content/uploads/2024/06/407.Analytics.png"
+            illustrationUrl={analyticsImg}
           />
         ),
       },
@@ -83,7 +92,7 @@ const router = createBrowserRouter([
             icon={FileCode}
             title="API Documentation"
             description="Comprehensive guides and references for integrating with the CryptoTally API."
-            illustrationUrl="https://notioly.com/wp-content/uploads/2025/03/519.Reporting-Stats.png"
+            illustrationUrl={reportingStatsImg}
           />
         ),
       },

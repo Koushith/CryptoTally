@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { HomeIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import analyticsImg from '@/assets/illustrations/analytics.png';
 
 interface ErrorScreenProps {
   error?: Error;
@@ -13,9 +14,9 @@ export const ErrorScreen = ({ error, message = "We couldn't find the page you're
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-5">
       <div className="flex flex-col items-center text-center max-w-md">
-        {/* Notioly Illustration */}
+        {/* Local Illustration */}
         <img
-          src="https://notioly.com/wp-content/uploads/2024/06/407.Analytics.png"
+          src={analyticsImg}
           alt="404 Not Found"
           className="w-64 h-64 mb-8 object-contain"
         />

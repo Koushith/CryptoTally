@@ -13,6 +13,7 @@ import {
   Bell,
   User,
   MessageSquare,
+  Plug,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Outlet, NavLink } from 'react-router-dom';
@@ -354,6 +355,7 @@ function AppSidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpe
           <div className="mt-6 mb-2 px-3">
             <div className="text-xs font-medium text-[#697386] uppercase">Developer</div>
           </div>
+          <NavItem icon={<Plug size={18} />} label="Integrations" to="/integrations" onClick={() => setIsMobileMenuOpen(false)} />
           <NavItem icon={<Key size={18} />} label="API Keys" to="/api-keys" onClick={() => setIsMobileMenuOpen(false)} />
           <NavItem icon={<Webhook size={18} />} label="Webhooks" to="/webhooks" onClick={() => setIsMobileMenuOpen(false)} />
           <NavItem icon={<FileCode size={18} />} label="Documentation" to="/documentation" onClick={() => setIsMobileMenuOpen(false)} />

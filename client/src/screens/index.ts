@@ -3,6 +3,7 @@ export * from './wallets';
 export * from './transactions';
 export * from './reports';
 export * from './settings';
+export * from './integrations';
 export * from './profile';
 export * from './feedback';
 export * from './error/Error';

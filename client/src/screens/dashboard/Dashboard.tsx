@@ -1,6 +1,11 @@
-import { Info, X, ArrowRight, Wallet, TrendingUp, TrendingDown, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Wallet, TrendingUp, TrendingDown, AlertCircle, ArrowRight } from 'lucide-react';
+import { PageHeader } from '@/components/shared/PageHeader';
+import { Banner } from '@/components/shared/Banner';
+import { StatCard } from '@/components/shared/StatCard';
+import { ActionCard } from '@/components/shared/ActionCard';
+import { InfoCard, InfoRow } from '@/components/shared/InfoCard';
 
 export const DashboardPage = () => {
   const [showBanner, setShowBanner] = useState(true);
@@ -10,85 +15,65 @@ export const DashboardPage = () => {
       <div className="w-full max-w-7xl mx-auto">
         {/* Preview Banner */}
         {showBanner && (
-          <div className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white rounded-2xl p-4 mb-8 shadow-lg">
-            <div className="flex items-start gap-3">
-              <Info className="h-4 w-4 flex-shrink-0 mt-0.5" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm leading-relaxed">
-                  <span className="font-medium">UI Preview</span> — This is how the app will look. Design and features are still in development.{' '}
-                  <Link to="/waitlist" className="underline hover:text-gray-300">
-                    Join waitlist
-                  </Link>
-                  {' • '}
-                  <Link to="/feedback" className="underline hover:text-gray-300">
-                    Share feedback
-                  </Link>
-                </p>
-              </div>
-              <button onClick={() => setShowBanner(false)} className="p-1 hover:bg-white/10 rounded flex-shrink-0" aria-label="Close">
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
+          <Banner
+            title="UI Preview"
+            message={
+              <>
+                This is how the app will look. Design and features are still in development.{' '}
+                <Link to="/waitlist" className="underline hover:text-gray-300">
+                  Join waitlist
+                </Link>
+                {' • '}
+                <Link to="/feedback" className="underline hover:text-gray-300">
+                  Share feedback
+                </Link>
+              </>
+            }
+            onClose={() => setShowBanner(false)}
+            variant="info"
+          />
         )}
 
         {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
-          <p className="text-gray-600">Track your crypto transactions across all wallets</p>
-        </div>
+        <PageHeader title="Dashboard" description="Track your crypto transactions across all wallets" />
 
         {/* Main Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Left Column - Key Metrics */}
           <div className="lg:col-span-2 space-y-6">
             {/* Balance Card - Hero */}
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-8 shadow-xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
-              <div className="relative">
-                <div className="flex items-center gap-2 mb-4">
-                  <Wallet className="h-5 w-5 text-gray-400" />
-                  <span className="text-sm font-medium text-gray-400 uppercase tracking-wide">Total Balance</span>
-                </div>
-                <p className="text-5xl font-bold mb-4">$168,350</p>
-                <p className="text-gray-400">4 wallets • 3 chains</p>
-              </div>
-            </div>
+            <StatCard
+              icon={Wallet}
+              label="Total Balance"
+              value="$168,350"
+              subvalue="4 wallets • 3 chains"
+              variant="hero"
+            />
 
             {/* Income & Expenses */}
             <div className="grid grid-cols-2 gap-6">
-              <div className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Income</p>
-                    <p className="text-sm text-gray-600">This Month</p>
-                  </div>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1">$24,500</p>
-                <p className="text-sm text-gray-500">18 transactions</p>
-              </div>
-
-              <div className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center">
-                    <TrendingDown className="h-6 w-6 text-red-600" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Expenses</p>
-                    <p className="text-sm text-gray-600">This Month</p>
-                  </div>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1">$8,200</p>
-                <p className="text-sm text-gray-500">12 transactions</p>
-              </div>
+              <StatCard
+                icon={TrendingUp}
+                iconBgColor="bg-green-50"
+                iconColor="text-green-600"
+                label="Income"
+                sublabel="This Month"
+                value="$24,500"
+                subvalue="18 transactions"
+              />
+              <StatCard
+                icon={TrendingDown}
+                iconBgColor="bg-red-50"
+                iconColor="text-red-600"
+                label="Expenses"
+                sublabel="This Month"
+                value="$8,200"
+                subvalue="12 transactions"
+              />
             </div>
 
             {/* YTD Summary */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-shadow">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wide">Year-to-Date</h3>
+            <InfoCard title="Year-to-Date">
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <p className="text-xs text-gray-500 mb-1">Total Income</p>
@@ -107,57 +92,36 @@ export const DashboardPage = () => {
                   <p className="text-2xl font-bold text-gray-900">342</p>
                 </div>
               </div>
-            </div>
+            </InfoCard>
           </div>
 
           {/* Right Column - Action Items */}
           <div className="space-y-6">
             {/* Untagged Alert */}
-            <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
-                  <AlertCircle className="h-5 w-5 text-orange-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-1">Action Required</h3>
-                  <p className="text-xs text-gray-600">You have untagged transactions</p>
-                </div>
-              </div>
-              <div className="flex items-end justify-between mb-3">
-                <div>
-                  <p className="text-3xl font-bold text-orange-600">23</p>
-                  <p className="text-xs text-gray-600">need categorization</p>
-                </div>
-              </div>
-              <Link
-                to="/transactions"
-                className="block w-full bg-orange-600 hover:bg-orange-700 text-white text-center py-2.5 rounded-lg font-medium transition-colors"
-              >
-                Tag Transactions
-              </Link>
-            </div>
+            <ActionCard
+              icon={AlertCircle}
+              title="Action Required"
+              description="You have untagged transactions"
+              value="23"
+              valueLabel="need categorization"
+              actionLabel="Tag Transactions"
+              actionHref="/transactions"
+              variant="warning"
+            />
 
             {/* Quick Stats */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-6">
-              <h3 className="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wide">Quick Stats</h3>
+            <InfoCard title="Quick Stats">
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Tagged</span>
-                  <span className="text-sm font-semibold text-gray-900">319 (93%)</span>
-                </div>
+                <InfoRow label="Tagged" value="319 (93%)" />
                 <div className="w-full bg-gray-100 rounded-full h-2">
                   <div className="bg-green-500 h-2 rounded-full" style={{ width: '93%' }}></div>
                 </div>
-                <div className="flex items-center justify-between pt-2">
-                  <span className="text-sm text-gray-600">Most Used Tag</span>
-                  <span className="text-sm font-semibold text-gray-900">Customer Payment</span>
+                <div className="pt-2">
+                  <InfoRow label="Most Used Tag" value="Customer Payment" />
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Active Wallets</span>
-                  <span className="text-sm font-semibold text-gray-900">4</span>
-                </div>
+                <InfoRow label="Active Wallets" value="4" />
               </div>
-            </div>
+            </InfoCard>
           </div>
         </div>
 
@@ -179,19 +143,64 @@ export const DashboardPage = () => {
 
           <div className="bg-white border border-gray-200 rounded-2xl divide-y divide-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
             {[
-              { amount: '5,000', token: 'USDC', tag: 'Customer Payment', time: '2h ago', wallet: 'Treasury', chain: 'Ethereum', type: 'in' as const, tagged: true },
-              { amount: '2.5', token: 'ETH', tag: 'Vendor Payment', time: '5h ago', wallet: 'Operations', chain: 'Ethereum', type: 'out' as const, tagged: true },
-              { amount: '10,000', token: 'USDT', tag: null, time: '1d ago', wallet: 'Treasury', chain: 'Polygon', type: 'in' as const, tagged: false },
-              { amount: '1,500', token: 'USDC', tag: 'Salary Payment', time: '2d ago', wallet: 'Payroll', chain: 'Arbitrum', type: 'out' as const, tagged: true },
-              { amount: '7,500', token: 'DAI', tag: 'Customer Payment', time: '3d ago', wallet: 'Treasury', chain: 'Ethereum', type: 'in' as const, tagged: true },
+              {
+                amount: '5,000',
+                token: 'USDC',
+                tag: 'Customer Payment',
+                time: '2h ago',
+                wallet: 'Treasury',
+                chain: 'Ethereum',
+                type: 'in' as const,
+                tagged: true,
+              },
+              {
+                amount: '2.5',
+                token: 'ETH',
+                tag: 'Vendor Payment',
+                time: '5h ago',
+                wallet: 'Operations',
+                chain: 'Ethereum',
+                type: 'out' as const,
+                tagged: true,
+              },
+              {
+                amount: '10,000',
+                token: 'USDT',
+                tag: null,
+                time: '1d ago',
+                wallet: 'Treasury',
+                chain: 'Polygon',
+                type: 'in' as const,
+                tagged: false,
+              },
+              {
+                amount: '1,500',
+                token: 'USDC',
+                tag: 'Salary Payment',
+                time: '2d ago',
+                wallet: 'Payroll',
+                chain: 'Arbitrum',
+                type: 'out' as const,
+                tagged: true,
+              },
+              {
+                amount: '7,500',
+                token: 'DAI',
+                tag: 'Customer Payment',
+                time: '3d ago',
+                wallet: 'Treasury',
+                chain: 'Ethereum',
+                type: 'in' as const,
+                tagged: true,
+              },
             ].map((tx, idx) => (
               <div key={idx} className="p-5 hover:bg-gray-50 transition-colors cursor-pointer group">
                 <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all ${
-                    tx.type === 'in'
-                      ? 'bg-green-50 group-hover:bg-green-100'
-                      : 'bg-red-50 group-hover:bg-red-100'
-                  }`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all ${
+                      tx.type === 'in' ? 'bg-green-50 group-hover:bg-green-100' : 'bg-red-50 group-hover:bg-red-100'
+                    }`}
+                  >
                     {tx.type === 'in' ? (
                       <TrendingUp className="h-6 w-6 text-green-600" />
                     ) : (
@@ -201,7 +210,8 @@ export const DashboardPage = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className={`text-lg font-bold ${tx.type === 'in' ? 'text-green-600' : 'text-red-600'}`}>
-                        {tx.type === 'in' ? '+' : '−'}{tx.amount} {tx.token}
+                        {tx.type === 'in' ? '+' : '−'}
+                        {tx.amount} {tx.token}
                       </span>
                       {!tx.tagged && (
                         <span className="text-xs bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full font-semibold">

@@ -5,11 +5,9 @@ import {
   ArrowLeftRight,
   FileText,
   Settings,
-  LogOut,
   Key,
   Webhook,
   FileCode,
-  X,
   Bell,
   User,
   MessageSquare,
@@ -18,67 +16,19 @@ import {
 import { cn } from '@/lib/utils';
 import { Outlet, NavLink } from 'react-router-dom';
 import { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-// Mock user data - replace with your actual user data
-const user = {
-  name: 'Koushith Amin',
-  email: 'koushith@def.com',
-  imageUrl: 'https://pbs.twimg.com/profile_images/1733931010977640448/KTlA02mC_400x400.jpg', // Replace with actual user image
-};
-
-// Mock notifications data
-const notifications = [
-  {
-    id: 1,
-    title: 'New transaction detected',
-    description: '+5,000 USDC received in Treasury Wallet',
-    time: '2h ago',
-    unread: true,
-    icon: '↓',
-  },
-  {
-    id: 2,
-    title: 'Wallet balance updated',
-    description: 'Operations wallet balance changed by 15%',
-    time: '5h ago',
-    unread: true,
-    icon: '📊',
-  },
-  {
-    id: 3,
-    title: 'Weekly report ready',
-    description: 'Your weekly transaction summary is ready',
-    time: '1d ago',
-    unread: true,
-    icon: '📄',
-  },
-  {
-    id: 4,
-    title: 'New team member',
-    description: 'Sarah Johnson joined your workspace',
-    time: '2d ago',
-    unread: false,
-    icon: '👤',
-  },
-];
-
-function Logo() {
-  return (
-    <div className="flex items-center gap-2.5">
-      <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gray-900">
-        <span className="text-lg font-bold text-white">CT</span>
-      </div>
-      <span className="text-xl font-bold text-gray-900">CryptoTally</span>
-    </div>
-  );
-}
+import { MOCK_USER, MOCK_NOTIFICATIONS } from '@/constants/user';
+import { Logo } from '@/components/shared/Logo';
+import { MobileHeader } from './MobileHeader';
+import { MobileNotifications } from './MobileNotifications';
+import { MobileBottomNav } from './MobileBottomNav';
+import { PromotionalCard } from './PromotionalCard';
+import { UserProfileSection } from './UserProfileSection';
+import { NotificationItem } from './NotificationItem';
 
 export function AppShell() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -87,82 +37,21 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Mobile Header - Peerlist Style */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white z-50 flex items-center justify-between px-5 shadow-sm">
-        {/* Left side - Logo (clickable to open menu) */}
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="flex items-center gap-2 active:opacity-70 transition-opacity"
-        >
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gray-900">
-            <span className="text-sm font-bold text-white">CT</span>
-          </div>
-        </button>
-
-        {/* Right side - Notifications & Profile */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setIsNotificationsOpen(true)}
-            className="relative h-8 w-8 flex items-center justify-center border border-gray-200 rounded-xl active:bg-gray-50 transition-colors"
-          >
-            <Bell className="h-4 w-4" />
-            {hasUnread && <span className="absolute top-0.5 right-0.5 h-2 w-2 bg-red-600 rounded-full" />}
-          </button>
-
-          <button className="h-8 w-8 rounded-full overflow-hidden border border-gray-200 bg-gray-900 flex items-center justify-center">
-            <span className="text-white text-sm font-semibold">K</span>
-          </button>
-        </div>
-      </div>
+      {/* Mobile Header */}
+      <MobileHeader
+        onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        onNotificationsOpen={() => setIsNotificationsOpen(true)}
+        hasUnread={hasUnread}
+        userInitial={MOCK_USER.name.charAt(0)}
+      />
 
       {/* Mobile Fullscreen Notifications */}
-      {isNotificationsOpen && (
-        <div className="md:hidden fixed inset-0 bg-white z-[60] flex flex-col">
-          {/* Header */}
-          <div className="h-14 flex items-center justify-between px-5 border-b border-gray-200">
-            <button
-              onClick={() => setIsNotificationsOpen(false)}
-              className="h-8 w-8 flex items-center justify-center active:bg-gray-100 rounded-lg"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <h1 className="text-sm font-semibold text-gray-900">Notifications</h1>
-            <button
-              onClick={() => setHasUnread(false)}
-              className="text-xs text-gray-700 active:text-gray-900 font-medium px-2"
-            >
-              Mark all read
-            </button>
-          </div>
-
-          {/* Notifications List */}
-          <div className="flex-1 overflow-y-auto">
-            {notifications.map((notification) => (
-              <div
-                key={notification.id}
-                className={cn(
-                  'px-5 py-4 active:bg-gray-50 transition-colors border-b border-gray-100',
-                  notification.unread && 'bg-gray-50/50'
-                )}
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gray-900 flex items-center justify-center flex-shrink-0">
-                    <span className="text-lg">{notification.icon}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                      <p className="text-sm font-semibold text-gray-900">{notification.title}</p>
-                      {notification.unread && <div className="w-2 h-2 bg-gray-900 rounded-full flex-shrink-0 mt-1.5" />}
-                    </div>
-                    <p className="text-sm text-gray-600 mb-2 leading-relaxed">{notification.description}</p>
-                    <p className="text-xs text-gray-500">{notification.time}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <MobileNotifications
+        isOpen={isNotificationsOpen}
+        notifications={MOCK_NOTIFICATIONS}
+        onClose={() => setIsNotificationsOpen(false)}
+        onMarkAllRead={() => setHasUnread(false)}
+      />
 
       <div className="flex">
         <AppSidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
@@ -174,110 +63,7 @@ export function AppShell() {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[100]"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-      >
-        <div className="flex items-center justify-around h-16 px-2">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <LayoutDashboard
-                  size={20}
-                  strokeWidth={isActive ? 2.5 : 2}
-                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
-                />
-                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Dashboard</span>
-              </>
-            )}
-          </NavLink>
-          <NavLink
-            to="/wallets"
-            className={({ isActive }) =>
-              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <Wallet
-                  size={20}
-                  strokeWidth={isActive ? 2.5 : 2}
-                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
-                />
-                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Wallets</span>
-              </>
-            )}
-          </NavLink>
-          <NavLink
-            to="/transactions"
-            className={({ isActive }) =>
-              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <ArrowLeftRight
-                  size={20}
-                  strokeWidth={isActive ? 2.5 : 2}
-                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
-                />
-                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>
-                  Transactions
-                </span>
-              </>
-            )}
-          </NavLink>
-          <NavLink
-            to="/reports"
-            className={({ isActive }) =>
-              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <FileText
-                  size={20}
-                  strokeWidth={isActive ? 2.5 : 2}
-                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
-                />
-                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Reports</span>
-              </>
-            )}
-          </NavLink>
-          <NavLink
-            to="/profile"
-            className={({ isActive }) =>
-              `flex flex-col items-center justify-center flex-1 py-2 px-2 rounded-lg transition-all ${
-                isActive ? 'text-gray-900 bg-gray-100' : 'text-gray-500'
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <User
-                  size={20}
-                  strokeWidth={isActive ? 2.5 : 2}
-                  className={isActive ? 'text-gray-900' : 'text-gray-500'}
-                />
-                <span className={`text-[10px] font-medium mt-0.5 ${isActive ? 'font-semibold' : ''}`}>Profile</span>
-              </>
-            )}
-          </NavLink>
-        </div>
-      </nav>
+      <MobileBottomNav />
 
       {/* Mobile overlay */}
       {isMobileMenuOpen && (
@@ -306,6 +92,7 @@ function AppSidebar({
       )}
     >
       <div className="h-full flex flex-col">
+        {/* Desktop Header with Logo & Notifications */}
         <div className="p-6 hidden md:flex items-center justify-between">
           <Logo />
           <DropdownMenu>
@@ -320,30 +107,9 @@ function AppSidebar({
                 <h3 className="font-semibold text-sm text-gray-900">Notifications</h3>
               </div>
               <div className="max-h-[420px] overflow-y-auto">
-                {notifications.map((notification, idx, arr) => (
-                  <div
-                    key={notification.id}
-                    className={cn(
-                      'px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors',
-                      notification.unread && 'bg-gray-50/50',
-                      idx !== arr.length - 1 && 'border-b border-gray-100'
-                    )}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center flex-shrink-0 text-sm">
-                        {notification.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2 mb-1">
-                          <p className="text-sm font-semibold text-gray-900">{notification.title}</p>
-                          {notification.unread && (
-                            <div className="w-2 h-2 bg-gray-900 rounded-full flex-shrink-0 mt-1.5" />
-                          )}
-                        </div>
-                        <p className="text-xs text-gray-600 mb-1.5 line-clamp-2">{notification.description}</p>
-                        <p className="text-xs text-gray-500">{notification.time}</p>
-                      </div>
-                    </div>
+                {MOCK_NOTIFICATIONS.map((notification, idx, arr) => (
+                  <div key={notification.id} className={cn(idx !== arr.length - 1 && 'border-b border-gray-100')}>
+                    <NotificationItem notification={notification} variant="compact" />
                   </div>
                 ))}
               </div>
@@ -358,6 +124,8 @@ function AppSidebar({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+
+        {/* Navigation Items */}
         <div className="flex flex-col gap-1 p-3 flex-1 pt-6 md:pt-3">
           <NavItem
             icon={<LayoutDashboard size={18} />}
@@ -442,67 +210,16 @@ function AppSidebar({
 
         {/* Promotional Card */}
         <div className="px-4 pb-4 mt-auto">
-          <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-4">
-            {/* Subtle pattern overlay */}
-            <div className="absolute inset-0 opacity-10">
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-                  backgroundSize: '24px 24px',
-                }}
-              />
-            </div>
-
-            <div className="relative">
-              <div className="mb-3">
-                <div className="inline-flex items-center justify-center w-8 h-8 bg-white/10 rounded-lg mb-2">
-                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-sm font-semibold text-white mb-1">Join the Waitlist</h3>
-                <p className="text-xs text-gray-300 leading-relaxed">
-                  Get early access to new features and updates. Be the first to know.
-                </p>
-              </div>
-              <Button size="sm" className="w-full bg-white text-gray-900 hover:bg-gray-100 font-semibold" asChild>
-                <NavLink to="/waitlist">Join Waitlist</NavLink>
-              </Button>
-            </div>
-          </div>
+          <PromotionalCard
+            title="Join the Waitlist"
+            description="Get early access to new features and updates. Be the first to know."
+            buttonText="Join Waitlist"
+            buttonLink="/waitlist"
+          />
         </div>
 
-        {/* User Profile Section with Dropdown */}
-        <div className="p-4 border-t">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="w-full justify-start p-2 px-3 -ml-3 h-auto">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={user.imageUrl} />
-                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col items-start text-sm">
-                    <span className="font-medium">{user.name}</span>
-                    <span className="text-xs text-muted-foreground">{user.email}</span>
-                  </div>
-                </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" side="top">
-              <DropdownMenuItem className="text-red-600">
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Sign out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        {/* User Profile Section */}
+        <UserProfileSection user={MOCK_USER} />
       </div>
     </aside>
   );

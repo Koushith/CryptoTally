@@ -449,8 +449,57 @@ export const FeedbackPage = () => {
             </div>
 
             {!isLoadingIssues && filteredIssues.length === 0 && (
-              <div className="text-center py-12 bg-white border border-gray-200 rounded-2xl md:rounded-xl">
-                <p className="text-sm text-gray-500">No issues found for this filter.</p>
+              <div className="text-center py-16 bg-white border border-gray-200 rounded-2xl md:rounded-xl">
+                {/* Illustration */}
+                <div className="flex justify-center mb-6">
+                  <img
+                    src="/src/assets/feedback-illustration.png"
+                    alt="No feedback yet"
+                    className="w-48 h-48 object-contain"
+                  />
+                </div>
+
+                {/* Title & Description */}
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {filterStatus === 'all' ? 'No Feedback Yet' : `No ${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1).replace('-', ' ')} Feedback`}
+                </h3>
+                <p className="text-sm text-gray-600 mb-6 max-w-md mx-auto">
+                  {filterStatus === 'all'
+                    ? 'Be the first to share your thoughts and help us improve CryptoTally!'
+                    : `No feedback items match the "${filterStatus}" filter. Try selecting a different filter.`
+                  }
+                </p>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto">
+                  {filterStatus !== 'all' ? (
+                    <Button
+                      variant="outline"
+                      onClick={() => setFilterStatus('all')}
+                      className="flex-1"
+                    >
+                      View All Feedback
+                    </Button>
+                  ) : (
+                    <>
+                      <Button
+                        onClick={() => setSelectedType('feature')}
+                        className="flex-1 bg-gray-900 hover:bg-gray-800"
+                      >
+                        <Lightbulb className="h-4 w-4 mr-2" />
+                        Request Feature
+                      </Button>
+                      <Button
+                        onClick={() => setSelectedType('bug')}
+                        variant="outline"
+                        className="flex-1"
+                      >
+                        <Bug className="h-4 w-4 mr-2" />
+                        Report Bug
+                      </Button>
+                    </>
+                  )}
+                </div>
               </div>
             )}
           </div>

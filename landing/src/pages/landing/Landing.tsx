@@ -325,7 +325,7 @@ const Hero = () => {
 
 const WhoIsItFor = () => {
   return (
-    <section className="relative bg-gray-50 py-16 sm:py-20">
+    <section id="who-is-it-for" className="relative bg-gray-50 py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center space-y-4 mb-16">
           <div className="flex items-center justify-center gap-2 text-gray-900">
@@ -382,7 +382,7 @@ const WhoIsItFor = () => {
 
 const Features = () => {
   return (
-    <section className="relative overflow-hidden bg-white py-24 sm:py-32">
+    <section id="features" className="relative overflow-hidden bg-white py-24 sm:py-32">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.gray.100),white)]" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">

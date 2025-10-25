@@ -98,16 +98,10 @@ const Navbar = () => {
               href="https://app.cryptotally.xyz/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[15px] font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-[15px] font-semibold bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              Sign In
+              Sign In →
             </a>
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
-            >
-              Join Waitlist
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -143,25 +137,16 @@ const Navbar = () => {
                   {item.label}
                 </a>
               ))}
-              <a
-                href="https://app.cryptotally.xyz/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-[15px] font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Sign In
-              </a>
               <div className="pt-4">
-                <Button
-                  onClick={() => {
-                    setIsModalOpen(true);
-                    setIsMenuOpen(false);
-                  }}
-                  className="w-full bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
+                <a
+                  href="https://app.cryptotally.xyz/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1 w-full px-4 py-2.5 rounded-lg text-[15px] font-semibold bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md"
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  Join Waitlist
-                </Button>
+                  Sign In →
+                </a>
               </div>
             </div>
           </div>

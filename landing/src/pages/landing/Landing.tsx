@@ -58,6 +58,11 @@ const Navbar = () => {
         navigate('/blog');
       },
     },
+    {
+      label: 'Docs',
+      href: 'https://docs.cryptotally.xyz/',
+      isExternal: true,
+    },
   ];
 
   return (
@@ -78,11 +83,12 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:items-center lg:gap-x-10">
-            {navItems.map((item) => (
+            {navItems.map((item: any) => (
               <a
                 key={item.label}
                 href={item.href}
                 onClick={item.onClick}
+                {...(item.isExternal && { target: '_blank', rel: 'noopener noreferrer' })}
                 className="text-[15px] font-medium text-gray-600 hover:text-gray-900 transition-colors"
               >
                 {item.label}
@@ -96,12 +102,6 @@ const Navbar = () => {
             >
               Launch App →
             </a>
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
-            >
-              Join Waitlist
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -121,7 +121,7 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="fixed inset-x-0 top-20 z-50 bg-white border-b border-gray-100 lg:hidden">
             <div className="p-6 space-y-4">
-              {navItems.map((item) => (
+              {navItems.map((item: any) => (
                 <a
                   key={item.label}
                   href={item.href}
@@ -131,13 +131,14 @@ const Navbar = () => {
                     }
                     setIsMenuOpen(false);
                   }}
+                  {...(item.isExternal && { target: '_blank', rel: 'noopener noreferrer' })}
                   className="block text-[15px] font-medium text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   {item.label}
                 </a>
               ))}
               <a
-                href="http://localhost:5173"
+                href="https://app.cryptotally.xyz/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-[15px] font-medium text-gray-900 hover:text-gray-700 transition-colors"
@@ -145,17 +146,6 @@ const Navbar = () => {
               >
                 Launch App →
               </a>
-              <div className="pt-4">
-                <Button
-                  onClick={() => {
-                    setIsModalOpen(true);
-                    setIsMenuOpen(false);
-                  }}
-                  className="w-full bg-gray-900 text-white hover:bg-gray-800 shadow-sm transition-all duration-200 hover:shadow-md"
-                >
-                  Join Waitlist
-                </Button>
-              </div>
             </div>
           </div>
         )}

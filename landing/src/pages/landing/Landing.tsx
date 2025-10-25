@@ -98,7 +98,7 @@ const Navbar = () => {
               href="https://app.cryptotally.xyz/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[15px] font-medium text-gray-900 hover:text-gray-700 transition-colors"
+              className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-[15px] font-semibold bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md"
             >
               Launch App →
             </a>
@@ -141,7 +141,7 @@ const Navbar = () => {
                 href="https://app.cryptotally.xyz/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-[15px] font-medium text-gray-900 hover:text-gray-700 transition-colors"
+                className="inline-flex items-center justify-center gap-1 w-full px-4 py-2.5 rounded-lg text-[15px] font-semibold bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Launch App →

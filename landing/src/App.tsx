@@ -3,6 +3,7 @@ import { MainLayout, LandingContent } from './pages/landing/Landing';
 import { BlogList } from './pages/blog/Blog';
 import { BlogPost } from './pages/blog/BlogPost';
 import { Analytics } from '@vercel/analytics/react';
+import { Toaster } from '@/components/ui/sonner';
 
 export enum Routes {
   Root = '/',
@@ -42,6 +43,7 @@ const App = () => {
     <>
       <RouterProvider router={router} />
       <Analytics />
+      <Toaster />
     </>
   );
 };

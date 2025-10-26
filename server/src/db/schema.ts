@@ -24,6 +24,7 @@ export const waitlist = pgTable('waitlist', {
   userType: varchar('user_type', { length: 50 }), // 'individual', 'startup', 'freelancer', 'enterprise'
   companyName: varchar('company_name', { length: 255 }),
   teamSize: varchar('team_size', { length: 50 }), // '1', '2-10', '11-50', '51-200', '200+'
+  paymentVolume: varchar('payment_volume', { length: 50 }), // '<10k', '10k-100k', '>100k'
   useCase: text('use_case'), // What they plan to use it for
 
   // Additional info

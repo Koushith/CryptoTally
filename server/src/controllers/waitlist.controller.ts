@@ -16,6 +16,7 @@ export const joinWaitlist = async (req: Request, res: Response): Promise<void> =
       userType,
       companyName,
       teamSize,
+      paymentVolume,
       useCase,
       referralSource
     } = req.body;
@@ -64,6 +65,7 @@ export const joinWaitlist = async (req: Request, res: Response): Promise<void> =
       userType: userType?.trim() || null,
       companyName: companyName?.trim() || null,
       teamSize: teamSize?.trim() || null,
+      paymentVolume: paymentVolume?.trim() || null,
       useCase: useCase?.trim() || null,
       referralSource: referralSource?.trim() || null,
     }).returning();

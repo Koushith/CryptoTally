@@ -20,6 +20,9 @@ export const WaitlistPage = () => {
   const [userType, setUserType] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [teamSize, setTeamSize] = useState('');
+  const [paymentVolume, setPaymentVolume] = useState('');
+  const [currentSystem, setCurrentSystem] = useState('');
+  const [softwareName, setSoftwareName] = useState('');
   const [useCase, setUseCase] = useState('');
   const [referralSource, setReferralSource] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,7 +65,15 @@ export const WaitlistPage = () => {
           userType: userType || undefined,
           companyName: companyName.trim() || undefined,
           teamSize: teamSize || undefined,
-          useCase: useCase.trim() || undefined,
+          paymentVolume: paymentVolume || undefined,
+          useCase: [
+            useCase.trim(),
+            currentSystem && currentSystem !== 'none'
+              ? `Current system: ${currentSystem === 'software' ? softwareName || 'accounting software' : currentSystem}`
+              : null,
+          ]
+            .filter(Boolean)
+            .join(' | ') || undefined,
           referralSource: referralSource || undefined,
         }),
       });
@@ -85,6 +96,9 @@ export const WaitlistPage = () => {
         setUserType('');
         setCompanyName('');
         setTeamSize('');
+        setPaymentVolume('');
+        setCurrentSystem('');
+        setSoftwareName('');
         setUseCase('');
         setReferralSource('');
         setIsSuccess(false);
@@ -261,6 +275,58 @@ export const WaitlistPage = () => {
                   </Select>
                 </div>
               </div>
+
+              {/* Monthly Payment Volume */}
+              <div>
+                <Label htmlFor="paymentVolume" className="text-sm font-medium text-gray-700 mb-1.5 block">
+                  Monthly Crypto Payment Volume
+                </Label>
+                <Select value={paymentVolume} onValueChange={setPaymentVolume} disabled={isSubmitting}>
+                  <SelectTrigger className="h-11">
+                    <SelectValue placeholder="Select volume" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="<10k">Less than $10k</SelectItem>
+                    <SelectItem value="10k-100k">$10k - $100k</SelectItem>
+                    <SelectItem value=">100k">More than $100k</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Current System */}
+              <div>
+                <Label htmlFor="currentSystem" className="text-sm font-medium text-gray-700 mb-1.5 block">
+                  Current Payment Management System
+                </Label>
+                <Select value={currentSystem} onValueChange={setCurrentSystem} disabled={isSubmitting}>
+                  <SelectTrigger className="h-11">
+                    <SelectValue placeholder="Select your current system" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="spreadsheet">Spreadsheets (Excel, Google Sheets)</SelectItem>
+                    <SelectItem value="software">Accounting Software (QuickBooks, Xero, etc.)</SelectItem>
+                    <SelectItem value="none">No system yet</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Software Name (conditional) */}
+              {currentSystem === 'software' && (
+                <div>
+                  <Label htmlFor="softwareName" className="text-sm font-medium text-gray-700 mb-1.5 block">
+                    Which software do you use?
+                  </Label>
+                  <Input
+                    id="softwareName"
+                    type="text"
+                    placeholder="E.g., QuickBooks, Xero, FreshBooks..."
+                    value={softwareName}
+                    onChange={(e) => setSoftwareName(e.target.value)}
+                    disabled={isSubmitting}
+                    className="h-11"
+                  />
+                </div>
+              )}
 
               {/* Use Case */}
               <div>

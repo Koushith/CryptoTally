@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { X, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 export const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [email, setEmail] = useState('');
@@ -19,29 +19,50 @@ export const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
     setLoading(true);
 
     try {
-      const response = await fetch('https://formspree.io/f/xzzrbrzp', {
+      const formElement = e.target as HTMLFormElement;
+      const paymentVolume = formElement.paymentVolume?.value;
+      const message = formElement.message?.value;
+
+      // Map form data to backend API format
+      const payload = {
+        email: email.trim(),
+        source: 'landing',
+        useCase: message || undefined,
+        // Map current system to team size/company context
+        teamSize: paymentVolume === 'small' ? '1-5' : paymentVolume === 'medium' ? '6-20' : '21-50',
+        // Add additional context in use case
+        ...(currentSystem !== 'none' && {
+          useCase: [
+            message,
+            `Current system: ${currentSystem === 'software' ? softwareName || 'accounting software' : currentSystem}`,
+          ]
+            .filter(Boolean)
+            .join(' | '),
+        }),
+      };
+
+      const response = await fetch('https://cryptotally.up.railway.app/api/waitlist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email,
-          currentSystem,
-          softwareName: currentSystem === 'software' ? softwareName : undefined,
-          paymentVolume: (e.target as HTMLFormElement).paymentVolume?.value,
-          message: (e.target as HTMLFormElement).message?.value,
-        }),
+        body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
+      const data = await response.json();
+
+      if (response.ok && data.success) {
         setIsSuccess(true);
         // Reset form
         setEmail('');
         setCurrentSystem('none');
         setSoftwareName('');
+      } else {
+        throw new Error(data.message || 'Failed to join waitlist');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('Failed to join waitlist. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -34,7 +34,7 @@ export const FeedbackPage = () => {
   const fetchFeedback = async () => {
     try {
       setIsLoadingIssues(true);
-      const response = await fetch('http://localhost:3001/api/feedback');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/feedback`);
       const result = await response.json();
 
       if (response.ok && result.success) {
@@ -52,10 +52,8 @@ export const FeedbackPage = () => {
     fetchFeedback();
   }, []);
 
-
-  const filteredIssues = filterStatus === 'all'
-    ? userIssues
-    : userIssues.filter(issue => issue.status === filterStatus);
+  const filteredIssues =
+    filterStatus === 'all' ? userIssues : userIssues.filter((issue) => issue.status === filterStatus);
 
   const feedbackTypes = [
     {
@@ -103,7 +101,7 @@ export const FeedbackPage = () => {
       // const { user } = useAuth();
       // name: user?.name || undefined,
 
-      const response = await fetch('http://localhost:3001/api/feedback', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -197,7 +195,9 @@ export const FeedbackPage = () => {
                   onClick={() => setSelectedType(type.type)}
                   className={`p-6 border-2 rounded-2xl md:rounded-xl transition-all text-left ${type.color} active:scale-[0.98]`}
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-4 ${type.iconColor}`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-white flex items-center justify-center mb-4 ${type.iconColor}`}
+                  >
                     <Icon className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">{type.title}</h3>
@@ -217,7 +217,9 @@ export const FeedbackPage = () => {
                   const Icon = selectedTypeData?.icon;
                   return (
                     <>
-                      <div className={`w-10 h-10 rounded-lg ${selectedTypeData?.color} flex items-center justify-center`}>
+                      <div
+                        className={`w-10 h-10 rounded-lg ${selectedTypeData?.color} flex items-center justify-center`}
+                      >
                         {Icon && <Icon className={`h-5 w-5 ${selectedTypeData.iconColor}`} />}
                       </div>
                       <div>
@@ -288,13 +290,17 @@ export const FeedbackPage = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="border-gray-200 focus:border-gray-900 focus:ring-0"
                 />
-                <p className="text-xs text-gray-500 mt-1.5">
-                  We'll use this to follow up on your feedback if needed
-                </p>
+                <p className="text-xs text-gray-500 mt-1.5">We'll use this to follow up on your feedback if needed</p>
               </div>
 
               <div className="flex gap-3 pt-4">
-                <Button type="button" variant="outline" onClick={handleReset} className="flex-1" disabled={isSubmitting}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleReset}
+                  className="flex-1"
+                  disabled={isSubmitting}
+                >
                   Cancel
                 </Button>
                 <Button type="submit" className="flex-1" disabled={isSubmitting}>
@@ -348,104 +354,110 @@ export const FeedbackPage = () => {
             </div>
 
             <div className="space-y-3">
-              {isLoadingIssues ? (
-                // Loading skeleton
-                Array.from({ length: 3 }).map((_, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-white border border-gray-200 rounded-2xl md:rounded-xl shadow-sm p-4 md:p-5 animate-pulse"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-gray-200 flex-shrink-0" />
-                      <div className="flex-1">
-                        <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
-                        <div className="h-3 bg-gray-200 rounded w-full mb-2" />
-                        <div className="h-3 bg-gray-200 rounded w-1/2" />
+              {isLoadingIssues
+                ? // Loading skeleton
+                  Array.from({ length: 3 }).map((_, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white border border-gray-200 rounded-2xl md:rounded-xl shadow-sm p-4 md:p-5 animate-pulse"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-lg bg-gray-200 flex-shrink-0" />
+                        <div className="flex-1">
+                          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+                          <div className="h-3 bg-gray-200 rounded w-full mb-2" />
+                          <div className="h-3 bg-gray-200 rounded w-1/2" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
-              ) : (
-                filteredIssues.map((issue) => {
-                const getTypeIcon = (type: FeedbackType) => {
-                  switch (type) {
-                    case 'bug':
-                      return <Bug className="h-4 w-4 text-red-600" />;
-                    case 'feature':
-                      return <Lightbulb className="h-4 w-4 text-blue-600" />;
-                    case 'feedback':
-                      return <MessageCircle className="h-4 w-4 text-green-600" />;
-                  }
-                };
+                  ))
+                : filteredIssues.map((issue) => {
+                    const getTypeIcon = (type: FeedbackType) => {
+                      switch (type) {
+                        case 'bug':
+                          return <Bug className="h-4 w-4 text-red-600" />;
+                        case 'feature':
+                          return <Lightbulb className="h-4 w-4 text-blue-600" />;
+                        case 'feedback':
+                          return <MessageCircle className="h-4 w-4 text-green-600" />;
+                      }
+                    };
 
-                const getTypeColor = (type: FeedbackType) => {
-                  switch (type) {
-                    case 'bug':
-                      return 'bg-red-50';
-                    case 'feature':
-                      return 'bg-blue-50';
-                    case 'feedback':
-                      return 'bg-green-50';
-                  }
-                };
+                    const getTypeColor = (type: FeedbackType) => {
+                      switch (type) {
+                        case 'bug':
+                          return 'bg-red-50';
+                        case 'feature':
+                          return 'bg-blue-50';
+                        case 'feedback':
+                          return 'bg-green-50';
+                      }
+                    };
 
-                const getStatusBadge = (status: Issue['status']) => {
-                  switch (status) {
-                    case 'open':
-                      return 'bg-gray-100 text-gray-700';
-                    case 'in-progress':
-                      return 'bg-yellow-100 text-yellow-700';
-                    case 'planned':
-                      return 'bg-blue-100 text-blue-700';
-                    case 'closed':
-                      return 'bg-green-100 text-green-700';
-                  }
-                };
+                    const getStatusBadge = (status: Issue['status']) => {
+                      switch (status) {
+                        case 'open':
+                          return 'bg-gray-100 text-gray-700';
+                        case 'in-progress':
+                          return 'bg-yellow-100 text-yellow-700';
+                        case 'planned':
+                          return 'bg-blue-100 text-blue-700';
+                        case 'closed':
+                          return 'bg-green-100 text-green-700';
+                      }
+                    };
 
-                return (
-                  <div
-                    key={issue.id}
-                    className="bg-white border border-gray-200 rounded-2xl md:rounded-xl shadow-sm md:shadow-none p-4 md:p-5 hover:shadow-md transition-shadow cursor-pointer"
-                  >
-                    <div className="flex items-start gap-4">
-                      {/* Type Icon */}
-                      <div className={`w-10 h-10 rounded-lg ${getTypeColor(issue.type)} flex items-center justify-center flex-shrink-0`}>
-                        {getTypeIcon(issue.type)}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-3 mb-2">
-                          <h3 className="text-sm font-semibold text-gray-900 leading-snug">{issue.title}</h3>
-                          <span
-                            className={`text-xs font-medium px-2 py-1 rounded-full flex-shrink-0 ${getStatusBadge(issue.status)}`}
+                    return (
+                      <div
+                        key={issue.id}
+                        className="bg-white border border-gray-200 rounded-2xl md:rounded-xl shadow-sm md:shadow-none p-4 md:p-5 hover:shadow-md transition-shadow cursor-pointer"
+                      >
+                        <div className="flex items-start gap-4">
+                          {/* Type Icon */}
+                          <div
+                            className={`w-10 h-10 rounded-lg ${getTypeColor(
+                              issue.type
+                            )} flex items-center justify-center flex-shrink-0`}
                           >
-                            {issue.status === 'in-progress' ? 'In Progress' : issue.status.charAt(0).toUpperCase() + issue.status.slice(1)}
-                          </span>
-                        </div>
+                            {getTypeIcon(issue.type)}
+                          </div>
 
-                        <p className="text-xs text-gray-600 leading-relaxed mb-3 line-clamp-2">
-                          {issue.description}
-                        </p>
+                          {/* Content */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-3 mb-2">
+                              <h3 className="text-sm font-semibold text-gray-900 leading-snug">{issue.title}</h3>
+                              <span
+                                className={`text-xs font-medium px-2 py-1 rounded-full flex-shrink-0 ${getStatusBadge(
+                                  issue.status
+                                )}`}
+                              >
+                                {issue.status === 'in-progress'
+                                  ? 'In Progress'
+                                  : issue.status.charAt(0).toUpperCase() + issue.status.slice(1)}
+                              </span>
+                            </div>
 
-                        {/* Meta Info */}
-                        <div className="flex items-center gap-4 text-xs text-gray-500">
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {issue.date}
-                          </span>
-                          <span>by {issue.author}</span>
-                          <button className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-gray-100 hover:text-gray-900 transition-colors">
-                            <ArrowUp className="h-3.5 w-3.5" />
-                            <span className="font-medium">{issue.votes}</span>
-                          </button>
+                            <p className="text-xs text-gray-600 leading-relaxed mb-3 line-clamp-2">
+                              {issue.description}
+                            </p>
+
+                            {/* Meta Info */}
+                            <div className="flex items-center gap-4 text-xs text-gray-500">
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {issue.date}
+                              </span>
+                              <span>by {issue.author}</span>
+                              <button className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                                <ArrowUp className="h-3.5 w-3.5" />
+                                <span className="font-medium">{issue.votes}</span>
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })
-              )}
+                    );
+                  })}
             </div>
 
             {!isLoadingIssues && filteredIssues.length === 0 && (
@@ -461,23 +473,20 @@ export const FeedbackPage = () => {
 
                 {/* Title & Description */}
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  {filterStatus === 'all' ? 'No Feedback Yet' : `No ${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1).replace('-', ' ')} Feedback`}
+                  {filterStatus === 'all'
+                    ? 'No Feedback Yet'
+                    : `No ${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1).replace('-', ' ')} Feedback`}
                 </h3>
                 <p className="text-sm text-gray-600 mb-6 max-w-md mx-auto">
                   {filterStatus === 'all'
                     ? 'Be the first to share your thoughts and help us improve CryptoTally!'
-                    : `No feedback items match the "${filterStatus}" filter. Try selecting a different filter.`
-                  }
+                    : `No feedback items match the "${filterStatus}" filter. Try selecting a different filter.`}
                 </p>
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto">
                   {filterStatus !== 'all' ? (
-                    <Button
-                      variant="outline"
-                      onClick={() => setFilterStatus('all')}
-                      className="flex-1"
-                    >
+                    <Button variant="outline" onClick={() => setFilterStatus('all')} className="flex-1">
                       View All Feedback
                     </Button>
                   ) : (
@@ -489,11 +498,7 @@ export const FeedbackPage = () => {
                         <Lightbulb className="h-4 w-4 mr-2" />
                         Request Feature
                       </Button>
-                      <Button
-                        onClick={() => setSelectedType('bug')}
-                        variant="outline"
-                        className="flex-1"
-                      >
+                      <Button onClick={() => setSelectedType('bug')} variant="outline" className="flex-1">
                         <Bug className="h-4 w-4 mr-2" />
                         Report Bug
                       </Button>

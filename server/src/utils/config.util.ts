@@ -1,4 +1,4 @@
-import { env, isProduction, isDevelopment } from '../config/env';
+import { env, isProduction } from '../config/env';
 
 // Production URLs - single source of truth
 const PROD_URLS = {
@@ -28,12 +28,20 @@ export const getUrl = () => {
 
 /**
  * Get CORS origin based on environment
+ * Always includes localhost for local testing
  */
-export const getCorsOrigin = () => {
-  if (isDevelopment) {
-    return [LOCAL_URLS.FRONTEND, LOCAL_URLS.FRONTEND_ALT, LOCAL_URLS.WEB];
+export const getCorsOrigin = (): string[] => {
+  const origins: string[] = [
+    LOCAL_URLS.FRONTEND,      // http://localhost:5173
+    LOCAL_URLS.FRONTEND_ALT,  // http://localhost:5174
+    LOCAL_URLS.WEB,           // http://localhost:3000
+  ];
+
+  if (isProduction) {
+    origins.push(PROD_URLS.FRONTEND, PROD_URLS.WEB);
   }
-  return [PROD_URLS.FRONTEND, PROD_URLS.WEB];
+
+  return origins;
 };
 
 /**

@@ -49,7 +49,7 @@ export const WaitlistPage = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/waitlist', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/waitlist`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

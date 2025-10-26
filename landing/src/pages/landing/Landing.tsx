@@ -1,32 +1,22 @@
 import { Button } from '@/components/ui/button';
 import {
   Wallet,
-  Shield,
-  Check,
-  Users,
-  Cog,
   Menu,
   X,
   Tags,
   LineChart,
   FileText,
-  Building2,
-  Palette,
   Twitter,
   Github,
-  Rocket,
   Lightbulb,
   Receipt,
-  Brain,
   BarChart3,
   DollarSign,
   Settings,
-  RefreshCw,
   CheckCircle2,
 } from 'lucide-react';
 import { WaitlistModal } from '@/components/waitlist-modal';
 import CTAILLUSTRATION from '@/assets/cta-illustration.svg';
-import CFO from '@/assets/cfo.png';
 import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 

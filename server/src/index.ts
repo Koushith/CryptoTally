@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { env, isDevelopment } from './config/env';
 import routes from './routes';
 import { getBaseUrl } from './utils/config.util';
+import { generalLimiter } from './middleware/rateLimiter.middleware';
 
 const app = express();
 
@@ -36,6 +37,12 @@ if (isDevelopment) {
     next();
   });
 }
+
+/**
+ * Rate limiting middleware
+ * Applied to all routes for baseline protection
+ */
+app.use('/api', generalLimiter);
 
 /**
  * Routes

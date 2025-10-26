@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { db } from '../config/database';
 import { waitlist } from '../db/schema';
 import { eq } from 'drizzle-orm';
+import { sendTelegramNotification } from '../services/telegram.service';
 
 /**
  * Join waitlist
@@ -69,6 +70,22 @@ export const joinWaitlist = async (req: Request, res: Response): Promise<void> =
       useCase: useCase?.trim() || null,
       referralSource: referralSource?.trim() || null,
     }).returning();
+
+    // Send Telegram notification (non-blocking)
+    sendTelegramNotification({
+      email: email.trim(),
+      name: name?.trim(),
+      source: source || 'app',
+      userType: userType?.trim(),
+      companyName: companyName?.trim(),
+      teamSize: teamSize?.trim(),
+      paymentVolume: paymentVolume?.trim(),
+      useCase: useCase?.trim(),
+      referralSource: referralSource?.trim(),
+    }).catch(err => {
+      console.error('Failed to send Telegram notification:', err);
+      // Don't fail the request if notification fails
+    });
 
     res.status(201).json({
       success: true,

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { db } from '../config/database';
 import { feedback } from '../db/schema';
+import { sendFeedbackNotification } from '../services/telegram.service';
 
 /**
  * Submit feedback
@@ -46,6 +47,17 @@ export const submitFeedback = async (req: Request, res: Response): Promise<void>
     }).returning();
 
     console.log('✅ Feedback saved successfully:', result.id);
+
+    // Send Telegram notification (non-blocking)
+    sendFeedbackNotification({
+      email: email?.trim(),
+      name: name?.trim(),
+      type: type.trim(),
+      message: message.trim(),
+    }).catch(err => {
+      console.error('Failed to send Telegram feedback notification:', err);
+      // Don't fail the request if notification fails
+    });
 
     res.status(201).json({
       success: true,

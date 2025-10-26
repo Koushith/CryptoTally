@@ -1,10 +1,11 @@
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
-import { env, isDevelopment } from './config/env';
+import { env, isDevelopment, isProduction } from './config/env';
 import routes from './routes';
 import { getBaseUrl } from './utils/config.util';
 import { generalLimiter } from './middleware/rateLimiter.middleware';
+import { sendServerNotification } from './services/telegram.service';
 
 const app = express();
 
@@ -118,6 +119,58 @@ app.listen(env.PORT, async () => {
 
   console.log('\n' + '─'.repeat(56) + '\n');
   console.log('✨ Server is ready to handle requests!\n');
+
+  // Send startup notification to Telegram (production only)
+  if (isProduction) {
+    sendServerNotification('startup').catch(err => {
+      console.error('Failed to send startup notification:', err);
+    });
+  }
+});
+
+/**
+ * Graceful shutdown handlers
+ */
+const shutdown = async (signal: string) => {
+  console.log(`\n${signal} received. Starting graceful shutdown...`);
+
+  // Send shutdown notification
+  await sendServerNotification('shutdown').catch(err => {
+    console.error('Failed to send shutdown notification:', err);
+  });
+
+  process.exit(0);
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+
+/**
+ * Uncaught exception handler
+ */
+process.on('uncaughtException', async (error: Error) => {
+  console.error('💥 Uncaught Exception:', error);
+
+  await sendServerNotification('crash', error.message).catch(err => {
+    console.error('Failed to send crash notification:', err);
+  });
+
+  process.exit(1);
+});
+
+/**
+ * Unhandled promise rejection handler
+ */
+process.on('unhandledRejection', async (reason: any) => {
+  console.error('💥 Unhandled Rejection:', reason);
+
+  const errorMessage = reason instanceof Error ? reason.message : String(reason);
+
+  await sendServerNotification('crash', `Unhandled Promise Rejection: ${errorMessage}`).catch(err => {
+    console.error('Failed to send crash notification:', err);
+  });
+
+  process.exit(1);
 });
 
 export default app;

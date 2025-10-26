@@ -13,6 +13,7 @@ export const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
   const [currentSystem, setCurrentSystem] = useState('none');
   const [softwareName, setSoftwareName] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [alreadyExists, setAlreadyExists] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +54,7 @@ export const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
 
       if (response.ok && data.success) {
         setIsSuccess(true);
+        setAlreadyExists(data.data?.alreadyExists || false);
         // Reset form
         setEmail('');
         setCurrentSystem('none');
@@ -76,10 +78,13 @@ export const WaitlistModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
           <div className="w-full rounded-2xl bg-white p-6">
             <div className="flex flex-col items-center justify-center text-center">
               <CheckCircle2 className="h-12 w-12 text-green-500" />
-              <h2 className="mt-4 text-xl font-semibold text-gray-900">You're on the list!</h2>
+              <h2 className="mt-4 text-xl font-semibold text-gray-900">
+                {alreadyExists ? "You're already on the list!" : "You're on the list!"}
+              </h2>
               <p className="mt-2 text-sm text-gray-600">
-                Thanks for joining our waitlist. We'll keep you updated on our progress and let you know when we launch.
-                Keep an eye on your inbox!
+                {alreadyExists
+                  ? "We've got you covered! You're already signed up for early access. Keep an eye on your inbox!"
+                  : "Thanks for joining our waitlist. We'll keep you updated on our progress and let you know when we launch. Keep an eye on your inbox!"}
               </p>
               <Button onClick={onClose} className="mt-6" size="sm">
                 Close

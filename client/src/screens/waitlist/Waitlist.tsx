@@ -27,6 +27,7 @@ export const WaitlistPage = () => {
   const [referralSource, setReferralSource] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [alreadyExists, setAlreadyExists] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,6 +86,7 @@ export const WaitlistPage = () => {
       }
 
       setIsSuccess(true);
+      setAlreadyExists(data.data.alreadyExists || false);
       toast({
         title: data.data.alreadyExists ? "You're already on the list!" : 'Welcome to the waitlist!',
         description: data.message,
@@ -102,6 +104,7 @@ export const WaitlistPage = () => {
         setUseCase('');
         setReferralSource('');
         setIsSuccess(false);
+        setAlreadyExists(false);
       }, 4000);
     } catch (error) {
       console.error('Error joining waitlist:', error);
@@ -122,8 +125,14 @@ export const WaitlistPage = () => {
           <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-in fade-in zoom-in duration-500">
             <CheckCircle2 className="h-12 w-12 text-green-600" />
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">You're on the list!</h2>
-          <p className="text-lg text-gray-600 mb-2">We'll notify you when CryptoTally launches.</p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            {alreadyExists ? "You're already on the list!" : "You're on the list!"}
+          </h2>
+          <p className="text-lg text-gray-600 mb-2">
+            {alreadyExists
+              ? "We've got you covered! You're already signed up for early access."
+              : "We'll notify you when CryptoTally launches."}
+          </p>
           <p className="text-sm text-gray-500">Keep an eye on your inbox!</p>
         </div>
       </div>

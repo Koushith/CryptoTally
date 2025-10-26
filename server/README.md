@@ -1,6 +1,6 @@
 # CryptoTally Server
 
-Backend API server for CryptoTally crypto accounting application.
+Backend API server for CryptoTally crypto accounting application.......
 
 ## Tech Stack
 
@@ -15,21 +15,25 @@ Backend API server for CryptoTally crypto accounting application.
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Create `.env` file:
+
 ```bash
 cp .env.example .env
 ```
 
 3. Update `.env` with your database credentials:
+
 ```
 DATABASE_URL=postgresql://user:password@localhost:5432/cryptotally
 ```
 
 4. **Setup Firebase Admin SDK** (for authentication):
+
    - Go to [Firebase Console](https://console.firebase.google.com/)
    - Navigate to **Project Settings** > **Service Accounts**
    - Click **Generate New Private Key**
@@ -39,6 +43,7 @@ DATABASE_URL=postgresql://user:password@localhost:5432/cryptotally
    > ⚠️ **IMPORTANT**: Never commit `serviceAccountKey.json` to git. See [FIREBASE_SECURITY.md](./FIREBASE_SECURITY.md) for details.
 
 5. **Create the database**:
+
 ```bash
 createdb cryptotally
 npm run db:push
@@ -47,6 +52,7 @@ npm run db:push
 ## Development
 
 Start development server with auto-restart:
+
 ```bash
 npm run dev
 ```
@@ -56,10 +62,12 @@ The server will run on `http://localhost:3001`
 ## API Endpoints
 
 ### Health Check
+
 - `GET /api/health` - Full health check (includes DB connection test)
 - `GET /api/health/ping` - Simple ping/pong check
 
 ### Root
+
 - `GET /` - API information
 
 ## Scripts
@@ -103,11 +111,13 @@ server/
 This project uses PostgreSQL with Drizzle ORM. Make sure you have PostgreSQL installed and running.
 
 To create the database:
+
 ```bash
 createdb cryptotally
 ```
 
 To run migrations:
+
 ```bash
 npm run db:push
 ```
@@ -119,6 +129,7 @@ npm run db:push
 For production deployment, use environment variables instead of the JSON file:
 
 1. Encode your service account key:
+
 ```bash
 cat serviceAccountKey.json | base64
 ```

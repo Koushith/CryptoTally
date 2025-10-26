@@ -19,7 +19,7 @@ export const DashboardPage = () => {
             title="UI Preview"
             message={
               <>
-                This is how the app will look. Design and features are still in development.{' '}
+                This is how the app will look. Design and features are still in development.
                 <Link to="/waitlist" className="underline hover:text-gray-300">
                   Join waitlist
                 </Link>

@@ -67,7 +67,7 @@ export const initializeFirebaseAdmin = () => {
     // Initialize Firebase Admin
     firebaseAdmin = admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      projectId: process.env.FIREBASE_PROJECT_ID || serviceAccount.project_id,
+      projectId: process.env.FIREBASE_PROJECT_ID || serviceAccount.projectId,
     });
 
     console.log('✅ Firebase Admin SDK initialized successfully');

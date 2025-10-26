@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/select';
 import { CheckCircle2, Loader2, Rocket, Users, Zap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { getBaseUrl } from '@/lib/config';
 
 export const WaitlistPage = () => {
   const [email, setEmail] = useState('');
@@ -49,7 +50,7 @@ export const WaitlistPage = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/waitlist`, {
+      const response = await fetch(`${getBaseUrl('backend')}/api/waitlist`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

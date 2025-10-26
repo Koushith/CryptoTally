@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Bug, Lightbulb, MessageCircle, Send, CheckCircle2, ArrowUp, Clock, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { getBaseUrl } from '@/lib/config';
 
 type FeedbackType = 'bug' | 'feature' | 'feedback';
 
@@ -34,7 +35,7 @@ export const FeedbackPage = () => {
   const fetchFeedback = async () => {
     try {
       setIsLoadingIssues(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/feedback`);
+      const response = await fetch(`${getBaseUrl('backend')}/api/feedback`);
       const result = await response.json();
 
       if (response.ok && result.success) {
@@ -101,7 +102,7 @@ export const FeedbackPage = () => {
       // const { user } = useAuth();
       // name: user?.name || undefined,
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/feedback`, {
+      const response = await fetch(`${getBaseUrl('backend')}/api/feedback`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

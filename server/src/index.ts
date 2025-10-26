@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
 import { env, isDevelopment } from './config/env';
 import routes from './routes';
+import { getBaseUrl } from './utils/config.util';
 
 const app = express();
 
@@ -86,10 +87,11 @@ app.listen(env.PORT, async () => {
   console.log(`   └─ Mode: ${env.NODE_ENV}`);
   console.log(`   └─ Port: ${env.PORT}`);
 
+  const apiUrl = getBaseUrl('backend');
   console.log('');
   console.log('🔗 Server URLs:');
-  console.log(`   └─ API: http://localhost:${env.PORT}/api`);
-  console.log(`   └─ Health: http://localhost:${env.PORT}/api/health`);
+  console.log(`   └─ API: ${apiUrl}/api`);
+  console.log(`   └─ Health: ${apiUrl}/api/health`);
   console.log('');
 
   // Check PostgreSQL connection

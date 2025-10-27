@@ -6,6 +6,10 @@ import { generalLimiter } from './middleware/rateLimiter.middleware';
 import routes from './routes';
 import { registerProcessHandlers, notifyServerStartup } from './utils/server-lifecycle';
 import { logServerStartup } from './utils/startup-logger';
+import { initializeFirebaseAdmin } from './config/firebase';
+
+// Initialize Firebase Admin SDK
+initializeFirebaseAdmin();
 
 const app = express();
 

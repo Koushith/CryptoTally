@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Bug, Lightbulb, MessageCircle, Send, CheckCircle2, ArrowUp, Clock, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { getBaseUrl } from '@/lib/config';
+import { useGetFeedbackQuery, useSubmitFeedbackMutation } from '@/store/api';
 
 type FeedbackType = 'bug' | 'feature' | 'feedback';
 
@@ -25,33 +25,14 @@ export const FeedbackPage = () => {
   const [description, setDescription] = useState('');
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | Issue['status']>('all');
-  const [userIssues, setUserIssues] = useState<Issue[]>([]);
-  const [isLoadingIssues, setIsLoadingIssues] = useState(true);
   const { toast } = useToast();
 
-  // Fetch feedback from backend
-  const fetchFeedback = async () => {
-    try {
-      setIsLoadingIssues(true);
-      const response = await fetch(`${getBaseUrl('backend')}/api/feedback`);
-      const result = await response.json();
+  // RTK Query hooks
+  const { data: feedbackData, isLoading: isLoadingIssues } = useGetFeedbackQuery();
+  const [submitFeedback, { isLoading: isSubmitting }] = useSubmitFeedbackMutation();
 
-      if (response.ok && result.success) {
-        setUserIssues(result.data);
-      }
-    } catch (error) {
-      console.error('Error fetching feedback:', error);
-    } finally {
-      setIsLoadingIssues(false);
-    }
-  };
-
-  // Fetch feedback on mount
-  useEffect(() => {
-    fetchFeedback();
-  }, []);
+  const userIssues = feedbackData?.data || [];
 
   const filteredIssues =
     filterStatus === 'all' ? userIssues : userIssues.filter((issue) => issue.status === filterStatus);
@@ -95,31 +76,17 @@ export const FeedbackPage = () => {
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
       // TODO: After auth integration, include user name from auth context
       // const { user } = useAuth();
       // name: user?.name || undefined,
 
-      const response = await fetch(`${getBaseUrl('backend')}/api/feedback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: selectedType,
-          message: `${title}\n\n${description}`,
-          email: email.trim() || undefined,
-          // name: user?.name || undefined, // TODO: Add after auth
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to submit feedback');
-      }
+      await submitFeedback({
+        type: selectedType!,
+        message: `${title}\n\n${description}`,
+        email: email.trim() || undefined,
+        // name: user?.name || undefined, // TODO: Add after auth
+      }).unwrap();
 
       // Success!
       setIsSubmitted(true);
@@ -128,10 +95,7 @@ export const FeedbackPage = () => {
         description: 'Thank you for helping us improve CryptoTally.',
       });
 
-      // Refresh feedback list to show new submission
-      fetchFeedback();
-
-      // Reset after 3 seconds
+      // Reset after 3 seconds (RTK Query will automatically refetch)
       setTimeout(() => {
         setIsSubmitted(false);
         setSelectedType(null);
@@ -139,15 +103,13 @@ export const FeedbackPage = () => {
         setDescription('');
         setEmail('');
       }, 3000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting feedback:', error);
       toast({
         title: 'Submission failed',
-        description: error instanceof Error ? error.message : 'Please try again later',
+        description: error.data?.message || error.message || 'Please try again later',
         variant: 'destructive',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

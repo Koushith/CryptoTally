@@ -21,7 +21,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MOCK_USER, MOCK_NOTIFICATIONS } from '@/constants/user';
+import { MOCK_NOTIFICATIONS } from '@/constants/user';
 import { Logo } from '@/components/shared/Logo';
 import { MobileHeader } from './MobileHeader';
 import { MobileNotifications } from './MobileNotifications';
@@ -29,11 +29,38 @@ import { MobileBottomNav } from './MobileBottomNav';
 import { PromotionalCard } from './PromotionalCard';
 import { UserProfileSection } from './UserProfileSection';
 import { NotificationItem } from './NotificationItem';
+import { useAuth } from '@/hooks/useAuth';
+import { AuthService } from '@/services/auth.service';
+import { toast } from 'sonner';
 
 export function AppShell() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [hasUnread, setHasUnread] = useState(true);
+  const { user } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await AuthService.signOut();
+      toast.success('Signed out successfully');
+    } catch (error) {
+      console.error('Sign out error:', error);
+      toast.error('Failed to sign out');
+    }
+  };
+
+  // User data for display (using Firebase user from useAuth hook)
+  const userData = user
+    ? {
+        name: user.displayName || user.email?.split('@')[0] || 'User',
+        email: user.email || '',
+        imageUrl: user.photoURL || '',
+      }
+    : {
+        name: 'User',
+        email: '',
+        imageUrl: '',
+      };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -42,7 +69,7 @@ export function AppShell() {
         onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         onNotificationsOpen={() => setIsNotificationsOpen(true)}
         hasUnread={hasUnread}
-        userInitial={MOCK_USER.name.charAt(0)}
+        userInitial={userData.name.charAt(0)}
       />
 
       {/* Mobile Fullscreen Notifications */}
@@ -54,7 +81,12 @@ export function AppShell() {
       />
 
       <div className="flex">
-        <AppSidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
+        <AppSidebar
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+          user={userData}
+          onSignOut={handleSignOut}
+        />
         <main className="md:ml-[280px] flex-1 min-h-screen bg-gray-50 pt-14 md:pt-0 pb-24 md:pb-0">
           <div className="p-5 md:p-8 max-w-[1500px] mx-auto">
             <Outlet />
@@ -76,9 +108,13 @@ export function AppShell() {
 function AppSidebar({
   isMobileMenuOpen,
   setIsMobileMenuOpen,
+  user,
+  onSignOut,
 }: {
   isMobileMenuOpen: boolean;
   setIsMobileMenuOpen: (open: boolean) => void;
+  user: { name: string; email: string; imageUrl: string };
+  onSignOut: () => void;
 }) {
   const [hasUnread, setHasUnread] = useState(true);
 
@@ -219,7 +255,7 @@ function AppSidebar({
         </div>
 
         {/* User Profile Section */}
-        <UserProfileSection user={MOCK_USER} />
+        <UserProfileSection user={user} onSignOut={onSignOut} />
       </div>
     </aside>
   );

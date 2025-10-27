@@ -1,36 +1,98 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Wallet, Shield, FileText, CheckCircle2, Loader2, Eye, EyeOff } from 'lucide-react';
+import { Wallet, Shield, FileText, CheckCircle2, Loader2, Eye, EyeOff, Fingerprint } from 'lucide-react';
+import { AuthService } from '@/services/auth.service';
+import { PasskeyService } from '@/services/passkey.service';
+import { toast } from 'sonner';
 
 export const Auth = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasskeyLoading, setIsPasskeyLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('signin');
   const [showSignInPassword, setShowSignInPassword] = useState(false);
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
+  const [passkeySupported, setPasskeySupported] = useState(false);
 
-  const handleGoogleAuth = () => {
+  // Form state
+  const [signInEmail, setSignInEmail] = useState('');
+  const [signInPassword, setSignInPassword] = useState('');
+  const [signUpName, setSignUpName] = useState('');
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
+
+  // Check if passkeys are supported on mount
+  useEffect(() => {
+    const checkPasskeySupport = async () => {
+      const isSupported = PasskeyService.isSupported();
+      const isPlatformAvailable = await PasskeyService.isPlatformAuthenticatorAvailable();
+      setPasskeySupported(isSupported && isPlatformAvailable);
+    };
+    checkPasskeySupport();
+  }, []);
+
+  const handleGoogleAuth = async () => {
     setIsLoading(true);
-    // TODO: Implement Google OAuth
-    console.log('Google OAuth');
-    setTimeout(() => setIsLoading(false), 1000);
+    try {
+      await AuthService.signInWithGoogle();
+      toast.success('Welcome! Signed in with Google');
+      navigate('/');
+    } catch (error: any) {
+      console.error('Google auth error:', error);
+      toast.error(error.message || 'Failed to sign in with Google');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handlePasskeyAuth = () => {
-    setIsLoading(true);
-    // TODO: Implement Passkey authentication
-    console.log('Passkey authentication');
-    setTimeout(() => setIsLoading(false), 1000);
+  const handlePasskeyAuth = async () => {
+    setIsPasskeyLoading(true);
+    try {
+      await PasskeyService.authenticateWithPasskey();
+      toast.success('Welcome! Signed in with passkey');
+      navigate('/');
+    } catch (error: any) {
+      console.error('Passkey auth error:', error);
+      toast.error(error.message || 'Failed to sign in with passkey');
+    } finally {
+      setIsPasskeyLoading(false);
+    }
   };
 
-  const handleEmailAuth = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: Implement email/password authentication
-    console.log('Email authentication');
-    setTimeout(() => setIsLoading(false), 1000);
+
+    try {
+      await AuthService.signInWithEmail(signInEmail, signInPassword);
+      toast.success('Welcome back!');
+      navigate('/');
+    } catch (error: any) {
+      console.error('Sign in error:', error);
+      toast.error(error.message || 'Failed to sign in');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      await AuthService.signUpWithEmail(signUpEmail, signUpPassword, signUpName);
+      toast.success('Account created successfully!');
+      navigate('/');
+    } catch (error: any) {
+      console.error('Sign up error:', error);
+      toast.error(error.message || 'Failed to create account');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -229,19 +291,21 @@ export const Auth = () => {
                 </Button>
 
                 {/* Passkey Auth */}
-                <Button
-                  variant="outline"
-                  className="w-full h-11 bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300 shadow-sm transition-all"
-                  onClick={handlePasskeyAuth}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <Shield className="mr-2 h-4 w-4" />
-                  )}
-                  Sign in with Passkey
-                </Button>
+                {passkeySupported && (
+                  <Button
+                    variant="outline"
+                    className="w-full h-11 bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300 shadow-sm transition-all"
+                    onClick={handlePasskeyAuth}
+                    disabled={isPasskeyLoading || isLoading}
+                  >
+                    {isPasskeyLoading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Fingerprint className="mr-2 h-4 w-4" />
+                    )}
+                    Sign in with Passkey
+                  </Button>
+                )}
               </div>
 
               <div className="relative">
@@ -256,7 +320,7 @@ export const Auth = () => {
               </div>
 
               {/* Email/Password Form */}
-              <form onSubmit={handleEmailAuth} className="space-y-4">
+              <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-email" className="text-sm font-medium text-gray-900">
                     Email address
@@ -268,6 +332,8 @@ export const Auth = () => {
                     required
                     disabled={isLoading}
                     className="h-11 bg-white border-gray-200"
+                    value={signInEmail}
+                    onChange={(e) => setSignInEmail(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -289,6 +355,8 @@ export const Auth = () => {
                       required
                       disabled={isLoading}
                       className="h-11 bg-white border-gray-200 pr-10"
+                      value={signInPassword}
+                      onChange={(e) => setSignInPassword(e.target.value)}
                     />
                     <button
                       type="button"
@@ -343,19 +411,21 @@ export const Auth = () => {
                 </Button>
 
                 {/* Passkey Auth */}
-                <Button
-                  variant="outline"
-                  className="w-full h-11 bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300 shadow-sm transition-all"
-                  onClick={handlePasskeyAuth}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <Shield className="mr-2 h-4 w-4" />
-                  )}
-                  Create account with Passkey
-                </Button>
+                {passkeySupported && (
+                  <Button
+                    variant="outline"
+                    className="w-full h-11 bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300 shadow-sm transition-all"
+                    onClick={handlePasskeyAuth}
+                    disabled={isPasskeyLoading || isLoading}
+                  >
+                    {isPasskeyLoading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Fingerprint className="mr-2 h-4 w-4" />
+                    )}
+                    Create account with Passkey
+                  </Button>
+                )}
               </div>
 
               <div className="relative">
@@ -370,7 +440,7 @@ export const Auth = () => {
               </div>
 
               {/* Email/Password Form */}
-              <form onSubmit={handleEmailAuth} className="space-y-4">
+              <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-name" className="text-sm font-medium text-gray-900">
                     Full name
@@ -382,6 +452,8 @@ export const Auth = () => {
                     required
                     disabled={isLoading}
                     className="h-11 bg-white border-gray-200"
+                    value={signUpName}
+                    onChange={(e) => setSignUpName(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -395,6 +467,8 @@ export const Auth = () => {
                     required
                     disabled={isLoading}
                     className="h-11 bg-white border-gray-200"
+                    value={signUpEmail}
+                    onChange={(e) => setSignUpEmail(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -408,6 +482,8 @@ export const Auth = () => {
                       required
                       disabled={isLoading}
                       className="h-11 bg-white border-gray-200 pr-10"
+                      value={signUpPassword}
+                      onChange={(e) => setSignUpPassword(e.target.value)}
                     />
                     <button
                       type="button"

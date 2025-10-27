@@ -14,19 +14,36 @@ import {
 } from './screens';
 import { Auth } from './screens/auth/Auth';
 import { ComingSoon } from '@/components/ComingSoon';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Key, Webhook } from 'lucide-react';
 import dataAnalystImg from '@/assets/illustrations/data-analyst.png';
 import analyticsImg from '@/assets/illustrations/analytics.png';
 
 const router = createBrowserRouter([
+  // Public routes
   {
     path: '/auth',
     element: <Auth />,
     errorElement: <ErrorScreen />,
   },
   {
+    path: '/feedback',
+    element: <FeedbackPage />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/waitlist',
+    element: <WaitlistPage />,
+    errorElement: <ErrorScreen />,
+  },
+  // Protected routes
+  {
     path: '/',
-    element: <AppShell />,
+    element: (
+      <ProtectedRoute>
+        <AppShell />
+      </ProtectedRoute>
+    ),
     errorElement: <ErrorScreen />,
     children: [
       {
@@ -61,16 +78,6 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <ProfilePage />,
-        errorElement: <ErrorScreen />,
-      },
-      {
-        path: '/feedback',
-        element: <FeedbackPage />,
-        errorElement: <ErrorScreen />,
-      },
-      {
-        path: '/waitlist',
-        element: <WaitlistPage />,
         errorElement: <ErrorScreen />,
       },
       // Developer routes

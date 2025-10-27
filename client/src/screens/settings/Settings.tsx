@@ -3,6 +3,7 @@ import { User, Building2, Globe, Bell, Shield, Palette, Users } from 'lucide-rea
 import { PageHeader } from '@/components/shared/PageHeader';
 import { SettingsCard } from '@/components/settings/SettingsCard';
 import { ProfileModal } from '@/components/settings/modals/ProfileModal';
+import { SecurityModal } from '@/components/settings/modals/SecurityModal';
 import { SettingModal } from '@/types/settings.types';
 
 export const SettingsPage = () => {
@@ -65,7 +66,7 @@ export const SettingsPage = () => {
           id: 'security' as const,
           icon: Shield,
           title: 'Security',
-          description: 'Update password and two-factor authentication',
+          description: 'Manage passkeys, password, and authentication',
         },
       ],
     },
@@ -110,6 +111,10 @@ export const SettingsPage = () => {
         {/* Modals */}
         <ProfileModal
           isOpen={openModal === 'profile'}
+          onClose={() => setOpenModal(null)}
+        />
+        <SecurityModal
+          isOpen={openModal === 'security'}
           onClose={() => setOpenModal(null)}
         />
         {/* Add other modals as needed */}

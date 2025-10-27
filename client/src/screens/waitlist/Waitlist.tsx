@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select';
 import { CheckCircle2, Loader2, Rocket, Users, Zap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { getBaseUrl } from '@/lib/config';
+import { useJoinWaitlistMutation } from '@/store/api';
 
 export const WaitlistPage = () => {
   const [email, setEmail] = useState('');
@@ -25,10 +25,12 @@ export const WaitlistPage = () => {
   const [softwareName, setSoftwareName] = useState('');
   const [useCase, setUseCase] = useState('');
   const [referralSource, setReferralSource] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [alreadyExists, setAlreadyExists] = useState(false);
   const { toast } = useToast();
+
+  // RTK Query hook
+  const [joinWaitlist, { isLoading: isSubmitting }] = useJoinWaitlistMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,45 +53,31 @@ export const WaitlistPage = () => {
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      const response = await fetch(`${getBaseUrl('backend')}/api/waitlist`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email.trim(),
-          name: name.trim() || undefined,
-          source: 'app',
-          userType: userType || undefined,
-          companyName: companyName.trim() || undefined,
-          teamSize: teamSize || undefined,
-          paymentVolume: paymentVolume || undefined,
-          useCase: [
-            useCase.trim(),
-            currentSystem && currentSystem !== 'none'
-              ? `Current system: ${currentSystem === 'software' ? softwareName || 'accounting software' : currentSystem}`
-              : null,
-          ]
-            .filter(Boolean)
-            .join(' | ') || undefined,
-          referralSource: referralSource || undefined,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to join waitlist');
-      }
+      const result = await joinWaitlist({
+        email: email.trim(),
+        name: name.trim() || undefined,
+        source: 'app',
+        userType: userType || undefined,
+        companyName: companyName.trim() || undefined,
+        teamSize: teamSize || undefined,
+        paymentVolume: paymentVolume || undefined,
+        useCase: [
+          useCase.trim(),
+          currentSystem && currentSystem !== 'none'
+            ? `Current system: ${currentSystem === 'software' ? softwareName || 'accounting software' : currentSystem}`
+            : null,
+        ]
+          .filter(Boolean)
+          .join(' | ') || undefined,
+        referralSource: referralSource || undefined,
+      }).unwrap();
 
       setIsSuccess(true);
-      setAlreadyExists(data.data.alreadyExists || false);
+      setAlreadyExists(result.data.alreadyExists || false);
       toast({
-        title: data.data.alreadyExists ? "You're already on the list!" : 'Welcome to the waitlist!',
-        description: data.message,
+        title: result.data.alreadyExists ? "You're already on the list!" : 'Welcome to the waitlist!',
+        description: result.message,
       });
 
       setTimeout(() => {
@@ -106,15 +94,13 @@ export const WaitlistPage = () => {
         setIsSuccess(false);
         setAlreadyExists(false);
       }, 4000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error joining waitlist:', error);
       toast({
         title: 'Submission failed',
-        description: error instanceof Error ? error.message : 'Please try again later',
+        description: error.data?.message || error.message || 'Please try again later',
         variant: 'destructive',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

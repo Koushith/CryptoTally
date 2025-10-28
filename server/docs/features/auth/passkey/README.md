@@ -247,6 +247,64 @@ await db
   .where(lt(passkeysChallenges.expiresAt, new Date()));
 ```
 
+## Frequently Asked Questions
+
+### Multiple Accounts with Passkeys
+
+**Q: What happens if two users register passkeys on the same device?**
+
+A: Each passkey registration creates a **unique credential**, even on the same device. This is a core WebAuthn feature.
+
+**Example:**
+- User A (alice@example.com) registers a passkey on iPhone → Creates Credential A
+- User B (bob@example.com) registers a passkey on the same iPhone → Creates Credential B
+
+Both credentials are stored separately and linked to their respective accounts.
+
+**Q: How does sign-in work with multiple accounts on the same device?**
+
+A: When a user clicks "Sign in with passkey", the browser/device shows a **picker** with all available accounts:
+
+```
+┌────────────────────────────────────┐
+│  Sign in to CryptoTally            │
+├────────────────────────────────────┤
+│  ○ alice@example.com               │
+│    iPhone (Added 2 days ago)       │
+│                                    │
+│  ○ bob@example.com                 │
+│    iPhone (Added 1 week ago)       │
+└────────────────────────────────────┘
+```
+
+The user selects which account to sign in to, and authentication completes for that specific account.
+
+**Q: How does the backend know which account to log in?**
+
+A: Each passkey has a unique `credential_id` that's sent during authentication:
+
+1. User selects an account from the device picker
+2. Device signs the challenge with the **private key for that credential**
+3. Authentication response includes the `credential_id`
+4. Backend looks up which user owns that credential (see `verifyAuthentication` line 329-342)
+5. Creates Firebase token for that specific user
+
+This design prevents any ambiguity - the credential ID uniquely identifies the user.
+
+**Q: Can the same passkey be shared across accounts?**
+
+A: No. Each passkey registration creates a unique public/private key pair. Even if you register on the same device for multiple accounts, each gets its own credential with a unique `credential_id`.
+
+**Q: What if a user has multiple devices?**
+
+A: Users can register multiple passkeys for the same account:
+
+- "MacBook Pro" passkey
+- "iPhone" passkey
+- "Work Laptop" passkey
+
+All linked to the same account. The implementation prevents duplicate credentials using `excludeCredentials` (line 78-81).
+
 ## Related Documentation
 
 - [API Documentation](./API.md)

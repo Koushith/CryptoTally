@@ -8,8 +8,10 @@ import {
   SettingsPage,
   IntegrationsPage,
   ProfilePage,
+  WorkspacePage,
   FeedbackPage,
   WaitlistPage,
+  AcceptInvitePage,
   ErrorScreen,
 } from './screens';
 import { Auth } from './screens/auth/Auth';
@@ -34,6 +36,11 @@ const router = createBrowserRouter([
   {
     path: '/waitlist',
     element: <WaitlistPage />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/invite/:token',
+    element: <AcceptInvitePage />,
     errorElement: <ErrorScreen />,
   },
   // Protected routes
@@ -78,6 +85,11 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <ProfilePage />,
+        errorElement: <ErrorScreen />,
+      },
+      {
+        path: '/workspace',
+        element: <WorkspacePage />,
         errorElement: <ErrorScreen />,
       },
       // Developer routes

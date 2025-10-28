@@ -106,8 +106,8 @@ export const WaitlistPage = () => {
 
   if (isSuccess) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="text-center max-w-md p-8">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="text-center max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
           <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-in fade-in zoom-in duration-500">
             <CheckCircle2 className="h-12 w-12 text-green-600" />
           </div>
@@ -126,7 +126,7 @@ export const WaitlistPage = () => {
   }
 
   return (
-    <div className="fixed inset-0 overflow-y-auto bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto py-12 px-4 md:px-6">
         {/* Header */}
         <div className="text-center mb-12">

@@ -5,6 +5,7 @@ import waitlistRoutes from './waitlist.routes';
 import webhookRoutes from './webhook.routes';
 import authRoutes from './auth.routes';
 import passkeyRoutes from './passkey.routes';
+import workspaceRoutes from './workspace.routes';
 
 const router = Router();
 
@@ -14,6 +15,7 @@ const router = Router();
 router.use('/health', healthRoutes);
 router.use('/auth', authRoutes);
 router.use('/passkey', passkeyRoutes);
+router.use('/workspace', workspaceRoutes);
 router.use('/feedback', feedbackRoutes);
 router.use('/waitlist', waitlistRoutes);
 router.use('/webhooks', webhookRoutes);

@@ -11,10 +11,12 @@ export * from './reports/Reports';
 export * from './settings/Settings';
 export * from './integrations/Integrations';
 export * from './profile/Profile';
+export * from './workspace/Workspace';
 
 // Supporting screens
 export * from './feedback/Feedback';
 export * from './waitlist/Waitlist';
+export * from './invite/AcceptInvite';
 
 // Special screens
 export * from './auth/Auth';

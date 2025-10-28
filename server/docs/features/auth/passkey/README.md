@@ -173,13 +173,69 @@ curl -X GET http://localhost:8000/api/passkey/authentication/options
 - Update RP_ID to your domain
 
 ### RP_ID Configuration
+
+The `RP_ID` (Relying Party ID) is the domain that passkeys are bound to. This prevents phishing attacks by ensuring passkeys only work on your specific domain.
+
 ```env
 # Development
 RP_ID=localhost
+FRONTEND_URL=http://localhost:5173
 
-# Production
+# Production - Root Domain
 RP_ID=cryptotally.com
+FRONTEND_URL=https://cryptotally.com
+
+# Production - Subdomain (if app is on subdomain)
+RP_ID=app.cryptotally.com
+FRONTEND_URL=https://app.cryptotally.com
 ```
+
+**Important Rules:**
+1. **Domain only** - No protocol (`https://`), no port (`:443`), no path
+2. **Must match your frontend domain exactly**
+3. **Requires HTTPS in production** (except localhost)
+
+**Subdomain Options:**
+- **Specific subdomain** (`app.cryptotally.com`) - Passkeys only work on that subdomain
+- **Parent domain** (`cryptotally.com`) - Passkeys work on all subdomains (`app.`, `www.`, etc.)
+
+**For separate landing/app setup:**
+If your landing page is on `cryptotally.com` and app is on `app.cryptotally.com`, use the subdomain as RP_ID since that's where authentication happens:
+```env
+RP_ID=app.cryptotally.com
+FRONTEND_URL=https://app.cryptotally.com
+```
+
+### Deploying to Railway
+
+1. **Set Environment Variables** in Railway dashboard:
+   ```bash
+   NODE_ENV=production
+   RP_ID=app.cryptotally.xyz
+   FRONTEND_URL=https://app.cryptotally.xyz
+   PROD_DATABASE_URL=your_railway_postgres_url
+   ```
+
+2. **Run Migrations** after deployment:
+   ```bash
+   # Locally, targeting production database
+   NODE_ENV=production npm run migrate
+
+   # Or via Railway CLI
+   railway run npm run migrate
+   ```
+
+3. **Verify Configuration** - Check server logs for:
+   ```
+   🔐 WebAuthn Configuration: {
+     rpName: 'CryptoTally',
+     rpID: 'app.cryptotally.xyz',
+     origin: 'https://app.cryptotally.xyz',
+     environment: 'production'
+   }
+   ```
+
+4. **Enable HTTPS** - Railway provides HTTPS by default, ensure your domain has a valid SSL certificate
 
 ### Challenge Cleanup
 Consider adding a cron job to clean up expired challenges:

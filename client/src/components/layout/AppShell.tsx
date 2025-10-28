@@ -12,6 +12,7 @@ import {
   User,
   MessageSquare,
   Plug,
+  Building2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Outlet, NavLink } from 'react-router-dom';
@@ -192,6 +193,12 @@ function AppSidebar({
             <div className="text-xs font-medium text-[#697386] uppercase">Account</div>
           </div>
           <NavItem icon={<User size={18} />} label="Profile" to="/profile" onClick={() => setIsMobileMenuOpen(false)} />
+          <NavItem
+            icon={<Building2 size={18} />}
+            label="Workspace"
+            to="/workspace"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
           <NavItem
             icon={<Settings size={18} />}
             label="Settings"

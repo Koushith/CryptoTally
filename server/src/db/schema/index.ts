@@ -11,6 +11,7 @@ export * from './passkeys';
 // Workspace and team management
 export * from './workspaces';
 export * from './workspace-members';
+export * from './workspace-invitations';
 
 // Feedback and waitlist
 export * from './feedback';

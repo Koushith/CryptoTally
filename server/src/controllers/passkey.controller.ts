@@ -18,6 +18,14 @@ const rpName = 'CryptoTally';
 const rpID = process.env.RP_ID || 'localhost';
 const origin = process.env.FRONTEND_URL || 'http://localhost:5173';
 
+// Log configuration on startup
+console.log('🔐 WebAuthn Configuration:', {
+  rpName,
+  rpID,
+  origin,
+  environment: process.env.NODE_ENV,
+});
+
 /**
  * Passkey Controller
  *

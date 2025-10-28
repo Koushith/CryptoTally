@@ -122,8 +122,8 @@ export const FeedbackPage = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center max-w-md">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="text-center max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="h-8 w-8 text-green-600" />
           </div>
@@ -137,8 +137,8 @@ export const FeedbackPage = () => {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="w-full max-w-4xl">
+    <div className="min-h-screen bg-gray-50">
+      <div className="w-full max-w-4xl mx-auto p-6 md:p-8">
         {/* Header */}
         <div className="mb-6 md:mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Feedback & Support</h1>

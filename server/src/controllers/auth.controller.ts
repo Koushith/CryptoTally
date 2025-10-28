@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { eq } from 'drizzle-orm';
 import { db } from '../config/database';
-import { users } from '../db/schema';
+import { users, workspaces, workspaceMembers } from '../db/schema';
 import { AuthRequest } from '../middleware/auth.middleware';
 
 /**
@@ -75,6 +75,34 @@ export class AuthController {
           .returning();
 
         user = newUser;
+
+        // Auto-create personal workspace for new user
+        const workspaceName = name ? `${name}'s Workspace` : `${email.split('@')[0]}'s Workspace`;
+        const baseSlug = workspaceName
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-');
+        const slug = `${baseSlug}-${Date.now()}`;
+
+        const [personalWorkspace] = await db
+          .insert(workspaces)
+          .values({
+            name: workspaceName,
+            slug,
+            description: 'Your personal workspace',
+            type: 'personal',
+            ownerId: newUser.id,
+          })
+          .returning();
+
+        // Add user as admin member of their personal workspace
+        await db.insert(workspaceMembers).values({
+          workspaceId: personalWorkspace.id,
+          userId: newUser.id,
+          role: 'admin',
+          joinedAt: new Date(),
+          isActive: true,
+        });
       }
 
       return res.status(200).json({

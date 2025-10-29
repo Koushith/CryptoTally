@@ -56,6 +56,7 @@ npm run migrate
 ```
 
 This creates:
+
 - `passkeys` - Stores WebAuthn credentials
 - `passkeys_challenges` - Temporary challenge storage (5-minute TTL)
 
@@ -64,11 +65,13 @@ This creates:
 ### Registration Flow
 
 1. **Client requests registration options**
+
    - `GET /api/passkey/registration/options`
    - Requires: Bearer token (Firebase ID token)
    - Returns: PublicKeyCredentialCreationOptions
 
 2. **Client creates credential**
+
    - Browser prompts for biometric authentication
    - Private key stored securely on device
    - Public key credential returned
@@ -80,11 +83,13 @@ This creates:
 ### Authentication Flow
 
 1. **Client requests authentication options**
+
    - `GET /api/passkey/authentication/options`
    - Public endpoint (no auth required)
    - Returns: PublicKeyCredentialRequestOptions
 
 2. **Client signs challenge**
+
    - Browser prompts for biometric authentication
    - Device signs challenge with private key
 
@@ -101,21 +106,25 @@ See [API.md](./API.md) for detailed API documentation.
 ## Security Considerations
 
 ### Challenge Management
+
 - Challenges expire after 5 minutes
 - One-time use (deleted after verification)
 - Cryptographically random (base64url encoded)
 
 ### Credential Storage
+
 - Public keys only (private keys never leave device)
 - Base64url encoding for safe database storage
 - Signature counters for replay protection
 
 ### Domain Binding
+
 - Credentials bound to RP_ID domain
 - Origin verification on every authentication
 - Prevents phishing attacks
 
 ### Firebase Integration
+
 - Custom tokens created only after successful verification
 - Same Firebase account across all auth methods
 - No password exposure
@@ -123,21 +132,25 @@ See [API.md](./API.md) for detailed API documentation.
 ## Troubleshooting
 
 ### "Passkey not found"
+
 - Credential ID mismatch
 - User may have deleted the passkey
 - Check database for credential ID
 
 ### "Challenge expired"
+
 - Challenges expire after 5 minutes
 - User took too long to complete authentication
 - Retry the flow
 
 ### "Origin mismatch"
+
 - FRONTEND_URL doesn't match actual origin
 - Check environment configuration
 - Verify HTTPS setup in production
 
 ### "No pending registration/authentication"
+
 - Challenge not found in database
 - May have been deleted or expired
 - Retry from step 1
@@ -168,6 +181,7 @@ curl -X GET http://localhost:8000/api/passkey/authentication/options
 ## Production Considerations
 
 ### HTTPS Required
+
 - WebAuthn requires HTTPS in production
 - Use valid SSL certificate
 - Update RP_ID to your domain
@@ -191,16 +205,19 @@ FRONTEND_URL=https://app.cryptotally.com
 ```
 
 **Important Rules:**
+
 1. **Domain only** - No protocol (`https://`), no port (`:443`), no path
 2. **Must match your frontend domain exactly**
 3. **Requires HTTPS in production** (except localhost)
 
 **Subdomain Options:**
+
 - **Specific subdomain** (`app.cryptotally.com`) - Passkeys only work on that subdomain
 - **Parent domain** (`cryptotally.com`) - Passkeys work on all subdomains (`app.`, `www.`, etc.)
 
 **For separate landing/app setup:**
 If your landing page is on `cryptotally.com` and app is on `app.cryptotally.com`, use the subdomain as RP_ID since that's where authentication happens:
+
 ```env
 RP_ID=app.cryptotally.com
 FRONTEND_URL=https://app.cryptotally.com
@@ -209,6 +226,7 @@ FRONTEND_URL=https://app.cryptotally.com
 ### Deploying to Railway
 
 1. **Set Environment Variables** in Railway dashboard:
+
    ```bash
    NODE_ENV=production
    RP_ID=app.cryptotally.xyz
@@ -217,6 +235,7 @@ FRONTEND_URL=https://app.cryptotally.com
    ```
 
 2. **Run Migrations** after deployment:
+
    ```bash
    # Locally, targeting production database
    NODE_ENV=production npm run migrate
@@ -226,6 +245,7 @@ FRONTEND_URL=https://app.cryptotally.com
    ```
 
 3. **Verify Configuration** - Check server logs for:
+
    ```
    🔐 WebAuthn Configuration: {
      rpName: 'CryptoTally',
@@ -238,13 +258,12 @@ FRONTEND_URL=https://app.cryptotally.com
 4. **Enable HTTPS** - Railway provides HTTPS by default, ensure your domain has a valid SSL certificate
 
 ### Challenge Cleanup
+
 Consider adding a cron job to clean up expired challenges:
 
 ```typescript
 // Clean up challenges older than 10 minutes
-await db
-  .delete(passkeysChallenges)
-  .where(lt(passkeysChallenges.expiresAt, new Date()));
+await db.delete(passkeysChallenges).where(lt(passkeysChallenges.expiresAt, new Date()));
 ```
 
 ## Frequently Asked Questions
@@ -256,6 +275,7 @@ await db
 A: Each passkey registration creates a **unique credential**, even on the same device. This is a core WebAuthn feature.
 
 **Example:**
+
 - User A (alice@example.com) registers a passkey on iPhone → Creates Credential A
 - User B (bob@example.com) registers a passkey on the same iPhone → Creates Credential B
 
@@ -301,7 +321,7 @@ A: Users can register multiple passkeys for the same account:
 
 - "MacBook Pro" passkey
 - "iPhone" passkey
-- "Work Laptop" passkey
+- "Work Laptop" passkey...
 
 All linked to the same account. The implementation prevents duplicate credentials using `excludeCredentials` (line 78-81).
 

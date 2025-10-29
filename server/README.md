@@ -124,7 +124,43 @@ npm run db:push
 
 ## Deployment
 
-### Railway / Render / Vercel
+### Railway
+
+The application is deployed on Railway with auto-deploy from the `main` branch.
+
+**Production URL**: https://cryptotally.up.railway.app
+
+**Environment Variables Required**:
+- `NODE_ENV=production`
+- `DATABASE_URL` - PostgreSQL connection string
+- `FIREBASE_SERVICE_ACCOUNT_BASE64` - Base64 encoded service account JSON
+- `FIREBASE_PROJECT_ID=cryptotally-5bdd8`
+- `RP_ID` - Domain for WebAuthn passkeys (e.g., `app.cryptotally.xyz`)
+- `FRONTEND_URL` - Frontend URL for CORS (e.g., `https://app.cryptotally.xyz`)
+
+**Deployment Process**:
+
+1. **Automatic**: Push to `main` branch triggers auto-deploy on Railway
+2. **Manual**: Use Railway dashboard → Deployments → Redeploy
+
+**After Deployment**:
+
+```bash
+# Run migrations on production database
+NODE_ENV=production npm run migrate
+```
+
+**Verify Deployment**:
+
+```bash
+# Check health
+curl https://cryptotally.up.railway.app/api/health
+
+# Expected response
+{"status":"ok","timestamp":"...","uptime":...,"environment":"production","database":"connected"}
+```
+
+### Other Platforms (Render / Vercel)
 
 For production deployment, use environment variables instead of the JSON file:
 

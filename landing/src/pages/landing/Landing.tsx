@@ -90,7 +90,7 @@ const Navbar = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 px-4 py-2 rounded-lg text-[15px] font-semibold bg-gray-900 text-white hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              Sign In →
+              Launch App →
             </a>
           </div>
 

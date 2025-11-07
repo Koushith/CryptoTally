@@ -6,6 +6,7 @@
 // Main screens
 export * from './dashboard/Dashboard';
 export * from './wallets/Wallets';
+export * from './wallets/WalletDetail';
 export * from './transactions/Transactions';
 export * from './reports/Reports';
 export * from './settings/Settings';

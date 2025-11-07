@@ -13,6 +13,10 @@ export * from './workspaces';
 export * from './workspace-members';
 export * from './workspace-invitations';
 
+// Wallets and blockchain data
+export * from './wallets';
+export * from './wallet-chains';
+
 // Feedback and waitlist
 export * from './feedback';
 export * from './waitlist';

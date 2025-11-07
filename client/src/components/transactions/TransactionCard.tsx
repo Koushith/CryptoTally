@@ -26,17 +26,27 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
       }`}
     >
       <div className="flex items-start gap-3">
-        {/* Icon */}
-        <div
-          className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
-            tx.type === 'in' ? 'bg-gray-100' : 'bg-gray-900'
-          }`}
-        >
-          {tx.type === 'in' ? (
-            <ArrowDownLeft className="h-5 w-5 text-gray-900" />
-          ) : (
-            <ArrowUpRight className="h-5 w-5 text-white" />
-          )}
+        {/* Chain Icon with Direction */}
+        <div className="relative w-10 h-10 flex-shrink-0">
+          <div
+            className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+              tx.type === 'in' ? 'bg-green-50 border-2 border-green-200' : 'bg-red-50 border-2 border-red-200'
+            }`}
+          >
+            {tx.type === 'in' ? (
+              <ArrowDownLeft className={`h-5 w-5 ${tx.type === 'in' ? 'text-green-600' : 'text-red-600'}`} />
+            ) : (
+              <ArrowUpRight className="h-5 w-5 text-red-600" />
+            )}
+          </div>
+          {/* Chain badge */}
+          <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-white border border-gray-200 flex items-center justify-center text-[10px] font-bold">
+            {tx.chain === 'Ethereum' && '⟠'}
+            {tx.chain === 'Polygon' && '⬡'}
+            {tx.chain === 'Arbitrum' && 'A'}
+            {tx.chain === 'Optimism' && 'O'}
+            {tx.chain === 'Base' && 'B'}
+          </div>
         </div>
 
         {/* Content */}

@@ -3,6 +3,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import {
   DashboardPage,
   WalletsPage,
+  WalletDetailPage,
   TransactionsPage,
   ReportsPage,
   SettingsPage,
@@ -60,6 +61,11 @@ const router = createBrowserRouter([
       {
         path: '/wallets',
         element: <WalletsPage />,
+        errorElement: <ErrorScreen />,
+      },
+      {
+        path: '/wallets/:id',
+        element: <WalletDetailPage />,
         errorElement: <ErrorScreen />,
       },
       {

@@ -98,16 +98,17 @@ export const Auth = () => {
   return (
     <div className="min-h-screen w-full lg:grid lg:grid-cols-2">
       {/* Left side - Hero */}
-      <div className="relative hidden bg-gradient-to-br from-gray-900 via-gray-850 to-gray-800 text-white lg:flex lg:flex-col lg:justify-between p-12 overflow-hidden">
+      <div className="relative hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white lg:flex lg:flex-col lg:justify-between p-12 overflow-hidden">
         {/* Animated background grid */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40" />
 
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-50" />
 
-        {/* Floating decorative elements */}
-        <div className="absolute top-20 right-20 w-32 h-32 bg-white/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-40 left-20 w-40 h-40 bg-white/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        {/* Floating decorative elements with crypto theme colors */}
+        <div className="absolute top-20 right-20 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-40 left-20 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
 
         {/* Logo */}
         <div className="relative z-10">
@@ -130,102 +131,63 @@ export const Auth = () => {
         {/* Hero content */}
         <div className="relative z-10 space-y-8">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm hover:bg-white/10 transition-colors">
-              <CheckCircle2 className="h-4 w-4" />
-              Trusted by 10,000+ crypto users
-            </div>
-            <h1 className="text-4xl font-bold text-white lg:text-5xl leading-tight">
-              Track your crypto
+            <h1 className="text-5xl font-bold text-white lg:text-6xl leading-tight">
+              Never lose track of a
               <br />
-              <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                transactions effortlessly
-              </span>
+              crypto transaction again
             </h1>
-            <p className="text-lg text-gray-300 leading-relaxed max-w-lg">
-              Multi-chain wallet tracking, automatic transaction sync, and
-              tax-ready reports for your crypto accounting needs.
+            <p className="text-xl text-slate-300 leading-relaxed max-w-xl">
+              Connect your wallets once. We automatically sync, categorize, and prepare tax-ready reports for every transaction across all chains.
             </p>
 
-            {/* Stats */}
-            <div className="flex items-center gap-6 pt-2">
-              <div className="space-y-1">
-                <div className="text-3xl font-bold text-white">10K+</div>
-                <div className="text-sm text-gray-400">Active Users</div>
+            {/* Key Benefits - Simple chips */}
+            <div className="flex flex-wrap items-center gap-3 pt-4">
+              <div className="flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-lg backdrop-blur-sm">
+                <Wallet className="h-4 w-4 text-blue-400" strokeWidth={2.5} />
+                <span className="text-sm font-medium text-white">15+ Chains</span>
               </div>
-              <div className="h-12 w-px bg-white/10" />
-              <div className="space-y-1">
-                <div className="text-3xl font-bold text-white">5M+</div>
-                <div className="text-sm text-gray-400">Transactions Tracked</div>
+              <div className="flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-lg backdrop-blur-sm">
+                <Shield className="h-4 w-4 text-emerald-400" strokeWidth={2.5} />
+                <span className="text-sm font-medium text-white">100% Secure</span>
               </div>
-              <div className="h-12 w-px bg-white/10" />
-              <div className="space-y-1">
-                <div className="text-3xl font-bold text-white">15+</div>
-                <div className="text-sm text-gray-400">Chains Supported</div>
+              <div className="flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-lg backdrop-blur-sm">
+                <FileText className="h-4 w-4 text-purple-400" strokeWidth={2.5} />
+                <span className="text-sm font-medium text-white">Tax Reports</span>
               </div>
             </div>
           </div>
 
-          {/* Features */}
-          <div className="space-y-3 pt-4">
-            {[
-              {
-                icon: Wallet,
-                title: 'Multi-chain Support',
-                description: 'Track Ethereum, Polygon, Arbitrum, BSC & more chains',
-              },
-              {
-                icon: Shield,
-                title: 'Read-Only & Secure',
-                description: 'No private keys needed. Your funds stay safe.',
-              },
-              {
-                icon: FileText,
-                title: 'Tax-Ready Reports',
-                description: 'Export CSV reports ready for your accountant',
-              },
-            ].map((feature, i) => (
-              <div
-                key={i}
-                className="relative flex items-start gap-4 p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-white/5 transition-all duration-300 group cursor-pointer"
-              >
-                {/* Hover glow effect */}
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                <div className="relative mt-0.5 rounded-lg bg-white p-2.5 shadow-lg group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-white/10 transition-all duration-300">
-                  <feature.icon className="h-5 w-5 text-gray-900" strokeWidth={2.5} />
+          {/* Features - Compact list */}
+          <div className="space-y-4 pt-4">
+            <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">What you get</h3>
+            <div className="space-y-3">
+              {[
+                'Multi-chain wallet tracking across Ethereum, Polygon, Arbitrum & more',
+                'Automatic transaction sync with real-time fiat valuations',
+                'Smart categorization with custom tags and notes',
+                'Export tax-ready reports in CSV format',
+              ].map((feature, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0 mt-0.5" strokeWidth={2.5} />
+                  <p className="text-slate-300 text-base leading-relaxed">{feature}</p>
                 </div>
-                <div className="relative flex-1">
-                  <h3 className="font-semibold text-white mb-1 group-hover:text-white transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Footer */}
         <div className="relative z-10">
-          <div className="flex items-center gap-3 text-sm text-gray-400">
-            <div className="flex -space-x-3">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="h-9 w-9 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 border-2 border-gray-900 shadow-lg flex items-center justify-center text-xs font-semibold text-white"
-                >
-                  {String.fromCharCode(64 + i)}
-                </div>
-              ))}
-              <div className="h-9 w-9 rounded-full bg-white/10 border-2 border-gray-900 shadow-lg flex items-center justify-center text-xs font-semibold text-white backdrop-blur-sm">
-                +1K
-              </div>
-            </div>
-            <p className="leading-relaxed">
-              Trusted by startups, freelancers, and DAOs worldwide
+          <div className="space-y-3">
+            <p className="text-slate-400 text-sm">
+              Join freelancers, startups, and DAOs who've simplified their crypto accounting
             </p>
+            <div className="flex items-center gap-2 text-slate-500 text-xs">
+              <CheckCircle2 className="h-4 w-4" />
+              <span>No credit card required</span>
+              <span className="text-slate-600">•</span>
+              <span>Free to start</span>
+            </div>
           </div>
         </div>
       </div>

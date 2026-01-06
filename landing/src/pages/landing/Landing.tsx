@@ -17,6 +17,17 @@ import {
 } from 'lucide-react';
 import { WaitlistModal } from '@/components/waitlist-modal';
 import CTAILLUSTRATION from '@/assets/cta-illustration.svg';
+
+import growBusinessIllustration from '@/assets/illustrations/grow-business.png';
+import trafficAnalyticsIllustration from '@/assets/illustrations/traffic-analytics.png';
+import globalTransactionIllustration from '@/assets/illustrations/global-transaction.png';
+import paymentIllustration from '@/assets/illustrations/payment.png';
+import rankingIllustration from '@/assets/illustrations/ranking.png';
+import pricingVariablesIllustration from '@/assets/illustrations/pricing-variables.png';
+import startupIllustration from '@/assets/illustrations/startup.png';
+import remoteWorkIllustration from '@/assets/illustrations/remote-work.png';
+import securedTransactionIllustration from '@/assets/illustrations/secured-transaction.png';
+import winMoneyIllustration from '@/assets/illustrations/win-money.png';
 import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
@@ -203,12 +214,12 @@ const Footer = () => {
                 <p className="text-xs text-gray-500">
                   Illustrations by{' '}
                   <a
-                    href="https://notioly.com"
+                    href="https://overflow.design"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-gray-700 hover:text-gray-900 transition-colors"
                   >
-                    Notioly
+                    Overflow Design
                   </a>
                 </p>
               </div>
@@ -269,7 +280,7 @@ const Hero = () => {
           <div className="relative lg:justify-self-end">
             <div className="relative mx-auto max-w-lg lg:max-w-xl">
               <img
-                src="https://notioly.com/wp-content/uploads/2024/05/388.Bitcoin-Savings.png"
+                src={globalTransactionIllustration}
                 alt="Crypto Accounting Illustration"
                 className="w-full h-auto drop-shadow-sm"
               />
@@ -281,17 +292,17 @@ const Hero = () => {
         <div className="mt-24 grid gap-8 sm:grid-cols-3">
           {[
             {
-              image: 'https://notioly.com/wp-content/uploads/2024/11/469.Money-Transfer.png',
+              image: paymentIllustration,
               title: 'Track All Wallets',
               description: 'Connect wallets across Ethereum, Polygon, Arbitrum, and more',
             },
             {
-              image: 'https://notioly.com/wp-content/uploads/2024/07/416.Data-Analyst.png',
+              image: rankingIllustration,
               title: 'Smart Analytics',
               description: 'Automatically categorize and analyze all your crypto transactions',
             },
             {
-              image: 'https://notioly.com/wp-content/uploads/2025/03/519.Reporting-Stats.png',
+              image: pricingVariablesIllustration,
               title: 'Tax Reports',
               description: 'Generate quarterly and annual reports ready for your accountant',
             },
@@ -336,22 +347,22 @@ const WhoIsItFor = () => {
               {
                 title: 'Startups accepting crypto',
                 description: 'Track USDC, ETH, or token payments seamlessly',
-                image: 'https://notioly.com/wp-content/uploads/2024/05/399.Business-Recipe.png',
+                image: startupIllustration,
               },
               {
                 title: 'Agencies & freelancers',
                 description: 'Manage crypto income and expenses effortlessly',
-                image: 'https://notioly.com/wp-content/uploads/2024/07/421.Hiring.png',
+                image: remoteWorkIllustration,
               },
               {
                 title: 'DAOs & grant recipients',
                 description: 'Monitor multisig wallet activities in real-time',
-                image: 'https://notioly.com/wp-content/uploads/2024/07/419.Money-Care.png',
+                image: securedTransactionIllustration,
               },
               {
                 title: 'NFT creators',
                 description: 'Track on-chain revenue and royalties automatically',
-                image: 'https://notioly.com/wp-content/uploads/2024/05/398.Make-It-Rain.png',
+                image: winMoneyIllustration,
               },
             ].map((item, i) => (
               <div
@@ -489,25 +500,25 @@ const HowItWorks = () => {
             {
               title: 'Connect Wallets',
               description: 'Link your MetaMask, Gnosis Safe, or hardware wallet in seconds',
-              image: 'https://notioly.com/wp-content/uploads/2024/11/469.Money-Transfer.png',
+              image: paymentIllustration,
               step: '01',
             },
             {
               title: 'Auto-Sync Transactions',
               description: 'We fetch and organize all your on-chain transactions automatically',
-              image: 'https://notioly.com/wp-content/uploads/2024/06/407.Analytics.png',
+              image: rankingIllustration,
               step: '02',
             },
             {
               title: 'Tag Transactions',
               description: 'Categorize as income, expenses, or payroll with custom tags',
-              image: 'https://notioly.com/wp-content/uploads/2024/05/387.Targeting.png',
+              image: securedTransactionIllustration,
               step: '03',
             },
             {
               title: 'Export Reports',
               description: 'Download tax-ready reports for your accountant',
-              image: 'https://notioly.com/wp-content/uploads/2025/03/519.Reporting-Stats.png',
+              image: pricingVariablesIllustration,
               step: '04',
             },
           ].map((step, index) => (
